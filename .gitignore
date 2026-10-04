@@ -1,0 +1,7 @@
+node_modules/
+.agents/
+.claude/
+skills-lock.json
+work/
+.DS_Store
+Thumbs.db
