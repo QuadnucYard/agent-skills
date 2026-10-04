@@ -1,0 +1,7 @@
+interface:
+  display_name: "Weekly Research Mentor"
+  short_description: "Rigorous, constructive weekly research mentor"
+  default_prompt: "Use $weekly-research-mentor to examine my weekly research update as a mentor with common field background, find unclear or unsupported reasoning, and help me improve it."
+
+policy:
+  allow_implicit_invocation: true

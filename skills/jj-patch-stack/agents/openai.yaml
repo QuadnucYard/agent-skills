@@ -1,0 +1,4 @@
+interface:
+  display_name: "JJ Patch Stack"
+  short_description: "Add fixes without rewriting existing jj history"
+  default_prompt: "Use $jj-patch-stack to patch these revisions from oldest to newest without modifying existing history."

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Seminar Supervisor"
+  short_description: "Rigorous critique of reasoning and structure"
+  default_prompt: "Use $seminar-supervisor to audit this material, rank every substantive defect, and propose precise repairs."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Jujutsu State Repair"
+  short_description: "Repair corrupt Jujutsu operation state safely"
+  default_prompt: "Use $jj-repair-state to diagnose and repair this corrupt Jujutsu repository state."
