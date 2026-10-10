@@ -10,7 +10,8 @@ jj diff -r "$OLD_STACK" --stat
 jj show -r <REVISION>
 ```
 
-Classify each commit as an independent logical change, exact fixup,
+Classify each commit as an independent logical change, incremental feature,
+migration or compatibility stage, intentional removal, exact fixup,
 distributed fixup, mixed change, dependency correction, noise, or description
 cleanup. Record a destination table before mutating:
 
@@ -19,6 +20,22 @@ cleanup. Record a destination table before mutating:
 | A | foundation | clean 1 | retain |
 | B | fixup for A | clean 1 | squash |
 | C | mixed implementation/tests | clean 2 and 3 | split |
+| D | later fixup spanning concerns | clean 1, 2, and 3 | absorb/split by hunk |
+
+Also record a semantic timeline. For every original commit, inspect both its
+parent-to-commit diff and the resulting tree, then answer:
+
+1. What capability, migration state, compatibility guarantee, or removal
+   becomes true here?
+2. Does a later commit alter or erase that state?
+3. Is the state an intended reviewable milestone, or only fixup noise or an
+   invalid partial implementation?
+4. Which clean commit preserves the milestone, and what evidence will validate
+   it?
+
+The destination table accounts for hunks; the semantic timeline accounts for
+states. Both are required. A final tree can account for every surviving hunk
+while still losing an incremental feature that existed earlier.
 
 Prefer dependency order: foundations, core implementation, public integration,
 call-site migration, tests, documentation, then independent mechanical work.
@@ -28,10 +45,10 @@ The real test is that each commit's parent supplies everything it needs.
 
 | Situation | Preferred treatment |
 |---|---|
-| Boundaries already coherent | Duplicate-and-edit; preserve useful commits. |
-| Large refactor or repeated rewrites | Final-state rebuild from `OLD_TIP`'s tree. |
-| Exact fixup to one owner | Squash into that duplicate/new owner. |
-| Hunk spans several owners | Explicitly scoped absorb, then review ambiguous hunks. |
+| A small minority of commits have coherent, mostly reusable boundaries | Duplicate only that confirmed slice, one explicit revision at a time. |
+| Large refactor or repeated rewrites | Reconstruct from identified semantic milestones; use final-state partitioning only if no meaningful intermediate state would be lost. |
+| Exact fixup whose complete diff belongs to one owner | Squash into that duplicate/new owner. |
+| Later commit contains hunks for several owners | Map hunks to all destinations, then use explicitly scoped absorb or split. |
 | Mixed behavior and tests | Split so behavior and tests have valid dependencies. |
 | Pure mechanical movement | Isolate from behavior when both commits remain checkable. |
 | Accidental/noise change | Omit only with approved content change; otherwise preserve it in a coherent commit. |
@@ -39,34 +56,60 @@ The real test is that each commit's parent supplies everything it needs.
 | Generated artifact | Follow repository policy; never silently drop it while claiming tree equivalence. |
 | Conflict or invalid intermediate | Stop, rebuild the duplicate/new stack from the first affected commit, and re-check. |
 
-## Select a reconstruction mode
+## Select reconstruction tactics
 
-Apply either mode only to the suffix after `REBUILD_BASE`, keeping the
-longest unchanged prefix intact as defined in `scope-and-safety.md`.
+Apply these tactics only to the suffix after `REBUILD_BASE`, keeping the
+longest unchanged prefix intact as defined in `scope-and-safety.md`. Choose the
+source for each clean commit from its intended semantic milestone; do not
+choose one reconstruction mode for the whole suffix by convenience.
+Duplication is only a local optimization for a small confirmed slice and must
+never become a second copy of the original stack.
 
-### Duplicate-and-edit mode
+### History-aware selective reconstruction
 
-Use this only when most original boundaries already represent useful logical
-changes and the main work is folding fixups, correcting order, or improving
-descriptions. Decide the final order and treatment of every commit first,
-then build the clean stack by duplicating one source revision at a time onto
-the current clean tip (see "Build the clean stack one commit at a time" in
-`scope-and-safety.md`). Never duplicate the whole range at once and reorder
-afterwards, and never use `jj rebase` to place revisions: the order is
-realized by the build itself. Apply the tactics below to the duplicate
-revisions as the build reaches them, and inspect after every step.
+This is the general tactic when original commits need substantial cleanup but
+their sequence contains meaningful states. Build each planned clean commit
+from the relevant original parent-to-commit diffs, milestone tree, and explicit
+edits. A clean commit may combine hunks from several original commits or
+represent an incremental state later absent from `OLD_TIP`. Materialize exactly
+one planned milestone, manually validate its complete parent diff and behavior,
+advance `CLEAN_BOOKMARK`, then continue.
 
-### Final-state rebuild mode
+Do not require a one-to-one mapping between original and clean commits. Do
+require every meaningful original milestone to have a named clean destination
+or a recorded justification for omission. If a milestone was later removed,
+the clean history may need both the feature-introduction commit and a later
+intentional-removal commit even though their net effect is absent at the tip.
 
-Use this for large refactors, repeated rewrites of the same files, commits
-whose diffs cannot be assigned reliably, or a stack where subjects and
-boundaries no longer describe the final design. The final tree is the source
-of truth; commit provenance is not.
+### Confirmed-slice duplication
+
+Use this only when a small minority of the original commits already represent
+useful logical changes and all or most of each selected commit will survive
+unchanged. Manually inspect every selected source commit under the evidence
+requirements in `scope-and-safety.md` before duplicating any of them. Name the
+bounded slice explicitly, then duplicate one source revision at a time onto
+the current clean tip. Never pass a range to `jj duplicate`, duplicate the
+whole original stack or changed suffix, or assemble multiple duplicate slices
+that collectively do so. Never use `jj rebase` to place revisions. After each
+resulting clean commit, read its full parent diff and validate its intent,
+dependencies, and relevant behavior before proceeding.
+
+### Qualified final-state reconstruction
+
+Use this only when a commit-by-commit semantic audit proves that the original
+suffix contains no meaningful intermediate feature, migration, compatibility
+stage, or intentional removal that would be hidden by `OLD_TIP`. Typical
+qualifying content is repeated fixup noise or invalid partial work whose only
+intended state is the final result. The final tree is then a reconstruction
+source, not proof that this tactic is safe.
 
 1. Preserve the original tip and commit-ID list as usual.
-2. Create a new child of `REBUILD_BASE`; retain the original prefix and do
+2. Record the semantic audit and the justification for omitting every original
+   intermediate state from the clean sequence. If any state lacks a confident
+   disposition, use history-aware selective reconstruction instead.
+3. Create a new child of `REBUILD_BASE`; retain the original prefix and do
    not import any original suffix commits.
-3. Restore the old tip's final tree into that new revision:
+4. Restore the old tip's final tree into that new revision:
 
    ```sh
    jj restore --from "$OLD_TIP" --into <NEW_REVISION>
@@ -74,12 +117,36 @@ of truth; commit provenance is not.
 
    Check `jj help restore` if the installed version differs, and record the
    source and destination revisions.
-4. Partition only the net suffix change relative to `REBUILD_BASE` into planned logical commits using `jj split`,
-   interactive editing, or small explicit edits. Give each commit a complete
-   purpose and description.
-5. If a final-state change must be removed or corrected, make the subtraction
+5. Partition only the net suffix change relative to `REBUILD_BASE` into planned
+   logical commits using `jj split`, interactive editing, or small explicit
+   edits. Materialize one planned commit, give it a complete purpose and
+   description, and validate it before extracting the next. Do not create a
+   batch of unchecked commits.
+6. After producing each commit, manually read its complete diff against its
+   actual clean parent, confirm its single stated purpose and dependency
+   completeness, and run the relevant behavioral check before splitting or
+   creating the next commit.
+7. If a final-state change must be removed or corrected, make the subtraction
    explicit before adding the replacement. Validate the resulting final tree
    against the original unless the user approved a content change.
+
+### Mixed-source sequencing
+
+When clean history combines selectively reconstructed milestones, confirmed
+duplicate slices, and possibly a qualified final-state partition, apply each
+source only at its planned semantic position. Do not restore the full final
+tree and then duplicate or reconstruct content already present; that would
+apply it twice. Build and validate each planned commit before selecting the
+source for the next. The combined duplicated revisions must remain a small
+minority and must never collectively reproduce the original stack or changed
+suffix.
+
+At every boundary, inspect the complete diff of the next planned commit, its
+source milestone, and the current-tip-to-`OLD_TIP` diff. Confirm that no hunk
+already introduced is applied again, no required final hunk is lost, and no
+required intermediate state is skipped. If that accounting is uncertain, stop
+and revise the milestone and destination maps; do not collapse to a final-state
+rebuild as a shortcut.
 
 Do not use duplication merely because it is mechanically convenient. A clean
 stack with correct final content and independently valid commits is preferable
@@ -117,7 +184,8 @@ The inverse and replacement should each pass their own checks.
 
 ## Choose the narrowest operation
 
-All placeholders below must resolve to duplicate revisions.
+All placeholders below must resolve to revisions in the rebuilt suffix, never
+the original stack.
 
 ### Exact fixup to one owner
 
@@ -125,16 +193,30 @@ All placeholders below must resolve to duplicate revisions.
 jj squash --from <FIXUP> --into <OWNER> --use-destination-message
 ```
 
-Use a path or `--interactive` when only part of the source belongs there.
-Inspect the owner and nearby history afterward. Remove an emptied duplicate
-only when it is genuinely redundant; never remove an original revision.
+Use squash only after manually confirming that the complete source diff belongs
+to this single owner. If only part belongs there, do not simplify the source to
+one destination: use a path or `--interactive` for that part and explicitly
+route the remainder to its other owners. Inspect and manually revalidate the
+owner and every rewritten descendant afterward. Remove an emptied duplicate
+only when every hunk has reached its correct destination and it is genuinely
+redundant; never remove an original revision.
 
 ### Distributed fixup
 
-Use `jj absorb` only with an explicit destination revset restricted to the
-duplicate stack and intended ancestors. Do not rely on its default mutable
-scope. Review the resulting operation (for example with `jj op show -p`) and
-manually handle ambiguous hunks with interactive squash or split.
+A later commit can be a fixup for multiple earlier rebuilt commits. Do not
+choose one owner for convenience. Read its complete diff, assign every hunk to
+one or more intended logical destinations, and record that map before mutation.
+Use `jj absorb` only with an explicit destination revset containing all and
+only those rebuilt destinations. Do not rely on its default mutable scope.
+Review the resulting operation (for example with `jj op show -p`) and manually
+handle ambiguous hunks with interactive squash or split.
+
+Absorption rewrites its destinations and may rewrite descendants. Immediately
+inspect and manually validate each rewritten destination from oldest to newest,
+then each affected rebuilt descendant against its new parent. Do not create,
+absorb, or split the next source commit until all of those validations pass.
+Re-resolve `CURRENT_TIP` and verify that `CLEAN_BOOKMARK` points to it after
+the rewrite.
 
 ### Mixed commit
 
@@ -147,14 +229,16 @@ jj split -r <DUPLICATE_REVISION>
 
 Use path selection when concerns divide by files. Use insertion options only
 after verifying the installed `jj split` syntax and the extracted change's
-dependencies.
+dependencies. Treat every result as newly rebuilt: manually validate each
+resulting commit from oldest to newest before any further split or mutation.
 
 ### Reordering
 
-Order is chosen during analysis and realized by the build: duplicate the
-next source revision onto the current clean tip in the final order. A
-revision that must come earlier is simply built earlier. Do not duplicate
-the whole range first and move duplicate revisions afterwards.
+Order is chosen during semantic-timeline analysis and realized while building
+one milestone at a time. When a confirmed small slice is reused, duplicate its
+next explicit source revision onto the current clean tip in the final order. A
+revision that must come earlier is built earlier. Do not duplicate the whole
+range first or move finished revisions afterwards.
 
 If a build step exposes a real dependency — the duplicate conflicts, or its
 tree is missing something its source had — stop building and adjust the
@@ -174,9 +258,10 @@ order.
 
 ## Descriptions
 
-Describe only duplicate revisions. State what the commit accomplishes and why
-when non-obvious. Do not mention `fixup`, `wip`, review cleanup, or the
-restacking process. The final history should read as intentional history.
+Describe only duplicate or newly reconstructed revisions. State what the
+commit accomplishes and why when non-obvious. Do not mention `fixup`, `wip`,
+review cleanup, or the restacking process. The final history should read as
+intentional history.
 
 Format every description in the repository's commit-message convention —
 check recent subjects with `jj log` to detect it (for example Conventional
@@ -188,9 +273,11 @@ placeholder or auto-generated description on a clean commit.
 
 | Goal | Command family |
 |---|---|
-| Build the clean stack | `jj duplicate --onto`, one source revision at a time |
-| Fold one fixup | `jj squash` |
-| Distribute a fixup | `jj absorb` with explicit `--into` |
+| Reconstruct a semantic milestone | selected `jj restore`, `jj split`, or explicit edits from original evidence |
+| Partition a qualified final state | `jj restore` plus `jj split`, only after the semantic audit |
+| Reuse a confirmed small slice | `jj duplicate --onto`, one explicit source revision at a time |
+| Fold a wholly single-owner fixup | `jj squash` |
+| Distribute a multi-owner fixup | `jj absorb` with explicit `--into`, or split by hunk |
 | Separate concerns | `jj split` |
-| Place a revision at a new position | `jj duplicate --onto` during the build (never `jj rebase`) |
+| Place a confirmed reusable revision | `jj duplicate --onto` within the small approved slice (never `jj rebase`) |
 | Review the latest operation | `jj op show -p` |
