@@ -1,13 +1,16 @@
 ---
 name: jj-commit
-description: Write Conventional Commit descriptions and commit verified changes with Jujutsu (jj). Use when asked to write a jj commit message, describe a change, or commit with jj.
+description: Write or rewrite Conventional Commit descriptions and commit verified changes with Jujutsu (jj). Use for jj commit messages, describe or redescribe requests, and stale or concatenated descriptions after squash, split, or fixes.
 license: MIT
 ---
 
 # JJ Commit
 
 Write a concise Conventional Commit subject and a meaningful body grounded in
-the actual change. A request for a message alone does not authorize committing.
+the actual change. Keep describing an existing change separate from finishing
+the working-copy change. A request for a message alone authorizes drafting;
+a request to redescribe a change authorizes applying its replacement description,
+without committing or advancing the working copy.
 
 ## Message
 
@@ -45,10 +48,20 @@ identity to the workspace so each project retains its own configuration.
 Keep `--no-cache` as an explicit bypass for troubleshooting.
 ```
 
+## Describe or redescribe
+
+For a describe or redescribe request, read
+[references/redescribe.md](references/redescribe.md). Compare the existing
+description against the target's current contents, consolidate squashed messages,
+remove stale claims, and fully rewrite poor descriptions. Apply only the
+description; do not finish or advance the working-copy change.
+
 ## Commit workflow
 
-1. Inspect the intended revision, its diff, and nearby descriptions with
-   `jj --no-pager status`, `jj --no-pager diff`, and `jj --no-pager log`.
+1. Inspect the intended revision, its full diff, and nearby descriptions with
+   `jj --no-pager status`, `jj --no-pager diff -r <target> --git`, and
+   `jj --no-pager log`. If an existing description needs reconciliation, read
+   [references/redescribe.md](references/redescribe.md) before writing the message.
    Preserve unrelated work and commit only the agreed change. Never run
    `git add` or `git commit`; use Jujutsu for committing. Do not reorganize
    history merely to write a message.

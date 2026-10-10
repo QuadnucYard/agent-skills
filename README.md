@@ -5,7 +5,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | Skill | Purpose |
 | --- | --- |
 | `jj-clean-restack` | Rebuild a clean Jujutsu stack while preserving original history. |
-| `jj-commit` | Write Conventional Commit descriptions and commit verified jj changes. |
+| `jj-commit` | Write or refresh Conventional Commit descriptions and commit verified jj changes. |
 | `jj-patch-stack` | Add fixes without rewriting existing changes. |
 | `jj-repair-state` | Diagnose and repair damaged Jujutsu metadata. |
 | `jj-review-restack` | Review, fix, and rebuild a Jujutsu stack. |
