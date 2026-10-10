@@ -13,14 +13,45 @@ jj show -r <REVISION>
 Classify each commit as an independent logical change, incremental feature,
 migration or compatibility stage, intentional removal, exact fixup,
 distributed fixup, mixed change, dependency correction, noise, or description
-cleanup. Record a destination table before mutating:
+cleanup. Before mutating, present the reconstruction plan to the user. The
+plan must contain all three views below; none can be replaced by a prose
+summary of the others. User-facing revision labels must contain short jj
+change IDs and must not contain commit IDs/Git hashes.
 
-| Original | Intent | Destination | Operation |
+1. **Original stack inventory.** List every original commit, oldest to newest,
+   including the retained prefix. For each, state its short change ID,
+   description, what behavior/content or semantic state it introduces,
+   modifies, or removes, its dependencies, and whether later commits revise or
+   erase that state.
+2. **Redistribution map.** Account for every original commit and every
+   meaningful hunk or state: name the clean destination or destinations, the
+   operation (`retain`, reconstruct, duplicate, split, squash, absorb, reorder,
+   or omit), and the evidence-backed reason. A split or distributed fixup must
+   enumerate all destinations; an omission must explain why it is noise or an
+   invalid partial state rather than a reviewable milestone.
+3. **Resulting clean stack.** Show the entire proposed stack from `BASE` to the
+   clean tip, including the retained prefix and rebuilt suffix. For every
+   proposed clean commit, give its ordered position, expected short change ID
+   when it already exists or a stable descriptive label when it does not,
+   final description, purpose, source original change IDs/hunks, parent or
+   dependency assumptions, and planned behavioral validation. Explicitly
+   reserve where future extensions attach or which boundary they build on
+   when the analyzed history establishes such an extension point; do not
+   invent speculative commits.
+
+The redistribution view can use this shape:
+
+| Original change | What it does | Clean destination(s) | Operation and reason |
 |---|---|---|---|
-| A | foundation | clean 1 | retain |
-| B | fixup for A | clean 1 | squash |
-| C | mixed implementation/tests | clean 2 and 3 | split |
-| D | later fixup spanning concerns | clean 1, 2, and 3 | absorb/split by hunk |
+| `<short-change-id>` | foundation | clean 1 | retain: boundary is already coherent |
+| `<short-change-id>` | fixup for foundation | clean 1 | squash: every hunk belongs there |
+| `<short-change-id>` | mixed implementation/tests | clean 2 and clean 3 | split by concern |
+| `<short-change-id>` | later fixup spanning concerns | clean 1, 2, and 3 | distribute each mapped hunk |
+
+Do not begin reconstruction while any original commit, hunk, meaningful state,
+clean destination, ordering dependency, or validation step is unaccounted for.
+If implementation reveals that this plan is wrong, revise and re-present the
+affected parts before continuing.
 
 Also record a semantic timeline. For every original commit, inspect both its
 parent-to-commit diff and the resulting tree, then answer:
@@ -33,9 +64,11 @@ parent-to-commit diff and the resulting tree, then answer:
 4. Which clean commit preserves the milestone, and what evidence will validate
    it?
 
-The destination table accounts for hunks; the semantic timeline accounts for
-states. Both are required. A final tree can account for every surviving hunk
-while still losing an incremental feature that existed earlier.
+The redistribution map accounts for hunks; the original-stack inventory and
+semantic timeline account for states; the resulting-stack view makes the
+reviewable outcome and dependency order explicit. All three are required. A
+final tree can account for every surviving hunk while still losing an
+incremental feature that existed earlier.
 
 Prefer dependency order: foundations, core implementation, public integration,
 call-site migration, tests, documentation, then independent mechanical work.

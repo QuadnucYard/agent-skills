@@ -142,11 +142,14 @@ tree change.
 
 State the original base/tip, `REBUILD_BASE`, retained prefix and rebuilt
 suffix counts, clean tip, the safety tag and clean bookmark with their target
-commit IDs, original and clean commit counts, fixups folded or distributed
-across multiple destinations, preserved semantic milestones, justified omitted
-states, splits, reorders, checks run, tree equivalence, original-ID
-preservation, and remaining caveats. A result is not complete until every item
-is evidenced or explicitly marked unverified.
+short jj change IDs, original and clean commit counts, fixups folded or
+distributed across multiple destinations, preserved semantic milestones,
+justified omitted states, splits, reorders, checks run, tree equivalence,
+internal original-commit preservation, and remaining caveats. Never expose a
+commit ID/Git hash in the report or other user-facing output; identify each
+reported revision with at least its short jj change ID and enough role/ref
+context to disambiguate it. A result is not complete until every item is
+evidenced or explicitly marked unverified.
 
 ## Definition of done
 

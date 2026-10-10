@@ -14,9 +14,9 @@ description: >
 # Clean A Jujutsu Stack
 
 Produce a new stack with a coherent history. The original stack is evidence
-and must remain reachable and identifiable by full commit ID, pinned with a
-tag. Do not silently replace the user's branch, publish over it, or flatten a
-merge history.
+and must remain reachable and internally identifiable by full commit ID,
+pinned with a tag. Do not silently replace the user's branch, publish over it,
+or flatten a merge history.
 
 ## Operating contract
 
@@ -92,6 +92,12 @@ merge history.
   advances.
 - Stop on ambiguity, an unexpected merge, a commit-ID intersection outside the retained prefix, a tree
   mismatch, or an unexplained conflict.
+- Keep commit IDs/Git hashes internal. Never expose them in user-facing
+  conversation, plans, tables, or reports. Identify every revision shown to
+  the user with at least its short jj change ID (`change_id.short()`), plus its
+  description and relevant tag/bookmark or original/clean role when needed to
+  disambiguate it. Do not paste command output containing commit IDs; render a
+  user-facing view that follows this rule instead.
 - Format every command, flag, revset, revision expression, and change or
   commit ID as code: inline backticks in prose, fenced `sh` blocks for
   command sequences. Never leave code unformatted.
@@ -129,7 +135,14 @@ Read detail as needed:
    proposed duplicate slice explicitly and justify, commit by commit, that it
    is small and that each commit will be fully or mostly retained. Reject any
    plan that duplicates the whole original stack or uses duplication as the
-   general reconstruction strategy.
+   general reconstruction strategy. Before the first reconstruction mutation,
+   present a concrete plan to the user with all three views defined in
+   [reconstruction.md](references/reconstruction.md): what every original
+   commit does, how all of its content and meaningful states will be
+   redistributed, and the complete ordered shape of the clean stack. Use
+   short jj change IDs, never commit IDs/Git hashes, in that plan. Do not hide
+   an unresolved destination or dependency behind a high-level summary; stop
+   for clarification when the plan cannot account for it confidently.
 4. Rebuild the suffix one planned semantic milestone at a time, using selected
    original diffs, original milestone trees, and explicit edits. A confirmed
    small reusable slice may be duplicated one explicit revision at a time at
