@@ -45,7 +45,7 @@ The redistribution view can use this shape:
 |---|---|---|---|
 | `<short-change-id>` | foundation | clean 1 | retain: boundary is already coherent |
 | `<short-change-id>` | fixup for foundation | clean 1 | squash: every hunk belongs there |
-| `<short-change-id>` | mixed implementation/tests | clean 2 and clean 3 | split by concern |
+| `<short-change-id>` | mixed features and their tests | clean 2 and clean 3 | split by semantic feature, keeping each feature's tests with it |
 | `<short-change-id>` | later fixup spanning concerns | clean 1, 2, and 3 | distribute each mapped hunk |
 
 Do not begin reconstruction while any original commit, hunk, meaningful state,
@@ -70,9 +70,27 @@ reviewable outcome and dependency order explicit. All three are required. A
 final tree can account for every surviving hunk while still losing an
 incremental feature that existed earlier.
 
-Prefer dependency order: foundations, core implementation, public integration,
-call-site migration, tests, documentation, then independent mechanical work.
-The real test is that each commit's parent supplies everything it needs.
+Choose semantic vertical slices unless the user explicitly requires another
+shape. Each clean commit should deliver one coherent capability across the
+affected crates or layers, with its integration, call sites, relevant tests,
+and documentation. Order these slices by their actual dependencies; do not
+use foundations, implementation, integration, tests, or crate boundaries as
+default clusters. Each commit's parent must supply everything it needs.
+
+For example, if upstream crate A supplies an API used by downstream crate B,
+implement each feature across A and B as a coherent whole. Do not implement
+all features in A first and then all their consumers in B. The only exception
+is when the A changes are independently coherent and confidently ready to
+merge early, while the B changes need more consideration. Record that
+readiness difference and validate the A boundary independently; an upstream
+dependency or convenient file split alone does not justify the exception.
+
+Late fixups make these boundaries especially important. Map each fixup hunk
+to the semantic feature it completes, even when it crosses A and B, and fold
+it into that feature's slice. Do not preserve crate clusters merely because
+the original implementation or later fixes were organized that way. Preserve
+meaningful migration and compatibility milestones under the semantic-timeline
+rules above.
 
 ## Case coverage
 
@@ -82,7 +100,8 @@ The real test is that each commit's parent supplies everything it needs.
 | Large refactor or repeated rewrites | Reconstruct from identified semantic milestones; use final-state partitioning only if no meaningful intermediate state would be lost. |
 | Exact fixup whose complete diff belongs to one owner | Squash into that duplicate/new owner. |
 | Later commit contains hunks for several owners | Map hunks to all destinations, then use explicitly scoped absorb or split. |
-| Mixed behavior and tests | Split so behavior and tests have valid dependencies. |
+| One feature spanning implementation, integration, and tests | Keep together as a coherent vertical slice. |
+| Several features mixed across crates or layers | Split by semantic feature, including each feature's integration and tests. |
 | Pure mechanical movement | Isolate from behavior when both commits remain checkable. |
 | Accidental/noise change | Omit only with approved content change; otherwise preserve it in a coherent commit. |
 | Deletion/removal | Treat as a first-class change; use `jj revert` for a known duplicate change, then add any replacement later. |

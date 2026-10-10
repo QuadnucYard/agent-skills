@@ -61,6 +61,15 @@ or flatten a merge history.
   stack commits are untouchable regardless, and `jj edit` remains allowed for
   the read-only per-commit checks in
   [validation-and-recovery.md](references/validation-and-recovery.md).
+- Unless explicitly required otherwise, choose semantic vertical slices as
+  clean commit boundaries: each slice implements one coherent capability across
+  the affected layers or crates, including its integration and relevant tests.
+  Do not cluster commits by crate or layer, especially when late fixups reveal
+  that changes belong to the same feature. The only exception to keeping an
+  upstream/downstream feature together is when the upstream changes are
+  independently coherent and confidently ready to merge early, while the
+  downstream changes need more consideration. See the boundary guidance in
+  [reconstruction.md](references/reconstruction.md).
 - Every rebuilt commit is a manual validation gate. Before building the next
   commit, inspect its complete diff against its actual clean parent, confirm
   its stated intent and dependencies, and run the relevant behavioral check.
