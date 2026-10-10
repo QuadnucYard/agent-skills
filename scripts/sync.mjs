@@ -3,7 +3,8 @@ import { install, root } from "./install.mjs";
 
 function git(args) {
   const result = Bun.spawnSync(["git", "-C", root, ...args], { stdout: "pipe", stderr: "pipe" });
-  if (result.exitCode !== 0) throw new Error(new TextDecoder().decode(result.stderr).trim() || "Git command failed");
+  if (result.exitCode !== 0)
+    throw new Error(new TextDecoder().decode(result.stderr).trim() || "Git command failed");
   return new TextDecoder().decode(result.stdout).trim();
 }
 
@@ -22,7 +23,7 @@ try {
       stderr: "inherit",
     },
   );
-  if (await check.exited !== 0)
+  if ((await check.exited) !== 0)
     throw new Error("Repository verification failed; installation was skipped.");
   if (process.argv.includes("--install")) {
     process.exitCode = await install(process.argv.slice(2).filter((arg) => arg !== "--install"));

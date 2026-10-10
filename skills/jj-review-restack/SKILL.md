@@ -14,7 +14,12 @@ Produce a dependency-correct, reviewable stack whose early changes are the most
 confident independent units and whose commits express the final design. Review
 the whole stack before choosing its boundaries or order.
 
-Use the bundled [jj-clean-restack guidance](references/restack/overview.md) for reconstruction. Read it and its applicable references before mutation. The bundle makes this skill usable when installed alone; the repository maintains it from the canonical `jj-clean-restack` skill. Do not substitute an in-place rebase for the requested reconstruction.
+This skill requires the separately installed `jj-clean-restack` skill. Load its
+`SKILL.md` and applicable references before planning or mutating the stack, and
+follow its reconstruction and validation contract. The checkout installer adds
+that dependency automatically. If it is unavailable, stop and request its
+installation; do not improvise a partial reconstruction workflow or substitute
+an in-place rebase.
 
 For local jj operations, inspect the repository boundary first: require a `.jj` directory for this workflow, and verify that `jj root` identifies the intended repository rather than a parent. Use `jj --no-pager` for output and noninteractive commands with explicit descriptions; avoid editor or TUI commands. In a colocated repository use jj for mutations and Git only for read-only verification. Preserve unrelated work and record the operation ID before mutation. Follow an installed `jujutsu-workflow` skill when available, subject to this skill’s stricter preservation rules.
 
@@ -44,9 +49,10 @@ Never hide a fix inside restack conflict resolution or edit an original commit.
 Keep fixes distinct from unrelated working-copy edits. Seek clarification when
 the correct behavior requires a material product or design decision.
 
-Pin the pre-fix tip, then record and pin the corrected tip after all fix commits
-are complete, using fresh tags under the restack skill's safety rules. Inspect
-the pre-fix-to-corrected diff so each intentional behavior change is explicit.
+Pin the pre-fix tip with a fresh review-safety tag. After all fix commits are
+complete, use the restack workflow's `ORIGINAL_TAG` to pin the corrected source
+tip and its `CLEAN_BOOKMARK` for the rebuilt tip. Inspect the
+pre-fix-to-corrected diff so each intentional behavior change is explicit.
 If no fixes are needed, these two tips are the same. Use the corrected tip as
 `OLD_TIP` and the equivalence target for reconstruction. Preserve the pre-fix
 tip separately so the original behavior and the fixes remain comparable.
@@ -59,8 +65,10 @@ preserved source stack, followed by an updated pinned target and build plan.
 ## Choose boundaries and order
 
 Build a compact source-to-intent map containing dependencies, confidence and
-its evidence, review findings, and proposed disposition: keep, squash, split, or
-replace with a commit reconstructed from the final state.
+its evidence, review findings, semantic milestones, and proposed disposition:
+keep, squash, split, reconstruct from original milestone evidence, or use a
+qualified final-state partition after proving that it hides no meaningful
+incremental state.
 
 1. Respect semantic dependencies first. A commit must work with its ancestors,
    without depending on later repairs or migrations.
@@ -100,10 +108,11 @@ tracking status or repeatedly reread it merely to confirm it exists.
 
 Execute with `jj-clean-restack`: retain the original graph and existing refs,
 retain the longest unchanged prefix and grow a separate suffix from the
-first divergence point, then choose duplicate-in-final-order or final-state
-reconstruction according to the dependency analysis. Follow its rules for
-amending created commits through verified child fixes, pinning tips, and
-recovery. Do not reorder finished duplicates through rebase.
+first divergence point, then reconstruct one semantic milestone at a time.
+Duplicate only confirmed small reusable slices, and use a final-state partition
+only when the semantic audit permits it. Follow its rules for amending created
+commits through verified child fixes, reference handling, per-commit manual
+validation, and recovery. Do not reorder finished duplicates through rebase.
 
 Verify exact tree equivalence between the clean tip and the corrected source
 tip. Also inspect the pre-fix-to-clean diff: it must contain precisely the
@@ -117,6 +126,6 @@ Honor mandatory repository checks and reconstruction-specific checks from
 Distinguish tests actually run from conclusions based on inspection.
 
 Report findings and top fixes, the final ordered commits with reasons and
-source mapping, preserved and clean tip identifiers/tags, tree-comparison
+source mapping, preserved tip tags, the clean tip bookmark, tree-comparison
 evidence, and any verification limits. Do not publish or move the user's
 existing branch as an implicit consequence of rebuilding.

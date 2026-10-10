@@ -1,6 +1,6 @@
 import { test } from "bun:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, readFileSync, readdirSync, existsSync, mkdirSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readdirSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { root } from "../scripts/install.mjs";
@@ -11,7 +11,9 @@ async function runInstall(skills) {
   const home = path.join(sandbox, "home");
   const bin = path.join(sandbox, "bin");
   mkdirSync(bin);
-  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => key.toLowerCase() !== "path"));
+  const env = Object.fromEntries(
+    Object.entries(process.env).filter(([key]) => key.toLowerCase() !== "path"),
+  );
   env.PATH = bin;
   assert.equal(Bun.which("node", { PATH: bin }), null, "Node must be unavailable");
   const result = Bun.spawn(
@@ -31,12 +33,16 @@ async function runInstall(skills) {
       },
     },
   );
-  const [status, stdout, stderr] = await Promise.all([result.exited, new Response(result.stdout).text(), new Response(result.stderr).text()]);
+  const [status, stdout, stderr] = await Promise.all([
+    result.exited,
+    new Response(result.stdout).text(),
+    new Response(result.stderr).text(),
+  ]);
   assert.equal(status, 0, stdout + stderr);
   return sandbox;
 }
 
-test("real skills CLI installs available skills with every bundled resource", async () => {
+test("real skills CLI installs available skills with every resource", async () => {
   const sandbox = await runInstall(["*"]);
   const source = path.join(root, "skills");
   const installed = path.join(sandbox, ".agents", "skills");
@@ -58,14 +64,4 @@ test("real skills CLI installs available skills with every bundled resource", as
     compare(path.join(source, name), path.join(installed, name));
     verifySkill(path.join(installed, name));
   }
-}, 30000);
-
-test("jj-review-restack installs alone with its reconstruction guidance", async () => {
-  const sandbox = await runInstall(["jj-review-restack"]);
-  const installed = path.join(sandbox, ".agents", "skills");
-  assert.deepEqual(readdirSync(installed), ["jj-review-restack"]);
-  assert.ok(
-    existsSync(path.join(installed, "jj-review-restack", "references", "restack", "overview.md")),
-  );
-  verifySkill(path.join(installed, "jj-review-restack"));
 }, 30000);

@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { root } from "./install.mjs";
@@ -27,7 +27,7 @@ export function verifySkill(directory) {
         if (!target || /^[a-z]+:\/\//i.test(target)) continue;
         const resolved = path.resolve(folder, target);
         if (!resolved.startsWith(directory + path.sep) || !existsSync(resolved)) {
-          throw new Error(`Unbundled reference in ${filename}: ${target}`);
+          throw new Error(`Missing or non-local reference in ${filename}: ${target}`);
         }
       }
     }
@@ -41,24 +41,7 @@ export function verifyRepository() {
     item.isDirectory(),
   );
   for (const item of directories) verifySkill(path.join(skills, item.name));
-  const clean = path.join(skills, "jj-clean-restack");
-  const bundle = path.join(skills, "jj-review-restack", "references", "restack");
-  const expected = readFileSync(path.join(clean, "SKILL.md"), "utf8").replace(
-    /^---\r?\n[\s\S]*?\r?\n---\r?\n/,
-    "",
-  );
-  if (readFileSync(path.join(bundle, "overview.md"), "utf8") !== expected)
-    throw new Error("Run bun run bundle: restack overview is stale");
-  for (const name of readdirSync(path.join(clean, "references"))) {
-    if (
-      !readFileSync(path.join(clean, "references", name)).equals(
-        readFileSync(path.join(bundle, "references", name)),
-      )
-    ) {
-      throw new Error(`Run bun run bundle: ${name} is stale`);
-    }
-  }
-  console.log(`Verified ${directories.length} self-contained skills and bundled references.`);
+  console.log(`Verified ${directories.length} skill resource trees.`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

@@ -24,6 +24,10 @@ Omit `--global` for a project installation; replace `codex` with your agent.
 Private repositories require configured GitHub access. Use `--copy` if links are unavailable.
 For npm-based environments, the same skills also install with `npx skills add <repository-url>`.
 
+`jj-review-restack` requires `jj-clean-restack`. The checkout installer resolves
+this dependency automatically. When invoking the upstream `skills` CLI directly,
+select both skills explicitly.
+
 ## Update
 
 ```sh

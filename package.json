@@ -9,7 +9,6 @@
   "scripts": {
     "install:skills": "bun scripts/install.mjs",
     "sync:skills": "bun scripts/sync.mjs",
-    "bundle": "bun scripts/bundle.mjs",
     "verify": "bun scripts/verify.mjs",
     "test": "bun scripts/verify.mjs && bun test tests/install.test.mjs"
   },
