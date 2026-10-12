@@ -139,7 +139,7 @@ destination was used. When the step places a revision at a new position,
 confirm the planned dependency is present. Resolve any conflict in a new
 change created on top of the new duplicate, verify the resolution, then
 squash it into the duplicate; never resolve by editing the duplicate in
-place (see the operating contract in `SKILL.md`).
+place (see [conflict resolution](conflict-resolution.md)).
 
 When a fixup is part of a confirmed small slice, first inspect it hunk by hunk.
 Squash it only if its complete diff belongs to one owner. If it changes several
@@ -171,20 +171,27 @@ was used.
 ## Mutation gate
 
 Before every `jj abandon`, `absorb`, `describe`, `diffedit`, `duplicate`,
-`restore`, `split`, or `squash`:
+`new`, `resolve`, `restore`, `split`, or `squash`:
 
 1. Resolve source and destination revisions explicitly. For `duplicate`, the
    destination must be `REBUILD_BASE` or the current clean tip. Reading or
    using a retained original as a parent is allowed; rewriting it is not.
-2. Confirm every rewritten revision is in `NEW_STACK`.
-3. Confirm no target intersects `OLD_STACK` or `BASE`.
+2. Confirm every rewritten revision is in `NEW_STACK` or is an explicitly
+   recorded temporary correction child owned by this reconstruction. A
+   correction branch need not be an ancestor of the current clean tip.
+3. Confirm no rewritten target intersects `OLD_STACK` or `BASE`. A parent
+   used by `new` is read-only and may be `REBUILD_BASE`.
 4. Prefer a narrow revision/path selection over `mutable()`, `all()`, or
    `mine()`.
+5. For `resolve`, the target must be the temporary correction child, never
+   a completed rebuilt commit. For `new`, verify its parent and preserve
+   unrelated working-copy changes; do not insert it into original history.
 
-Useful checks:
+Useful checks (`CORRECTION_REVSET` is the explicitly recorded correction-child
+set, or `none()` when no correction exists):
 
 ```sh
-jj log -r "(<TARGET_REVSET>) & ($NEW_STACK)" \
+jj log -r "(<TARGET_REVSET>) & ($NEW_STACK | ($CORRECTION_REVSET))" \
   -T 'commit_id.short() ++ " " ++ description.first_line() ++ "\\n"'
 jj log -r "(<TARGET_REVSET>) & ($OLD_STACK)"
 ```

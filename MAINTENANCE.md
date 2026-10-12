@@ -12,18 +12,31 @@ skills and their resources, and install `jj-review-restack` alone.
 GitHub Actions runs the same checks on Windows and Linux. Packaging verification
 does not exercise live metadata repairs or evaluate a model's research critique.
 
-## Shared guidance
-
-`jj-review-restack` bundles reconstruction guidance from `jj-clean-restack` so
-users can install it alone. After editing the canonical restack skill:
+Structural conflict integration has a separate behavioral suite:
 
 ```sh
-bun run bundle
-bun run test
+bun run test:conflicts
 ```
 
-Commit both the canonical guidance and regenerated bundle. Verification rejects
-stale bundles and missing references. New skills go in `skills/<name>/SKILL.md`;
+It requires `jj`, `mergiraf`, and `rustc` on `PATH`. `RESTACK_JJ` and
+`RESTACK_MERGIRAF` can select explicit binaries without changing global settings.
+Fixtures use isolated temporary repositories and jj configuration; they compile
+and run Rust behavior tests, check partial and refused resolutions, and compare
+preserved source trees and refs. CI runs released jj `0.46.0` and Mergiraf
+`0.20.0` on Windows and Linux. The ordinary installation suite remains usable
+without these merge tools. Neither suite proves semantic equivalence for
+arbitrary refactors; manual milestone review remains part of the skill.
+
+## Shared guidance
+
+`jj-review-restack` loads the separately installed `jj-clean-restack` skill.
+The checkout installer adds that dependency automatically; direct upstream CLI
+installs must select both. Keep the merge profile and conflict guidance inside
+the canonical restack skill so its installed resources remain self-contained.
+After editing that skill, run both suites listed under Verification.
+
+Verification rejects missing references and installation tests check every
+bundled resource. New skills go in `skills/<name>/SKILL.md`;
 keep required resources inside each skill. Agent-specific metadata can go in
 `agents/`. Plugin packaging can be added without restructuring these folders.
 

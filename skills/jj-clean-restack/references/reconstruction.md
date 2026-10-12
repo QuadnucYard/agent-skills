@@ -106,7 +106,8 @@ rules above.
 | Accidental/noise change | Omit only with approved content change; otherwise preserve it in a coherent commit. |
 | Deletion/removal | Treat as a first-class change; use `jj revert` for a known duplicate change, then add any replacement later. |
 | Generated artifact | Follow repository policy; never silently drop it while claiming tree equivalence. |
-| Conflict or invalid intermediate | Stop, rebuild the duplicate/new stack from the first affected commit, and re-check. |
+| Explained structural conflict | Resolve in a correction child using the conflict-resolution reference, then revalidate the owner and affected descendants. |
+| Missing dependency or invalid intermediate | Stop, revise the build plan from the first affected commit, and re-check. |
 
 ## Select reconstruction tactics
 
@@ -263,6 +264,12 @@ only those rebuilt destinations. Do not rely on its default mutable scope.
 Review the resulting operation (for example with `jj op show -p`) and manually
 handle ambiguous hunks with interactive squash or split.
 
+Line provenance is not semantic ownership, especially across moved or extracted
+code. When it disagrees with the destination map, reconstruct corrections in
+their intended owners' earlier structures or split explicitly. Resolve any
+structural conflicts in rewritten descendants with
+[conflict resolution](conflict-resolution.md), not by editing destinations.
+
 Absorption rewrites its destinations and may rewrite descendants. Immediately
 inspect and manually validate each rewritten destination from oldest to newest,
 then each affected rebuilt descendant against its new parent. Do not create,
@@ -292,8 +299,9 @@ next explicit source revision onto the current clean tip in the final order. A
 revision that must come earlier is built earlier. Do not duplicate the whole
 range first or move finished revisions afterwards.
 
-If a build step exposes a real dependency — the duplicate conflicts, or its
-tree is missing something its source had — stop building and adjust the
+An explained mechanical overlap can follow
+[conflict resolution](conflict-resolution.md). If a build step exposes a real
+dependency or its tree is missing something its source had, stop and adjust the
 plan: move the foundation earlier in the build order, keep dependent changes
 together, or merge them when they are not independently coherent. Do not
 leave a broken intermediate commit.

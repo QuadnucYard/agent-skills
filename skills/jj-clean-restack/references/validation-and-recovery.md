@@ -96,6 +96,12 @@ jj log -r "$BASE | ($BASE..$ORIGINAL_TIP) | ($BASE..$CLEAN_TIP)"
 
 ## Failure handling
 
+### A reconstruction operation creates a conflict
+
+Follow [conflict resolution](conflict-resolution.md) for classification,
+candidate generation, and correction children. Apply the per-commit protocol
+above to every rewritten owner and affected descendant before continuing.
+
 ### An original revision was mutated
 
 Stop immediately. Inspect the operation log and patch, then undo only the

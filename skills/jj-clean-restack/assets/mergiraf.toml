@@ -1,0 +1,10 @@
+# Load only for a resolution command with --config-file; no persistent setup.
+[merge-tools.mergiraf]
+program = "mergiraf"
+# Full files are needed to match edits across moved or extracted syntax nodes.
+merge-args = ["merge", "$base", "$left", "$right", "-o", "$output", "-l", "$marker_length", "-p", "$path", "--allow-parse-errors=false"]
+merge-conflict-exit-codes = [1]
+merge-tool-edits-conflict-markers = true
+conflict-marker-style = "git"
+edit-args = []
+diff-args = []

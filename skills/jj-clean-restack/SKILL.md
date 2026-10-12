@@ -13,178 +13,87 @@ description: >
 
 # Clean A Jujutsu Stack
 
-Produce a new stack with a coherent history. The original stack is evidence
-and must remain reachable and internally identifiable by full commit ID,
-pinned with a tag. Do not silently replace the user's branch, publish over it,
-or flatten a merge history.
+Build a separate, reviewable stack from the original history's intent and
+meaningful intermediate states. Preserve the original graph, existing refs,
+and final tree. This skill handles linear stacks; merges, unrelated branches,
+generated-artifact policy decisions, or content changes require an explicit plan.
+Do not replace the user's branch or publish over it.
 
 ## Operating contract
 
-- Establish explicit `BASE`, `OLD_TIP`, `ORIGINAL_TAG`, and `CLEAN_BOOKMARK`;
-  never infer the tip from `@` alone.
-- Record full commit IDs of the original range before any mutation.
-- Pin the original tip with an immutable safety tag (`jj tag set`). Track the
-  rebuilt tip with a newly created dedicated bookmark. Never use a bookmark as
-  the original-stack safety reference, and never use a second tag for the
-  rebuilt stack. Advance only `CLEAN_BOOKMARK`, and only after the new rebuilt
-  tip passes its immediate manual validation; do not move any pre-existing
-  bookmark or any tag.
-- Do not always rebuild the whole stack or restore the whole final tree.
-  Keep the longest initial prefix that needs no content, description, or
-  ordering changes; grow the clean suffix from its last commit, immediately
-  before the first divergence. Record this commit as `REBUILD_BASE` (use
-  `BASE` when no prefix can be retained). If the entire stack is already
-  clean, retain it and report that no rebuild is needed.
-- Preserve the original graph first. Reconstruct the changed suffix from the
-  original history's intent and meaningful intermediate states. The final tree
-  is one source of evidence, not the default reconstruction source: it can hide
-  incremental features, migrations, compatibility stages, and intentional
-  removals. Duplication is an exceptional reuse tactic for a
-  small, explicitly bounded source slice, never the mechanism for copying the
-  original stack or the whole suffix. Before duplicating anything, manually
-  inspect every commit in that slice and confirm that all or most of each
-  commit belongs unchanged in one planned clean commit, with useful boundaries
-  and valid dependencies. Record that evidence and the exact edits still
-  needed. If the proposed slice is broad, uncertain, or collectively covers
-  the original stack, do not duplicate it; reconstruct those changes from
-  selected original diffs, milestone trees, and explicit edits. Never duplicate
-  a range specifier or use `jj rebase` to arrange the result.
-- Never directly edit a change this workflow created — the duplicated
-  clean-stack commits and newly reconstructed commits. Once
-  such a change exists, do not check it out with `jj edit` and modify it in
-  place, and never move `@` onto it in order to change it. For a correction
-  that belongs wholly to one rebuilt commit, create a new change on top, edit
-  and verify there, then squash it into that one destination. A later change
-  may instead contain hunks for several earlier rebuilt commits: map every
-  hunk to its intended destination and use explicitly scoped absorption or
-  splitting rather than forcing the whole change into one commit. Original
-  stack commits are untouchable regardless, and `jj edit` remains allowed for
-  the read-only per-commit checks in
-  [validation-and-recovery.md](references/validation-and-recovery.md).
-- Unless explicitly required otherwise, choose semantic vertical slices as
-  clean commit boundaries: each slice implements one coherent capability across
-  the affected layers or crates, including its integration and relevant tests.
-  Do not cluster commits by crate or layer, especially when late fixups reveal
-  that changes belong to the same feature. The only exception to keeping an
-  upstream/downstream feature together is when the upstream changes are
-  independently coherent and confidently ready to merge early, while the
-  downstream changes need more consideration. See the boundary guidance in
-  [reconstruction.md](references/reconstruction.md).
-- Every rebuilt commit is a manual validation gate. Before building the next
-  commit, inspect its complete diff against its actual clean parent, confirm
-  its stated intent and dependencies, and run the relevant behavioral check.
-  Reconstruct one planned commit at a time; do not accumulate several
-  unchecked commits and validate them later.
-  Automated summaries, tree equivalence, and tests do not replace reading the
-  diff. A commit that has not passed this review must not remain in the clean
-  stack or be reported as validated. Any later operation that rewrites an
-  already validated commit invalidates that evidence: manually revalidate
-  every rewritten destination and each affected descendant before continuing.
-- Every clean commit must be well formatted: each description follows the
-  repository's commit-message convention with no leftover fixup, WIP, or
-  placeholder wording (see "Descriptions" in
-  [reconstruction.md](references/reconstruction.md)), and content the rebuild
-  itself produces (conflict resolutions, split assemblies, new commits) passes
-  the repository's formatter and linters. Reformatting preserved original
-  content changes the tree, so it needs the same explicit approval as any
-  content change.
-- Preserve the final tree exactly unless the user explicitly approves content
-  changes.
-- Preserve every meaningful incremental state identified during analysis, even
-  when later commits modify or remove it and the final tree no longer contains
-  it. Final-tip tree equivalence is necessary but does not prove historical
-  equivalence. Omit an intermediate state only after establishing that it was
-  fixup noise, an invalid partial implementation, or otherwise not an intended
-  reviewable feature boundary.
-- Keep existing bookmarks and tags unchanged. Create only `ORIGINAL_TAG` and
-  `CLEAN_BOOKMARK`; only the new clean bookmark may move as construction
-  advances.
-- Stop on ambiguity, an unexpected merge, a commit-ID intersection outside the retained prefix, a tree
-  mismatch, or an unexplained conflict.
-- Keep commit IDs/Git hashes internal. Never expose them in user-facing
-  conversation, plans, tables, or reports. Identify every revision shown to
-  the user with at least its short jj change ID (`change_id.short()`), plus its
-  description and relevant tag/bookmark or original/clean role when needed to
-  disambiguate it. Do not paste command output containing commit IDs; render a
-  user-facing view that follows this rule instead.
-- Format every command, flag, revset, revision expression, and change or
-  commit ID as code: inline backticks in prose, fenced `sh` blocks for
-  command sequences. Never leave code unformatted.
-- Never use `--ignore-immutable` as a workaround.
+- Original commits and the retained prefix are untouchable. Before every
+  mutation, read and apply [scope and safety](references/scope-and-safety.md).
+  Never bypass protection with `--ignore-immutable`.
+- Create only the safety tag `ORIGINAL_TAG` and dedicated `CLEAN_BOOKMARK`.
+  Existing refs and the safety tag never move. A bookmark cannot pin the
+  original; a second tag must not track the rebuilt stack. Advance the clean
+  bookmark only to a manually validated tip.
+- Preserve the final tree unless the user explicitly approves a content change,
+  including reformatting preserved content. Preserve meaningful intermediate
+  features, migrations, compatibility stages, and removals even when absent at
+  the tip; omit a state only with evidence that it is noise or invalid partial work.
+- Duplication is limited to a small, explicitly named slice whose complete
+  commits were manually inspected and are fully or mostly reusable. Never
+  duplicate a range, the whole stack or suffix, or several slices collectively
+  reproducing them. Never use `jj rebase` to arrange history.
+- Never directly edit an existing duplicate or reconstructed commit, including
+  by moving `@` or using `jj edit`. Correct it in a verified child and squash
+  only when the whole correction belongs to that owner. Map multi-owner hunks
+  and use explicitly scoped absorb or split. Read-only `jj edit` for validation
+  remains allowed. Syntax matching and line provenance do not decide ownership.
+- Every created or rewritten commit must pass manual parent-diff review,
+  dependency checks, and relevant behavior tests before continuing. Tests,
+  summaries, and tree equality cannot replace reading the diff. Revalidate all
+  rewritten owners and affected descendants oldest first; never accumulate
+  unchecked commits or report them as validated.
+- Stop on ambiguity, unexpected merges, intersections with original suffix
+  commits, unexplained conflicts, or tree mismatches. Use
+  [validation and recovery](references/validation-and-recovery.md) when an
+  invariant fails.
+- Keep full commit IDs/Git hashes internal. In conversation, plans, tables,
+  and reports, identify revisions with short jj change IDs (`change_id.short()`)
+  and enough description/ref/role context to disambiguate them. Do not paste
+  hash-bearing output. Format commands, flags, revsets, and IDs as inline code
+  or fenced `sh` blocks.
 
-The workflow is staged: inspect and freeze scope, analyze intent, reconstruct
-the suffix in small slices, manually validate each rebuilt commit, validate
-the complete result, then report.
-Read detail as needed:
+## Workflow
 
-- [Scope and safety](references/scope-and-safety.md) before duplication and
-  before every mutating command.
-- [Reconstruction tactics](references/reconstruction.md) when choosing a
-  reconstruction mode, classifying changes, splitting, folding, or using
-  additive/subtractive operations.
-- [Validation and recovery](references/validation-and-recovery.md) after
-  transformation and whenever an invariant fails.
-
-## Minimal workflow
-
-1. Resolve the named revisions and inspect the graph. Confirm the range is
-   the intended linear stack and record full commit IDs outside the
-   repository when practical.
-2. Pin the original tip with the safety tag `ORIGINAL_TAG`. Reserve an unused
-   `CLEAN_BOOKMARK` name; create it after the first rebuilt commit passes
-   manual validation and keep it on the latest validated rebuilt tip. Never
-   move or delete an existing tag or bookmark.
-3. Analyze every commit by reading its complete diff and checking its
-   dependencies, not by subject or summary alone. Decide the final clean
-   boundaries and order. Build a semantic timeline of features, migrations,
-   compatibility stages, deprecations, and removals; mark which intermediate
-   states must remain visible even when absent from `OLD_TIP`. Identify the
-   longest unchanged prefix and record
-   `REBUILD_BASE`; keep those original commits without duplication. Mark any
-   proposed duplicate slice explicitly and justify, commit by commit, that it
-   is small and that each commit will be fully or mostly retained. Reject any
-   plan that duplicates the whole original stack or uses duplication as the
-   general reconstruction strategy. Before the first reconstruction mutation,
-   present a concrete plan to the user with all three views defined in
-   [reconstruction.md](references/reconstruction.md): what every original
-   commit does, how all of its content and meaningful states will be
-   redistributed, and the complete ordered shape of the clean stack. Use
-   short jj change IDs, never commit IDs/Git hashes, in that plan. Do not hide
-   an unresolved destination or dependency behind a high-level summary; stop
-   for clarification when the plan cannot account for it confidently.
-4. Rebuild the suffix one planned semantic milestone at a time, using selected
-   original diffs, original milestone trees, and explicit edits. A confirmed
-   small reusable slice may be duplicated one explicit revision at a time at
-   its planned position. A final-state partition is allowed only after a
-   commit-by-commit audit proves that no meaningful incremental state would be
-   hidden; it is never the fallback merely because broad duplication is
-   prohibited. Never restore content that is also going to be duplicated, and
-   never pass a range to `jj duplicate`. Record every source milestone,
-   restore operation, hunk destination, and source-to-new mapping.
-5. Rebuild intent using the least manual operation that fits. Squash only when
-   the entire source belongs to one destination. A later commit may be a
-   distributed fixup for several earlier commits; map its hunks and absorb or
-   split them into every correct destination rather than choosing one owner.
-   Reconstruct one planned commit at a time. After creating or rewriting one
-   rebuilt commit, stop and manually validate
-   its full parent diff, intent, dependency completeness, and relevant behavior
-   before continuing. When one operation rewrites multiple commits, manually
-   validate each rewritten commit from oldest to newest and then every affected
-   descendant. If the build exposes a wrong order, adjust the build plan; do
-   not reshuffle finished duplicates.
-6. Rewrite descriptions only on duplicate/new revisions, following the
-   repository's commit-message convention, so each clean commit states its
-   final purpose rather than its cleanup history.
-7. Point `CLEAN_BOOKMARK` at `CLEAN_TIP`. Validate tree equivalence (unless an
-   explicit content change was approved), conflicts, empties, descriptions,
-   and the recorded manual review and checks for every rebuilt commit. Verify
-   the rebuilt semantic timeline against every required original milestone;
-   then verify original IDs, the original tag, the clean bookmark, unchanged
-   retained-prefix IDs, suffix separation, and report evidence and caveats.
-
-## Scope boundary
-
-This skill is for a linear stack. If the range contains merges, unrelated
-branches, generated artifacts requiring policy decisions, or a requested
-content change, stop and get an explicit plan rather than silently
-interpreting it as a restack.
+1. **Freeze scope.** Establish explicit `BASE` and `OLD_TIP`; never infer the
+   tip from `@` alone. Inspect the linear graph and record original full commit
+   IDs outside the repository when practical. Pin the tip with `ORIGINAL_TAG`
+   using `jj tag set` and reserve an unused `CLEAN_BOOKMARK` name. Follow
+   [scope and safety](references/scope-and-safety.md).
+2. **Plan from history.** Read every original parent diff and milestone tree.
+   Follow [reconstruction tactics](references/reconstruction.md) to present
+   the original inventory, complete redistribution map, and ordered clean stack
+   before reconstruction. Account for dependencies, meaningful states, and
+   validation. Prefer coherent feature slices spanning crates/layers and their
+   integration/tests; separate upstream work only when independently ready.
+   Retain the longest prefix needing no content, description, or order changes;
+   set `REBUILD_BASE` to its tip, or `BASE` when none qualifies. If all commits
+   qualify, report that no rebuild is needed.
+3. **Build one milestone.** Reconstruct from selected original diffs, milestone
+   trees, and explicit edits. Apply a confirmed reusable slice one revision at
+   a time at its planned position. Final-state partitioning requires a
+   commit-by-commit audit proving no meaningful state is lost; it is not a
+   fallback for prohibited duplication. Never restore content also being
+   duplicated. Record source milestones, restores, hunk destinations, and mappings.
+   For structural overlaps, follow
+   [conflict resolution](references/conflict-resolution.md) with the scoped
+   Mergiraf profile or guided manual resolution in correction children. If the
+   build reveals wrong dependencies, revise the plan rather than reshuffling
+   completed commits.
+4. **Validate before advancing.** Apply the
+   [per-commit protocol](references/validation-and-recovery.md#per-commit-check-protocol)
+   to each created or rewritten boundary. Give duplicate/new commits final
+   descriptions following the repository convention, without fixup/WIP or
+   placeholder wording. Rebuild-produced content must pass the repository's
+   formatter and linters. Create `CLEAN_BOOKMARK` after the first validated
+   rebuilt commit and advance it only after subsequent gates pass. Repeat
+   steps 3–4 for the remaining milestones.
+5. **Verify and report.** Record `CLEAN_TIP` and verify the bookmark target,
+   final-tree equivalence, preserved semantic timeline, original IDs/refs,
+   retained-prefix IDs, and separate suffix. Check conflicts, unexplained
+   empties, descriptions, and recorded per-commit evidence. Follow the
+   [final validation and report](references/validation-and-recovery.md);
+   report skipped checks and remaining caveats rather than claiming validity.

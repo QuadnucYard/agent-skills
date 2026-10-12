@@ -10,7 +10,8 @@
     "install:skills": "bun scripts/install.mjs",
     "sync:skills": "bun scripts/sync.mjs",
     "verify": "bun scripts/verify.mjs",
-    "test": "bun scripts/verify.mjs && bun test tests/install.test.mjs"
+    "test": "bun scripts/verify.mjs && bun test tests/install.test.mjs",
+    "test:conflicts": "bun test --timeout 600000 tests/restack-conflicts.test.mjs"
   },
   "devDependencies": {
     "skills": "1.7.0"
