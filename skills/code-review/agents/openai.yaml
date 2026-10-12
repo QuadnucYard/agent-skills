@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Review"
+  short_description: "Review behavior, requirements, and change boundaries"
+  default_prompt: "Use $code-review to review these changes against the original requirements, classify findings, and recommend coherent refactor and feature boundaries."

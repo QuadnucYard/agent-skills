@@ -1,0 +1,106 @@
+---
+license: MIT
+name: code-review
+description: >
+  Review code, pull requests, or commit stacks for requirement conformance,
+  correctness, design adoption, and simplification. Classify findings and
+  recommend coherent refactor and feature boundaries.
+---
+
+# Code Review
+
+Review behavior and design adoption against the original requirements. Report
+evidence-backed findings; do not spend review time on formatting or linter checks.
+
+## Establish the review contract
+
+- Identify the target, base, and scope. Inspect the whole change or stack before
+  judging individual boundaries.
+- Find the original requirements, acceptance criteria, constraints, and
+  exclusions in the conversation or supplied issue/specification. If missing,
+  explicitly ask the user for them. Continue independent checks while waiting,
+  but mark conformance as unverified. Code and tests do not replace requirements;
+  keep inferred intent provisional and clarify material ambiguity.
+- Consider the complete design and foreseeable interactions. Resolve gaps
+  needed for correctness now; reserve relevant future extension points with
+  concrete reasons, without speculative machinery. Do not label plans with `V1`.
+
+## Review behavior and design adoption
+
+Read the diff, final implementations, callers, interfaces, and relevant tests.
+Trace success, failure, and boundary paths across components.
+
+- **Requirements:** Map acceptance criteria to implementation and behavioral
+  evidence. Identify partial, missing, or unverified behavior, scope expansion,
+  and violations of exclusions.
+- **Correctness and oversight:** Check relevant invariants, errors, state
+  transitions, ownership, concurrency, compatibility, and migration. Look for
+  omitted cases and interactions introduced by the change.
+- **Adoption:** Verify that callers use the design coherently and obsolete paths
+  disappear or have an explicit compatibility purpose. Flag unused abstractions,
+  duplicated sources of truth, and incomplete migrations.
+- **Simplification and quality:** Challenge redundant branches, duplicated logic,
+  unnecessary state, indirection, configuration, and generic machinery. Assess
+  responsibilities, dependency direction, API clarity, and testability. Propose
+  a simpler viable design with concrete maintenance or risk benefits, preserving
+  required behavior, invariants, and justified extension seams. Treat naming and
+  documentation as findings only when they obscure meaning or contracts;
+  preference for another valid design is not a defect.
+
+Use focused behavioral tests or reproductions to resolve material uncertainty,
+and honor required repository checks. Distinguish execution from inspection.
+
+## Classify findings
+
+Assign one primary category per root cause. Severity and acceptance impact are
+independent of category and effort.
+
+| Category | Meaning | Disposition |
+| --- | --- | --- |
+| **Correctness Fix** | Implemented behavior violates a contract or invariant, or regresses. | Repair in the current work. |
+| **Scope Completion** | A small missing feature or acceptance case completes agreed scope with little implementation and verification effort. | Include in current work when implementation is authorized. |
+| **Feature Follow-up** | Missing capability needs substantial work or a product decision; also covers additions outside agreed scope. | Record as a separate addition for a later commit or follow-up change. |
+| **Design Refinement** | Simplification or maintainability improvement preserves behavior. | Refine; separate substantial refactoring from features. |
+
+- A large repair or structural remedy for broken behavior is still a Correctness
+  Fix. Estimate completion effort by contracts, dependencies, migration, and
+  verification, not line count.
+- A required Feature Follow-up remains an unmet requirement until the user
+  changes scope. Mark its acceptance impact; deferral cannot justify accepting
+  an incomplete or unsafe feature.
+- Optional refinements are not blockers without demonstrated harm. Small effort
+  does not authorize product-scope expansion.
+
+## Separate concerns and order changes
+
+Split independently meaningful concerns by intent and dependencies, even when
+they touch the same files. Keep necessary wiring and tests with their behavior.
+
+- For a feature mixed with a notable refactor, put independent, behavior-preserving
+  preparation first, verify it, then add the feature to the resulting structure.
+  If part depends on the feature, explain the coupling; do not force a reversal.
+- Separate unrelated fixes and additions; keep inseparable small cleanup with
+  its implementation. Each boundary must work without later repairs and preserve
+  necessary compatibility or migration stages.
+- Give Feature Follow-ups distinct additions with acceptance criteria,
+  prerequisites, and required extension seams. Dependencies take precedence
+  over placing additions later. Avoid temporary structures and add-then-move churn.
+
+Recommend changes for review-only requests; carry out fixes or history changes
+only within existing authorization and repository workflow. Local plan files
+are deliberately untracked; do not check their tracking or reread them merely
+to confirm they were written.
+
+## Deliver an actionable review
+
+Lead with requirement conformance and acceptance blockers, noting unavailable
+requirements. Group findings by category, ordered by severity; omit empty groups.
+
+For each finding, state category, severity, acceptance impact, location, evidence,
+trigger and consequence, remedy, and verification. Distinguish confirmed defects
+from questions and optional improvements; omit unsupported claims.
+
+Include a proposed change sequence when splitting is needed, unresolved
+requirement questions, and verification limits. If no substantive findings exist,
+say so with the reviewed scope. Add future language or domain checks to the
+review lenses while keeping the categories stable.

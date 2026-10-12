@@ -4,6 +4,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 
 | Skill | Purpose |
 | --- | --- |
+| `code-review` | Review requirements, behavior, design quality, and change boundaries. |
 | `jj-clean-restack` | Rebuild a clean Jujutsu stack while preserving original history. |
 | `jj-commit` | Write or refresh Conventional Commit descriptions and commit verified jj changes. |
 | `jj-patch-stack` | Add fixes without rewriting existing changes. |
