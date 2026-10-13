@@ -10,6 +10,9 @@ jj diff -r "$OLD_STACK" --stat
 jj show -r <REVISION>
 ```
 
+For later file/hunk touches and candidate dependencies, use the bundled
+[analysis scripts](dependency-analysis.md).
+
 Classify each commit as an independent logical change, incremental feature,
 migration or compatibility stage, intentional removal, exact fixup,
 distributed fixup, mixed change, dependency correction, noise, or description

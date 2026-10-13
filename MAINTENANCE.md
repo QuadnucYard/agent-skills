@@ -27,13 +27,25 @@ preserved source trees and refs. CI runs released jj `0.46.0` and Mergiraf
 without these merge tools. Neither suite proves semantic equivalence for
 arbitrary refactors; manual milestone review remains part of the skill.
 
+The standalone history-analysis helpers have their own behavioral suite:
+
+```sh
+python -B -m unittest discover -s tests -p test_restack_analysis.py -v
+```
+
+It requires Nu, jj, Git, and Python 3.11+. `RESTACK_NU` and `RESTACK_JJ` select
+explicit executables. Tests run copied skill scripts in isolated repositories
+and check preservation, lineage, dependencies, and conflict predictions. CI runs
+them on Windows and Linux and checks the Python helper/tests with `mypy --strict`.
+
 ## Shared guidance
 
 `jj-review-restack` loads the separately installed `jj-clean-restack` skill.
 The checkout installer adds that dependency automatically; direct upstream CLI
 installs must select both. Keep the merge profile and conflict guidance inside
 the canonical restack skill so its installed resources remain self-contained.
-After editing that skill, run both suites listed under Verification.
+After editing that skill, run the installation, conflict, and analysis suites
+listed under Verification.
 
 Verification rejects missing references and installation tests check every
 bundled resource. New skills go in `skills/<name>/SKILL.md`;

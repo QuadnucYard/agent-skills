@@ -64,6 +64,8 @@ Do not replace the user's branch or publish over it.
    using `jj tag set` and reserve an unused `CLEAN_BOOKMARK` name. Follow
    [scope and safety](references/scope-and-safety.md).
 2. **Plan from history.** Read every original parent diff and milestone tree.
+   Use [dependency and conflict analysis](references/dependency-analysis.md)
+   to collect advisory evidence for the dependency map.
    Follow [reconstruction tactics](references/reconstruction.md) to present
    the original inventory, complete redistribution map, and ordered clean stack
    before reconstruction. Account for dependencies, meaningful states, and
