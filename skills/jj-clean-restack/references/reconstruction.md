@@ -121,6 +121,15 @@ choose one reconstruction mode for the whole suffix by convenience.
 Duplication is only a local optimization for a small confirmed slice and must
 never become a second copy of the original stack.
 
+### State equality versus change reuse
+
+`jj restore` replaces selected content with a source state, rather than applying
+a change. Use it only for intended state equality and inspect overwritten fixes
+and hunk ownership. For example, restoring a later snapshot can hide a missed
+comment update by introducing it in the wrong commit; fix its actual owner.
+To pick all or most of one change, use `jj duplicate` within the confirmed-slice
+limits below. Reconstruct substantially redistributed changes from diffs and edits.
+
 ### History-aware selective reconstruction
 
 This is the general tactic when original commits need substantial cleanup but
@@ -165,7 +174,8 @@ source, not proof that this tactic is safe.
    disposition, use history-aware selective reconstruction instead.
 3. Create a new child of `REBUILD_BASE`; retain the original prefix and do
    not import any original suffix commits.
-4. Restore the old tip's final tree into that new revision:
+4. Restore the old tip's final tree into that new revision for state equality,
+   checking for overwritten fixes as described above:
 
    ```sh
    jj restore --from "$OLD_TIP" --into <NEW_REVISION>
@@ -336,7 +346,8 @@ placeholder or auto-generated description on a clean commit.
 
 | Goal | Command family |
 |---|---|
-| Reconstruct a semantic milestone | selected `jj restore`, `jj split`, or explicit edits from original evidence |
+| Reconstruct a semantic milestone | selected original diffs, `jj split`, or explicit edits from original evidence |
+| Make selected content equal a source state | scoped `jj restore`, after checking overwritten fixes and hunk ownership/timing |
 | Partition a qualified final state | `jj restore` plus `jj split`, only after the semantic audit |
 | Reuse a confirmed small slice | `jj duplicate --onto`, one explicit source revision at a time |
 | Fold a wholly single-owner fixup | `jj squash` |

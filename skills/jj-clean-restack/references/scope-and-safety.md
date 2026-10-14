@@ -186,6 +186,8 @@ Before every `jj abandon`, `absorb`, `describe`, `diffedit`, `duplicate`,
 5. For `resolve`, the target must be the temporary correction child, never
    a completed rebuilt commit. For `new`, verify its parent and preserve
    unrelated working-copy changes; do not insert it into original history.
+6. For `restore`, confirm the intended state equality and inspect overwritten
+   fixes and hunk ownership/timing as described in the reconstruction reference.
 
 Useful checks (`CORRECTION_REVSET` is the explicitly recorded correction-child
 set, or `none()` when no correction exists):

@@ -36,6 +36,10 @@ Do not replace the user's branch or publish over it.
   commits were manually inspected and are fully or mostly reusable. Never
   duplicate a range, the whole stack or suffix, or several slices collectively
   reproducing them. Never use `jj rebase` to arrange history.
+- Use `jj restore` only for explicit state equality; it can erase earlier fixes
+  or hide omissions by importing corrections at the wrong commit. Inspect its
+  diff carefully. To pick all or most of a change, use `jj duplicate` within
+  the confirmed-slice limits above.
 - Never directly edit an existing duplicate or reconstructed commit, including
   by moving `@` or using `jj edit`. Correct it in a verified child and squash
   only when the whole correction belongs to that owner. Map multi-owner hunks
