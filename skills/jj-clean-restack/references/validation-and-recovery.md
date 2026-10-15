@@ -71,8 +71,9 @@ For each clean commit, from oldest to newest:
    relevant integration tests, build/type checks, lints, and formatting checks.
    A refactor must run behavior/regression tests, not only compilation.
 6. Record the review conclusion, exact commands, and outcomes. A failed,
-   skipped, or not-manually-reviewed commit is a
-   blocking caveat, not a passing commit.
+   skipped, or not-manually-reviewed commit blocks the next milestone and
+   completion. Repair the owning commit and recheck affected descendants;
+   a passing tip cannot excuse a broken intermediate commit.
 
 At minimum, the oldest rebuilt commit must build against `REBUILD_BASE`; every
 later commit must build against its immediate clean parent. Inspect the retained
@@ -177,8 +178,8 @@ evidenced or explicitly marked unverified.
 - Rebuild-produced content passes the repository's formatter and linters;
   formatting findings in preserved original content are reported as caveats,
   not fixed silently.
-- Relevant checks were run for each intermediate commit, or limitations are
-  reported.
+- Relevant checks pass at each intermediate commit's own revision; unavailable
+  checks block completion. No broken intermediate commits remain.
 - Every rebuilt commit's complete parent diff was manually reviewed when the
   commit was created. Every commit rewritten by a later multi-destination
   absorb, squash, split, or descendant rebase was manually reviewed again

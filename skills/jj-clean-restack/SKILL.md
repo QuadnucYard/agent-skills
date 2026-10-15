@@ -46,7 +46,9 @@ Do not replace the user's branch or publish over it.
   and use explicitly scoped absorb or split. Read-only `jj edit` for validation
   remains allowed. Syntax matching and line provenance do not decide ownership.
 - Every created or rewritten commit must pass manual parent-diff review,
-  dependency checks, and relevant behavior tests before continuing. Tests,
+  dependency checks, and relevant behavior tests at its own revision before
+  building the next milestone. Never leave a broken intermediate commit or
+  rely on a later commit to repair it. Tests,
   summaries, and tree equality cannot replace reading the diff. Revalidate all
   rewritten owners and affected descendants oldest first; never accumulate
   unchecked commits or report them as validated.
