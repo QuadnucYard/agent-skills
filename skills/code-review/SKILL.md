@@ -46,6 +46,11 @@ Trace success, failure, and boundary paths across components.
   required behavior, invariants, and justified extension seams. Treat naming and
   documentation as findings only when they obscure meaning or contracts;
   preference for another valid design is not a defect.
+- **Large modules:** Flag large modules that mix responsibilities or obscure
+  independent subsystems. Propose cohesive splits with clear ownership, narrow
+  interfaces, and acyclic dependencies, preserving behavior and invariants.
+  Use responsibility and coupling, not arbitrary line counts; avoid mechanical
+  fragmentation or catch-all utility modules.
 
 Use focused behavioral tests or reproductions to resolve material uncertainty,
 and honor required repository checks. Distinguish execution from inspection.
@@ -85,6 +90,40 @@ they touch the same files. Keep necessary wiring and tests with their behavior.
 - Give Feature Follow-ups distinct additions with acceptance criteria,
   prerequisites, and required extension seams. Dependencies take precedence
   over placing additions later. Avoid temporary structures and add-then-move churn.
+
+### Review linear slices
+
+For consecutive changes under review, inspect each parent diff and the base-to-tip
+result. Trace additions through later changes; a correct tip can hide broken
+boundaries or wasted work. Flag:
+
+- Features largely rewritten, design reversals, or repeated moves and renames
+  without independent value. Introduce the settled design at its original boundary.
+- Fixes to defects introduced within the slice. Put corrections and regression
+  coverage in the introducing change; fixes to preexisting defects remain valid.
+- Unused additions later deleted, temporary scaffolding, duplicate implementations,
+  and add/revert/reintroduce cycles. Omit detours; add preparation with its first
+  consumer unless independently useful, preserving justified extension seams.
+- Deferred wiring, migrations, tests, or documentation needed to make an earlier
+  boundary complete and credible.
+
+Allow coherent extensions and added coverage. Necessary migration stages need
+independent purpose, valid behavior, and a clear exit. Textual overlap alone is
+not a defect; preserve distinct, durable features.
+
+Cite introducing and later changes, explain the failure or churn, and propose
+boundaries preserving intended final behavior. Classify history-only churn as
+Design Refinement; distinguish broken intermediate states repaired later from
+defects remaining at the tip.
+
+### Review change descriptions
+
+Check intent, behavior, material design decisions, and compatibility claims against
+each change and its position. Flag stale claims, concatenated fixup narratives,
+and promises fulfilled only later; ignore cosmetic preferences. Remove routine
+CI obligations and pass claims (test counts, formatter/linter success); put
+verification evidence and limits in the review. Retain substantive testing intent
+or unusual validation constraints when they explain coverage or a tradeoff.
 
 Recommend changes for review-only requests; carry out fixes or history changes
 only within existing authorization and repository workflow. Local plan files
