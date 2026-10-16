@@ -1,6 +1,6 @@
 ---
 name: jj-commit
-description: Write or rewrite Conventional Commit descriptions and commit verified changes with Jujutsu (jj). Use for jj commit messages, describe or redescribe requests, and stale or concatenated descriptions after squash, split, or fixes.
+description: Describe pending work, keep task boundaries clean, and commit verified Jujutsu (jj) changes. Use for starting or finishing jj tasks, drafting messages, and rewriting stale or concatenated descriptions.
 license: MIT
 ---
 
@@ -56,37 +56,44 @@ description against the target's current contents, consolidate squashed messages
 remove stale claims, and fully rewrite poor descriptions. Apply only the
 description; do not finish or advance the working-copy change.
 
-## Commit workflow
+## Task and commit workflow
 
-1. Inspect the intended revision, its full diff, and nearby descriptions with
-   `jj --no-pager status`, `jj --no-pager diff -r <target> --git`, and
-   `jj --no-pager log`. If an existing description needs reconciliation, read
-   [references/redescribe.md](references/redescribe.md) before writing the message.
-   Preserve unrelated work and commit only the agreed change. Never run
-   `git add` or `git commit`; use Jujutsu for committing. Do not reorganize
-   history merely to write a message.
-2. Before committing, run the repository-required tests and relevant checks
-   against the exact content being committed. All required tests must pass.
-   Failures, skipped required tests, or unavailable test tooling block the
-   commit; explain the blocker. If no tests apply, state that separately and
-   run the repository's applicable verification. Rerun affected checks if the
-   content changes after validation. Drafting a message can proceed without
-   claiming the change is verified.
-3. Apply the description only when requested. Use `jj describe -m "message"`
-   to describe the target change without advancing the working copy; use
-   `jj commit -m "message"` to finish the current change and create a new
-   working-copy change. Never
-   run bare `jj commit` or bare `jj describe`: they launch an interactive
-   editor and can stall execution. Replace `"message"` with the complete
-   subject and body, including actual newlines. Pass it as a literal argument
-   through a process API, or use shell quoting that preserves backticks and newlines
-   without evaluating message text. Never invoke an editor or interpolate the
-   message into executable shell code.
-   If committing fails because of signing, check for a solution documented
-   in the repository. Follow it only within the existing authorization. If
-   none is provided, stop and tell the user about the signing issue. Present
-   the complete proposed description in a code block so the user can apply it.
-   Do not attempt to repair signing, disable it, or invent a workaround.
-4. Read back the saved description and confirm the intended revision and
-   working-copy state. Check that backticks and line breaks survived. Report
-   the change ID and verification outcome separately from the commit body.
+1. Before a new file-changing task, check `jj --no-pager status` and
+   `jj --no-pager diff --git`. Require an empty diff, no conflicts, and no
+   unexpected untracked files; a described empty change is clean. Finish
+   authorized pending work after verification, or use a separate jj workspace
+   from the intended base. Never discard or commit unrelated work to clean up.
+   Requests to commit existing edits, draft messages, or only describe changes
+   do not require an initially empty working copy.
+2. Prefer `jj describe -m "planned message"` before editing to name the scope
+   and motivation without claiming completion. Inspect existing edits first
+   when continuing a task.
+3. Review the target's full `jj --no-pager diff -r <target> --git`, status,
+   and nearby `jj --no-pager log`. Reconcile the final description with the
+   actual result; use the redescribe reference when replacing existing text.
+   Commit only agreed work with jj, never `git add` or `git commit`. Do not
+   reorganize history merely to write a message.
+4. Run required tests and applicable checks against the exact content to commit;
+   rerun affected checks after edits. Failed or skipped required tests and
+   unavailable tooling block committing: preserve the work and report the
+   blocker. If no tests apply, say so and run applicable verification. Message
+   drafting may proceed without claiming verification.
+5. Finish verified work at `@` with `jj commit -m "final message"`, which
+   creates an empty working-copy change. Prefer this over `jj describe` followed
+   by `jj new`, even when a provisional description exists. For description-only
+   requests, use `jj describe -r <target> -m "message"` without advancing `@`.
+6. Read back the saved description, checking the revision, backticks, and
+   newlines. Recheck status and diff: require a clean working copy before the
+   next task, accounting for leftover edits and generated files without
+   discarding unrelated work. A partial commit alone does not ensure cleanliness;
+   no content changes need no empty completion commit. Report the change ID and
+   verification separately. Description-only work preserves file trees and
+   working-copy position as specified in the redescribe reference.
+
+Always pass `-m` with the complete subject and body as one literal argument.
+Preserve backticks and actual newlines through a process API or safe shell
+quoting; never evaluate message text or launch an interactive editor.
+
+For signing failures, use only a repository-documented solution within existing
+authorization. Otherwise stop, report the issue, and provide the full proposed
+message in a code block. Do not repair or disable signing or invent a workaround.
