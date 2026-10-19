@@ -4,37 +4,6 @@ import { fileURLToPath } from "node:url";
 
 export const root = fileURLToPath(new URL("../", import.meta.url));
 
-export const skillDependencies = Object.freeze({
-  "jj-review-restack": ["jj-clean-restack"],
-});
-
-export function expandSkillDependencies(input) {
-  const args = [...input];
-  const selected = [];
-  for (let index = 0; index < args.length; index++) {
-    if (!["--skill", "-s"].includes(args[index])) continue;
-    while (args[index + 1] && !args[index + 1].startsWith("-")) {
-      selected.push(args[++index]);
-    }
-  }
-  if (selected.includes("*")) return args;
-
-  const seen = new Set(selected);
-  const queue = [...selected];
-  const dependencies = [];
-  while (queue.length) {
-    const skill = queue.shift();
-    for (const dependency of skillDependencies[skill] ?? []) {
-      if (seen.has(dependency)) continue;
-      seen.add(dependency);
-      queue.push(dependency);
-      dependencies.push(dependency);
-    }
-  }
-  if (dependencies.length) args.push("--skill", ...dependencies);
-  return args;
-}
-
 export async function install(input = process.argv.slice(2)) {
   let args = [...input];
   let source = root;
@@ -50,7 +19,6 @@ export async function install(input = process.argv.slice(2)) {
     throw new Error("Run bun install --frozen-lockfile in the skills repository first.");
   if (!args.some((arg) => ["--agent", "-a"].includes(arg))) args.push("--agent", "codex");
   if (!args.some((arg) => ["--skill", "-s"].includes(arg))) args.push("--skill", "*");
-  args = expandSkillDependencies(args);
   const result = Bun.spawn([process.execPath, cli, "add", source, ...args], {
     cwd: process.cwd(),
     stdin: "inherit",

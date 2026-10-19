@@ -1,0 +1,3 @@
+interface:
+  display_name: "JJ Plan Restack"
+  short_description: "Review jj stacks and plan coherent commit boundaries"

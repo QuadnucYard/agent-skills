@@ -45,7 +45,7 @@ it. This mode requires `--path`, excludes `--hunk`, and also permits `START` to
 equal `BASE`. The file must exist at the starting revision.
 
 | Event relation | Evidence |
-|---|---|
+| --- | --- |
 | `overlap` | Edit intersects tracked text or a deletion boundary. |
 | `adjacent` | Edit touches a tracked boundary without intersecting it. |
 | `same-file` | File changed outside the tracked text or metadata. |
@@ -82,8 +82,8 @@ mappings, non-regular files, binary content, and failed merge tools produce
 `unassessed` lists those revisions, including empty commits that were not reached.
 
 A `clean` result predicts text applicability, not behavior, semantic ownership,
-or identical results from jj or Mergiraf. Preserve the skill's manual review and
-per-commit validation gates.
+or identical results from jj or Mergiraf. Keep manual semantic review in the
+plan and per-commit validation in its execution requirements.
 
 ## Reports and coverage
 

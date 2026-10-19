@@ -1,0 +1,78 @@
+# Stack Design
+
+## Inventory and semantic timeline
+
+Read every source parent diff and milestone tree, oldest first. Subjects are
+clues, not evidence of intent or dependency. Use the
+[analysis helpers](dependency-analysis.md) for advisory lineage and conflict data.
+
+Classify source changes as coherent intent, incremental feature, migration,
+removal, exact or distributed fixup, mixed purpose, dependency correction, noise,
+or description cleanup. For each state, identify what becomes true, whether later
+changes revise or erase it, why it is meaningful or disposable, and where its
+behavior will be represented and validated in the clean stack.
+
+Present all three views; a final-tree partition cannot replace history analysis:
+
+1. **Original inventory.** Every source commit, including the retained prefix:
+   short change ID, description, behavior/state introduced or removed,
+   dependencies, and later revisions of that state.
+2. **Redistribution map.** Every source change, meaningful hunk, and state:
+   destination label(s), disposition (retain, reconstruct, duplicate, split,
+   squash, absorb, reorder, or omit), and evidence-backed reason. Enumerate all
+   owners for distributed fixups. Explain omissions as noise or invalid partial
+   work rather than silently dropping a reviewable milestone.
+3. **Target sequence.** Entire clean stack including the retained prefix:
+   ordered label, final description, purpose, source changes/hunks, parent and
+   semantic dependencies, intended state, and behavioral validation. Show where
+   justified future extensions attach without inventing speculative commits.
+
+Map proposed fixes by stable labels before execution creates their top commits.
+Separate recommendations or unresolved behavior choices from authorized fixes.
+Do not mark a plan executable while required sources, destinations, dependencies,
+states, behavior decisions, or validation remain unaccounted for. If execution
+disproves an assumption, revise and re-present affected scope before continuing.
+
+## Coherent slices
+
+Prefer one capability across layers or crates, including its integration,
+callers, tests, and documentation. File boundaries and convenient patch
+application do not establish independently valid commits. For an upstream API
+used by downstream behavior, keep the feature coherent across both unless the
+upstream change is independently useful and confidently ready earlier. Record
+that evidence; dependency alone does not justify grouping every upstream change
+ahead of all consumers.
+
+Map late fixup hunks to their semantic owners, including corrections across
+moved or extracted code. Line provenance does not decide ownership. Preserve
+meaningful introduction and removal states even when both vanish at the tip.
+
+## Boundaries and order
+
+Respect semantic dependencies first. Among independent units, put the most
+confident, well-understood changes first, using demonstrated correctness and
+adoption rather than size or clean patch application.
+
+- Fold implementation, corrections, adoption, and tests into a coherent owner
+  when separate commits would be incomplete or misleading. Keep independently
+  useful changes and required migration boundaries distinct; shared files alone
+  do not justify squashing.
+- Move independent structural preparation ahead of features that would otherwise
+  be rewritten by it. If preparation depends on the feature, extract the
+  independent part or plan their final intent together.
+- Introduce additions directly in their final module with wiring and callers;
+  preserve an intermediate location only for a real compatibility requirement.
+- Preserve meaningful migration, compatibility, and removal stages. Net-zero
+  content does not prove that intermediate behavior is disposable.
+- Retain the longest initial prefix whose content, descriptions, and order fit
+  the plan. A later correction targeting a prefix owner moves that owner and
+  subsequent changes into the rebuilt suffix. Never retain scattered originals
+  after divergence.
+
+Choose sources per milestone. Prefer original diffs, meaningful trees, and
+explicit reconstruction. Duplication is only for a named small minority of
+manually inspected, mostly reusable commits, never the whole range or suffix.
+A final-state partition requires a commit-by-commit audit proving it loses no
+meaningful intermediate state. Plan their sequencing so no content is applied
+both by restoration and duplication. Leave command selection and mutations to
+the executor.

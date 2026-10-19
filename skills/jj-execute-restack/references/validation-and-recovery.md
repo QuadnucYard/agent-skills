@@ -2,17 +2,18 @@
 
 ## Required validation
 
-The clean and original tips must have identical trees unless the user
-explicitly approved a content change. For the normal case:
+The clean tip must equal the verified source target. `ORIGINAL_TIP` is the
+corrected source tip when planned fixes were committed, otherwise the pre-fix
+source tip. For both cases:
 
 ```sh
 jj diff --from "$ORIGINAL_TIP" --to "$CLEAN_TIP" --summary
 jj diff --from "$ORIGINAL_TIP" --to "$CLEAN_TIP" --git
 ```
 
-For an approved content change, compare the clean tip to the explicitly
-approved target and report the intentional delta; do not call it equivalent to
-the original tree.
+With fixes, also inspect the pre-fix-to-corrected and pre-fix-to-clean diffs:
+both must contain exactly the planned, authorized changes. Never claim equality
+to the pre-fix tree when those trees differ.
 
 Tip equivalence is necessary but insufficient. Compare the rebuilt sequence to
 the semantic timeline recorded during analysis. Every meaningful incremental
@@ -147,7 +148,7 @@ tree change.
 
 ## Report
 
-State the original base/tip, `REBUILD_BASE`, retained prefix and rebuilt
+State the pre-fix and corrected source tips, base, `REBUILD_BASE`, retained prefix and rebuilt
 suffix counts, clean tip, the safety tag and clean bookmark with their target
 short jj change IDs, original and clean commit counts, fixups folded or
 distributed across multiple destinations, preserved semantic milestones,
@@ -164,7 +165,8 @@ evidenced or explicitly marked unverified.
   clean bookmark.
 - The original tip and every original commit ID remain reachable unchanged,
   pinned by the safety tag.
-- Existing bookmarks and tags were not moved or deleted.
+- Existing bookmarks and tags, including the pre-fix and corrected source tags,
+  were not moved or deleted.
 - The original safety tag still targets the exact original tip, and the clean
   bookmark targets the rebuilt tip.
 - Clean and original tip trees are identical.

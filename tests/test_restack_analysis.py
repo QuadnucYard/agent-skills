@@ -14,7 +14,7 @@ from collections.abc import Sequence
 from typing import ClassVar, Literal, TypedDict, cast, overload
 
 
-SKILL = Path(__file__).resolve().parents[1] / "skills" / "jj-clean-restack"
+SKILL = Path(__file__).resolve().parents[1] / "skills" / "jj-plan-restack"
 sys.path.insert(0, str(SKILL / "scripts"))
 import hunk_lineage as lineage
 

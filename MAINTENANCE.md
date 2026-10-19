@@ -8,7 +8,7 @@ bun run test
 ```
 
 Tests run the pinned skills CLI in isolated project directories, check installed
-skills and their resources, and install `jj-review-restack` alone.
+skills and their resources, and install each restack skill independently.
 GitHub Actions runs the same checks on Windows and Linux. Packaging verification
 does not exercise live metadata repairs or evaluate a model's research critique.
 
@@ -40,12 +40,12 @@ them on Windows and Linux and checks the Python helper/tests with `mypy --strict
 
 ## Shared guidance
 
-`jj-review-restack` loads the separately installed `jj-clean-restack` skill.
-The checkout installer adds that dependency automatically; direct upstream CLI
-installs must select both. Keep the merge profile and conflict guidance inside
-the canonical restack skill so its installed resources remain self-contained.
-After editing that skill, run the installation, conflict, and analysis suites
-listed under Verification.
+`jj-plan-restack` owns review, boundaries, the plan handoff contract, and read-only
+analysis helpers. `jj-execute-restack` consumes an actionable plan and owns fixes,
+reconstruction, the merge profile, validation, and recovery. Each installs alone;
+neither requires loading the other to perform its role. Keep bundled resources
+self-contained. After changing this split, run the installation, conflict, and
+analysis suites listed under Verification.
 
 Verification rejects missing references and installation tests check every
 bundled resource. New skills go in `skills/<name>/SKILL.md`;
@@ -80,8 +80,8 @@ that maintain different copies of the same skill.
 Packaging changes:
 
 - Replaced the repair inspector's hard-coded Codex path with its installed skill path.
-- Bundled clean-restack references in the review skill and included essential local
-  jj guardrails, so an external workflow skill is optional.
+- Replaced the review/clean restack pair with independent planning and execution
+  skills; moved analysis helpers to planning and kept mutation resources in execution.
 - Resolved the patch skill's contradictory squash instructions in favor of its
   explicit additive-only contract: committed patches remain immutable.
 

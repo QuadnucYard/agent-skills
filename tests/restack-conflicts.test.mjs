@@ -11,7 +11,7 @@ const mergiraf = process.env.RESTACK_MERGIRAF || Bun.which("mergiraf");
 const rustc = Bun.which("rustc");
 assert.ok(jj && mergiraf && rustc,
   "Conflict tests require jj, mergiraf, and rustc; RESTACK_JJ/RESTACK_MERGIRAF can select binaries.");
-const profile = path.join(root, "skills/jj-clean-restack/assets/mergiraf.toml");
+const profile = path.join(root, "skills/jj-execute-restack/assets/mergiraf.toml");
 const sandboxes = [];
 
 afterAll(() => {

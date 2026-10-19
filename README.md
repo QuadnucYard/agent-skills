@@ -5,11 +5,11 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | Skill | Purpose |
 | --- | --- |
 | `code-review` | Review requirements, behavior, design quality, and change boundaries. |
-| `jj-clean-restack` | Rebuild a clean Jujutsu stack while preserving original history. |
+| `jj-execute-restack` | Execute a restack plan, apply authorized fixes, and verify the rebuilt stack. |
 | `jj-commit` | Write or refresh Conventional Commit descriptions and commit verified jj changes. |
 | `jj-patch-stack` | Add fixes without rewriting existing changes. |
 | `jj-repair-state` | Diagnose and repair damaged Jujutsu metadata. |
-| `jj-review-restack` | Review, fix, and rebuild a Jujutsu stack. |
+| `jj-plan-restack` | Review a Jujutsu stack and plan boundaries, fixes, and validation without mutations. |
 | `seminar-supervisor` | Critique arguments and designs for substantive defects. |
 | `weekly-research-mentor` | Rehearse and review research updates. |
 
@@ -26,9 +26,9 @@ Omit `--global` for a project installation; replace `codex` with your agent.
 Private repositories require configured GitHub access. Use `--copy` if links are unavailable.
 For npm-based environments, the same skills also install with `npx skills add <repository-url>`.
 
-`jj-review-restack` requires `jj-clean-restack`. The checkout installer resolves
-this dependency automatically. When invoking the upstream `skills` CLI directly,
-select both skills explicitly.
+`jj-plan-restack` and `jj-execute-restack` install independently. Select both for
+the complete workflow. They replace `jj-review-restack` and `jj-clean-restack`;
+remove those old installations after switching to avoid competing workflows.
 
 ## Update
 

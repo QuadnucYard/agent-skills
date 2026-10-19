@@ -5,8 +5,9 @@ and original milestones to distinguish mechanical overlap, incompatible behavior
 and missing dependencies. Revise the build order for dependency failures;
 request clarification when intended behavior is ambiguous.
 
-For read-only preflight predictions, use the [analysis scripts](dependency-analysis.md).
-Resolve actual rebuilt conflicts using the correction-child workflow below.
+Use the plan's advisory preflight evidence when available. Resolve actual rebuilt
+conflicts using the correction-child workflow below; predictions do not establish
+behavior or ownership.
 
 ## Tool and inputs
 

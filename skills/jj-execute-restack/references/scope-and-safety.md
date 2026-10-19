@@ -1,5 +1,23 @@
 # Scope And Safety
 
+## Planned source fixes
+
+Verify the plan's exact source snapshot, relevant refs, and unrelated working-copy
+state before mutation. Record the operation and pre-fix source identities. Pin
+`SOURCE_TIP` with a fresh `SOURCE_TAG` before any fix. Tags never move.
+
+Only planned, authorized fixes may extend this source: create explicit children
+of the recorded source tip, keep unrelated edits separate, and review and test
+each fix before continuing. Original commits remain unchanged; do not insert,
+squash, or absorb fixes into them. Record each verified fix and its clean owner.
+This source-fix phase permits new top commits, not reconstruction rewrites.
+
+After fixes, pin their final verified tip with a fresh `ORIGINAL_TAG` and use it
+as `OLD_TIP` below. Without fixes, `ORIGINAL_TAG` is the existing `SOURCE_TAG`.
+Verify the pre-fix-to-corrected delta against the plan. All later reconstruction
+mutations follow the gate below. If a new source fix is required, return to
+planning and repeat the source-fix phase with fresh target records and tags.
+
 ## Freeze the original
 
 Use explicit revision expressions, preferably full commit IDs. Naming an
@@ -35,8 +53,8 @@ Change IDs are insufficient because rewritten versions can retain a change ID.
 Use a file outside the repository when possible, with a path appropriate to
 the host rather than assuming `/tmp` exists.
 
-Pin the original tip with a new tag, and keep its full commit ID in a
-variable for revset use:
+Verify the fresh tag from the source-fix phase, or create it if this execution
+has not yet pinned its source. Keep its full commit ID for revset use:
 
 ```sh
 jj tag set "$ORIGINAL_TAG" -r "$OLD_TIP"
@@ -76,8 +94,8 @@ confirmed as fully or mostly suitable for the clean history. Duplication must
 not collectively reproduce the original stack, even through several separate
 commands or slices.
 
-After analyzing the complete range, retain its longest initial prefix whose
-content, descriptions, and order already fit the final plan. Record its full
+Verify the plan's longest initial prefix whose content, descriptions, and order
+already fit the final plan. Record its full
 commit IDs and set `REBUILD_BASE` to its tip, or `BASE` if no prefix qualifies.
 A later fixup targeting a prefix commit makes that commit part of the suffix
 to rebuild. Reuse only this contiguous prefix, never scattered original
@@ -127,8 +145,8 @@ jj log -r "$CURRENT_TIP" --no-graph \
 jj diff -r "$CURRENT_TIP" --stat
 ```
 
-When the step preserves the original order, the duplicate's tree must match
-its source's:
+When the duplicate's parent tree equals its source parent and the operation
+preserves the complete source delta, its tree must match its source's:
 
 ```sh
 jj diff --from "$NEXT_SOURCE" --to "$CURRENT_TIP" --summary
