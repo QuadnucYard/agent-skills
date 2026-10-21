@@ -5,6 +5,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | Skill | Purpose |
 | --- | --- |
 | `code-review` | Review requirements, behavior, design quality, and change boundaries. |
+| `feature-planning` | Confirm design details and prioritize incremental features with effective tests and evidence-based confidence. |
 | `jj-execute-restack` | Execute a restack plan, apply authorized fixes, and verify the rebuilt stack. |
 | `jj-commit` | Write or refresh Conventional Commit descriptions and commit verified jj changes. |
 | `jj-patch-stack` | Add fixes without rewriting existing changes. |
