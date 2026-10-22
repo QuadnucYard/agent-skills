@@ -1,4 +1,4 @@
 interface:
   display_name: "Feature Plan Review"
-  short_description: "Audit feature complexity and actionable vertical slices"
-  default_prompt: "Use $feature-plan-review to audit this feature plan for complexity, overloaded steps, vertical slices with observable effects and V&V checks at each step, and complete scope, with concrete repairs for any findings."
+  short_description: "Audit feature boundaries, dependencies, and delivery readiness"
+  default_prompt: "Use $feature-plan-review to audit this plan for clear feature boundaries, dependencies, incremental growth of interacting features, complete scope, and small implementation steps sized for one easily verified commit each; give concrete repairs or reject it with a rewrite request when structural defects prevent a reliable readiness assessment."

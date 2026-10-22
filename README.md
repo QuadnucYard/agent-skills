@@ -6,7 +6,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | --- | --- |
 | `code-review` | Review requirements, behavior, design quality, and change boundaries. |
 | `feature-planning` | Confirm design details and prioritize incremental features with effective tests and evidence-based confidence. |
-| `feature-plan-review` | Audit feature plans for complexity, actionable vertical slices, overloaded steps, and effective validation. |
+| `feature-plan-review` | Audit feature boundaries, dependencies, complexity, and verifiable delivery; reject structurally unclear plans with a rewrite request. |
 | `fix-commit-review` | Audit bug-fix claims, completeness, cost, scope, ownership, and reuse; separate existing defects from commit corrections. |
 | `jj-execute-restack` | Execute a restack plan, apply authorized fixes, and verify the rebuilt stack. |
 | `jj-commit` | Write or refresh Conventional Commit descriptions and commit verified jj changes. |

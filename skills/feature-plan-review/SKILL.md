@@ -2,15 +2,17 @@
 license: MIT
 name: feature-plan-review
 description: >
-  Review feature plans for actionable vertical slices, overloaded steps,
-  design complexity, complete scope, and effective validation. Use to audit
+  Review feature plans for clear feature boundaries and dependencies, actionable
+  vertical slices, incremental growth of interacting features, small verifiable
+  commits, design complexity, complete scope, and
+  effective validation; reject unreviewable plans with a rewrite request. Use to audit
   an existing feature plan or assess implementation readiness, rather than
   create a plan or review implemented code.
 ---
 
 # Feature Plan Review
 
-Assess whether the plan delivers the **complete intended feature** through
+Assess whether the plan delivers the **complete intended outcome** through
 **coherent, verifiable increments**. Focus on **behavior and design adoption**,
 not formatting or linting. Scale review depth to the actual risk.
 
@@ -28,6 +30,35 @@ not formatting or linting. Scale review depth to the actual risk.
 
 ## Audit the plan
 
+- **Feature boundaries:** Establish whether the plan describes one coherent
+  feature or a bundle of features before assessing individual delivery steps.
+  For a bundle, identify each feature's user outcome, responsibilities, owned
+  state or contracts, exclusions, and acceptance criteria. Flag unrelated goals,
+  overlapping ownership, and shared work mixed into feature scope without clear
+  boundaries. A shared roadmap is valid; placing everything under one feature
+  heading does not establish cohesion. Preserve the full agreed outcome when
+  separating features, and distinguish feature boundaries from delivery slices.
+- **Inter-feature dependencies:** Identify which feature requires which other
+  feature, the specific behavior or contract required, why it is required, and
+  when it becomes available. Distinguish hard prerequisites from shared
+  infrastructure, optional integrations, and convenient sequencing. Check that
+  each feature has clear acceptance criteria and that combined behavior has an
+  integration check. Expose cycles and hidden coupling; propose a contract change,
+  bounded shared prerequisite, or coherent joint delivery when independence is
+  unjustified. Do not force independent delivery or duplicate shared machinery
+  merely to claim separation. Assign ownership and acceptance checks to shared
+  work, and carry dependency gates into the delivery order.
+- **Combinational complexity and growth:** Look for features whose interactions
+  multiply behavior across options, modes, states, or integrations. Require a
+  growth path from a narrow working combination to the complete agreed outcome,
+  adding bounded capabilities or interactions with observable checks at each
+  increment. Name supported and unsupported combinations at intermediate states,
+  their gates, and the contract preserving room for the remaining combinations.
+  Exercise meaningful interactions and failures as they become available; isolated
+  feature tests alone cannot establish that combinations work. Challenge plans
+  that deliver the whole interaction space at once or defer integration to the
+  end. A jointly released feature can still grow through small internal commits;
+  preserve required final coverage and safeguards throughout that sequence.
 - **Complete scope:** Map every requirement and material risk to a step and
   acceptance check. Trace success, failure, and state transitions across the real
   path. Check applicable permissions, data lifecycle, concurrency, compatibility,
@@ -57,6 +88,15 @@ not formatting or linting. Scale review depth to the actual risk.
   without breaking each other. Keep one coherent cross-layer behavior together;
   more bullets or artificial layer splits do not improve delivery boundaries.
   Separate substantial independent refactoring and unrelated fixes where useful.
+- **Commit size and verifiability:** Treat each proposed implementation step as
+  one commit. Require a small, coherent change whose purpose, affected contracts,
+  and correctness can be assessed without holding a large set of simultaneous
+  changes in mind. Give it focused acceptance evidence runnable at that commit,
+  without later commits to finish wiring or make its checks meaningful. Split a
+  large step even if it serves one feature; check conceptual scope and verification
+  effort rather than imposing a line or file limit. Keep the smallest complete
+  behavior and its tests together, or justify bounded enabling work with a directly
+  verifiable contract. Relabeling a large batch as one step does not make it small.
 - **Actionability:** Each step needs an outcome, concrete actions, affected
   components or contracts, prerequisites, and observable acceptance criteria.
   Reference details elsewhere rather than demanding a fixed template. Enabling
@@ -84,8 +124,20 @@ not formatting or linting. Scale review depth to the actual risk.
 
 ## Report findings
 
-Lead with **implementation readiness** and the specific steps blocked. Unresolved
-work need not block independent ready slices; a small coherent feature may need
+Lead with **implementation readiness**: ready, ready only for identified independent
+slices, needs targeted repairs, or **rejected — rewrite required**. Name the specific features and steps
+blocked. Reject the plan when mixed scope, missing boundaries or dependency
+contracts, contradictions, or missing outcomes make it impossible to reliably
+assess implementation readiness without inventing consequential decisions.
+Poor prose or a different template alone is not grounds for rejection.
+
+For a rejection, cite representative defects and explain why local edits cannot
+resolve them. Explicitly request a rewritten plan, specifying the required feature
+boundaries, dependency contracts and order, unresolved decisions, and acceptance
+evidence. Do not manufacture a full replacement plan or imply implementation is
+approved. A rewrite request is a review outcome, not permission to edit the plan.
+
+Unresolved work need not block independent ready slices; a small coherent feature may need
 only one implementation step.
 
 For each substantive root cause, provide **location and evidence**, **consequence**,
@@ -93,8 +145,10 @@ For each substantive root cause, provide **location and evidence**, **consequenc
 confirmed defects, open questions, and optional improvements; order by consequence.
 Do not turn preferences or unsupported possibilities into findings.
 
-For overloaded or misordered work, propose **replacement steps in dependency
-order**, each with an outcome, actions, **observable effects**, and **V&V checks**.
+For locally repairable overloaded or misordered work, propose **replacement steps in dependency
+order**, each sized for one small commit with an outcome, actions,
+**observable effects**, and **V&V checks**. For interacting features, show how these
+commits grow supported combinations toward the complete outcome.
 Preserve agreed scope and necessary safeguards. Rewrite only what findings require.
 
 State evidence limits and remaining required decisions. If no substantive findings
