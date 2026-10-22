@@ -12,6 +12,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | `jj-patch-stack` | Add fixes without rewriting existing changes. |
 | `jj-repair-state` | Diagnose and repair damaged Jujutsu metadata. |
 | `jj-plan-restack` | Review a Jujutsu stack and plan boundaries, fixes, and validation without mutations. |
+| `jj-split` | Split mixed jj changes into semantic commits, with existing-feature fixes and refactors first. |
 | `seminar-supervisor` | Critique arguments and designs for substantive defects. |
 | `weekly-research-mentor` | Rehearse and review research updates. |
 

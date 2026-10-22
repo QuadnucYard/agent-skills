@@ -1,0 +1,4 @@
+interface:
+  display_name: "JJ Split"
+  short_description: "Split jj changes into coherent semantic commits"
+  default_prompt: "Use $jj-split to split these changes into semantic commits, putting existing-feature fixes and refactors first and following the restack plan when available."
