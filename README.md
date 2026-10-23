@@ -5,6 +5,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | Skill | Purpose |
 | --- | --- |
 | `code-review` | Review requirements, behavior, design quality, and change boundaries. |
+| `experiment-design-and-audit` | Design experiments and audit settings, execution, results, fair comparisons, and anomalous outcomes. |
 | `feature-planning` | Confirm design details and prioritize incremental features with effective tests and evidence-based confidence. |
 | `feature-plan-review` | Audit feature boundaries, dependencies, complexity, and verifiable delivery; reject structurally unclear plans with a rewrite request. |
 | `fix-commit-review` | Audit bug-fix claims, completeness, cost, scope, ownership, and reuse; separate existing defects from commit corrections. |

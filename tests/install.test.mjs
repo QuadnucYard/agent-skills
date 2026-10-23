@@ -66,15 +66,16 @@ test("real skills CLI installs available skills with every resource", async () =
   }
 }, 30000);
 
-for (const name of ["jj-plan-restack", "jj-execute-restack"]) {
+for (const [name, resource] of [
+  ["experiment-design-and-audit", "references/report-contract.md"],
+  ["jj-plan-restack", "scripts/analyze-history.nu"],
+  ["jj-execute-restack", "assets/mergiraf.toml"],
+]) {
   test(`${name} installs independently with its resources`, async () => {
     const sandbox = await runInstall([name]);
     const installed = path.join(sandbox, ".agents", "skills");
     assert.deepEqual(readdirSync(installed), [name]);
     verifySkill(path.join(installed, name));
-    const resource = name === "jj-plan-restack"
-      ? "scripts/analyze-history.nu"
-      : "assets/mergiraf.toml";
     assert.deepEqual(
       readFileSync(path.join(installed, name, resource)),
       readFileSync(path.join(root, "skills", name, resource)),
