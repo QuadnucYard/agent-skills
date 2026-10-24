@@ -41,6 +41,7 @@ jobs:
         with:
           tool: jj-cli@0.46.0,nu@0.114.1
       - run: python -B -m unittest discover -s tests -p test_restack_analysis.py -v
+      - run: python -B -m unittest discover -s tests -p test_stack_evidence.py -v
       - run: python -m pip install mypy==2.3.1
       - run: python -m mypy --strict --python-version 3.11 skills/jj-plan-restack/scripts/hunk_lineage.py tests/test_restack_analysis.py
         env:

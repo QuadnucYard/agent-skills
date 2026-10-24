@@ -40,6 +40,15 @@ them on Windows and Linux and checks the Python helper/tests with `mypy --strict
 
 ## Shared guidance
 
+`recognize-stack-features` provides a reusable, read-only feature recognition
+contract for reviews, splits, and restack plans. Its standalone Python/Git
+evidence collector retains per-parent diffs, intermediate trees, and unclassified
+consumer candidates. Verify its behavior with:
+
+```sh
+python -B -m unittest discover -s tests -p test_stack_evidence.py -v
+```
+
 `jj-plan-restack` owns review, boundaries, the plan handoff contract, and read-only
 analysis helpers. `jj-execute-restack` consumes an actionable plan and owns fixes,
 reconstruction, the merge profile, validation, and recovery. Each installs alone;

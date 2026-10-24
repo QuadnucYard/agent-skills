@@ -1,0 +1,4 @@
+interface:
+  display_name: "Recognize Stack Features"
+  short_description: "Infer vertical features from changes and real consumers"
+  default_prompt: "Use $recognize-stack-features to infer vertical features, production consumers, source ownership, and dependencies across this stack without inheriting its commit boundaries."
