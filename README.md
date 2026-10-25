@@ -11,7 +11,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | `fix-commit-review` | Audit bug-fix claims, completeness, cost, scope, ownership, and reuse; separate existing defects from commit corrections. |
 | `jj-execute-restack` | Execute a restack plan, apply authorized fixes, and verify the rebuilt stack. |
 | `jj-commit` | Write or refresh Conventional Commit descriptions and commit verified jj changes. |
-| `jj-patch-stack` | Add fixes without rewriting existing changes. |
+| `jj-patch-stack` | Add fixes without rewriting existing changes, then guide squashing after approval. |
 | `jj-repair-state` | Diagnose and repair damaged Jujutsu metadata. |
 | `jj-plan-restack` | Review a Jujutsu stack and plan boundaries, fixes, and validation without mutations. |
 | `jj-split` | Split mixed jj changes into semantic commits, with existing-feature fixes and refactors first. |
