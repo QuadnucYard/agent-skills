@@ -2,23 +2,64 @@
 license: MIT
 name: requirement-alignment-check
 description: >
-  Judge whether refined requirements faithfully preserve the user's original
-  intent and adequately address ambiguities and acknowledged issues. Use when
-  comparing a rewritten request, clarified specification, or acceptance criteria
-  with the original request and subsequent user decisions. Review requirement
-  alignment rather than implementation quality or delivery planning.
+  Restate user requests for confirmation, then judge whether refined requirements
+  faithfully preserve the user's intent and adequately address ambiguities and
+  acknowledged issues. Use when checking understanding of a request or comparing
+  a rewritten request, clarified specification, or acceptance criteria with the
+  original request and subsequent user decisions. Review requirement alignment
+  rather than implementation quality or delivery planning.
 ---
 
 # Requirement Alignment Check
 
-Evaluate two separate questions: **Does the refinement preserve the user's
-intended outcome and constraints?** **Does it resolve, or explicitly account for,
+Begin by restating the requirement so the user can confirm your understanding.
+When a refinement is available, evaluate two separate questions: **Does the
+refinement preserve the user's intended outcome and constraints?** **Does it
+resolve, or explicitly account for,
 the ambiguities and acknowledged issues that matter to that outcome?** A fluent,
 detailed specification can fail either check.
 
 Review meaning and observable behavior. Do not spend the review on formatting,
 linting, or preferred wording. Review by default; edit the requirement only when
 authorized. Suggested repairs do not constitute user agreement.
+
+## Restate the requirement for confirmation
+
+After receiving a user request, first restate the requirement in your own words
+and explicitly ask the user to confirm or correct your understanding. Keep it
+concise: use a short paragraph or a few compact bullets that capture the whole
+picture, including the intended outcome, essential behavior, material scope and
+exclusions, constraints, and what would count as success. Include relevant future
+extension boundaries without adding speculative features. A task acknowledgment
+or implementation plan does not substitute for restating what the user wants.
+
+- Compress wording, not scope. Group related details, omit repetition and design
+  mechanics unless explicitly required, and preserve qualifiers or exceptions that
+  change the result. Check that every material obligation is represented; brevity
+  must not drop an affected user, required outcome, constraint, or unresolved issue.
+- Include acknowledged issues and material ambiguities. Separate what the user
+  actually said from tentative interpretations and unanswered questions; do not
+  silently fill gaps or introduce new requirements to make the restatement precise.
+- Present the restatement before dependent refinement, review conclusions, or
+  implementation. Ask a focused question such as "Does this capture what you want?"
+  and identify any specific interpretation that needs a decision.
+- Wait for explicit confirmation or correction before treating the restatement as
+  agreed or proceeding with work that depends on it. Continue independent,
+  read-only investigation when useful. Silence and elapsed time are not confirmation.
+- Incorporate corrections and restate the changed understanding for confirmation.
+  Reuse an existing explicit confirmation of the same understanding; do not ask
+  again about unchanged requirements. Material later changes need confirmation
+  of the affected scope, with earlier confirmed obligations retained.
+- Confirmation establishes shared understanding of the requirement. It does not
+  approve an unreviewed refinement, authorize implementation or external actions,
+  or resolve questions the user has left open. Keep the original request and
+  subsequent decisions as traceable sources rather than replacing them with your
+  restatement.
+
+A refinement need not exist for this opening step. If the task is only to establish
+understanding, provide the restatement and confirmation question; do not invent a
+candidate or issue comparison verdicts. After confirmation, perform the comparison
+below when a review is requested and a refinement is available.
 
 ## Establish the authoritative source
 
@@ -132,7 +173,8 @@ This is a specification check; do not imply implementation tests have been run.
 
 ## Report the judgment
 
-Lead with two explicit judgments:
+For a comparison review, lead with two explicit judgments after the requirement
+understanding has been confirmed:
 
 - **Intent alignment:** aligned, misaligned, or indeterminate from available evidence.
 - **Ambiguity and issue handling:** sufficient, sufficient only for named independent

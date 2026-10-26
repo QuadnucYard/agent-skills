@@ -1,4 +1,4 @@
 interface:
   display_name: "Requirement Alignment Check"
-  short_description: "Check refined requirements against user intent"
-  default_prompt: "Use $requirement-alignment-check to compare this refined requirement with the original user request and subsequent clarifications, checking intent preservation, ambiguity resolution, and acknowledged issues."
+  short_description: "Confirm understanding and check requirement alignment"
+  default_prompt: "Use $requirement-alignment-check to concisely restate my requirement while capturing the whole picture, then ask me to confirm your understanding before comparing any refinement against my original request, clarifications, ambiguities, and acknowledged issues."
