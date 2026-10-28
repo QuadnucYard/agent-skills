@@ -105,6 +105,31 @@ Always pass `-m` with the complete subject and body as one literal argument.
 Preserve backticks and actual newlines through a process API or safe shell
 quoting; never evaluate message text or launch an interactive editor.
 
+PowerShell treats backticks as escapes in double-quoted strings; POSIX shells
+can treat them as command substitution. Use shell-appropriate literal quoting:
+PowerShell single-quoted strings or single-quoted here-strings, and POSIX
+single-quoted strings. Handle embedded apostrophes according to that shell's
+rules; double quotes and JSON serialization alone do not protect the message.
+Never strip Markdown backticks to work around shell interpretation.
+
+When literal quoting is uncertain, write the complete message to a temporary
+UTF-8 file through a literal file-write API, then read it into a process argument
+without a shell. For example, run this as a saved Python script:
+
+```python
+from pathlib import Path
+import subprocess
+import sys
+
+message = Path(sys.argv[1]).read_text(encoding="utf-8")
+subprocess.run(["jj", "--no-pager", "commit", "-m", message], check=True)
+```
+
+Pass only the temporary file's path to the script. For description-only work,
+use `["jj", "--no-pager", "describe", "-r", target, "-m", message]` instead.
+Keep `shell=False` (the default), await completion, and read back the saved
+description to confirm literal backticks and paragraph breaks survived.
+
 For signing failures, use only a repository-documented solution within existing
 authorization. Otherwise stop, report the issue, and provide the full proposed
 message in a code block. Do not repair or disable signing or invent a workaround.
