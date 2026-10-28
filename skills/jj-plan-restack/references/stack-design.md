@@ -32,8 +32,10 @@ Present all three views; a final-tree partition cannot replace history analysis:
 2. **Redistribution map.** Every source change, meaningful hunk, and state:
    destination label(s), disposition (retain, reconstruct, duplicate, split,
    squash, absorb, reorder, or omit), and evidence-backed reason. Enumerate all
-   owners for distributed fixups. Explain omissions as noise or invalid partial
-   work rather than silently dropping a reviewable milestone.
+   owners for distributed fixups. Explain omissions as noise, invalid partial
+   work, or explicitly scoped feature exclusions rather than silently dropping
+   a reviewable milestone. In extraction, map excluded hunks and dependency
+   adaptations as fully as retained work; follow [extraction scope](feature-extraction.md).
 3. **Target sequence.** Entire clean stack including the retained prefix:
    ordered label, final description, purpose, source changes/hunks, parent and
    semantic dependencies, intended state, and behavioral validation. Show where

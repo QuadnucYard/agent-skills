@@ -31,8 +31,16 @@ to implement recommended fixes outside the user's authorized scope.
    unchanged. Reserve fresh safety-tag and clean-bookmark names; only the latter
    may move. With authorized fixes, the clean tree equals the verified corrected
    source and its delta from the pre-fix source is exactly those fixes. Otherwise
-   it equals the original source. Specify checks at every boundary and final
+   it equals the original source. For [feature extraction](feature-extraction.md),
+   include the retained/excluded map, dependency closure, authorized adaptations,
+   and complete expected source-to-target delta. Require an independently prepared,
+   validated target pinned before reconstruction; clean-to-target equality replaces
+   clean-to-full-source equality. Specify checks at every boundary and final
    graph, source, tree, and semantic-timeline checks, plus unavailable evidence.
+6. **Result review.** Identify the comparison mode and evidence needed for the
+   [post-restack audit](review-restack.md), including exact execution targets,
+   source preservation, retained behavior, excluded entry points, and checks at
+   intermediate revisions. Execution evidence does not replace this review.
 
 ## Execution and changes
 
@@ -47,8 +55,11 @@ verified source commit, fresh target tag, updated mapping, and revalidation from
 the first affected boundary. Preserve earlier source and execution records.
 When resuming, compare protected source state to the original snapshot and
 workflow-owned refs and working-copy state to the execution checkpoint. Recorded
-fixes and bookmark advances are expected progress. Reuse evidence only for
-unchanged revisions and parents with still-applicable checks. Unrelated
+fixes and bookmark advances are expected progress. Reuse evidence for unchanged
+revisions and parents with still-applicable checks. For description-only
+rewrites, require proof of unchanged content and parent trees and an explicit
+old-to-new identity mapping; review metadata and graph, and rerun any checks
+sensitive to revision metadata or changed execution conditions. Unrelated
 operation-log changes alone do not require discarding the plan.
 
 Future merge-aware planning or language-specific analysis can extend source

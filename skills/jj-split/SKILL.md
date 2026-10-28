@@ -10,6 +10,10 @@ license: MIT
 
 Split selected changes into **independently valid semantic commits**, preserving
 the combined final tree. Splitting does not authorize additional behavior fixes.
+Selecting only some resulting features is a restack extraction, not a split
+with tree equality waived. Use `jj-plan-restack` and `jj-execute-restack` when
+available, or an equivalent explicit selection/dependency plan and independently
+validated retained-feature target. Preserve the split-only contract here.
 
 ## Choose boundaries
 

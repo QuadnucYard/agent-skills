@@ -18,6 +18,37 @@ Verify the pre-fix-to-corrected delta against the plan. All later reconstruction
 mutations follow the gate below. If a new source fix is required, return to
 planning and repeat the source-fix phase with fresh target records and tags.
 
+## Prepare an extraction target
+
+Ordinary restacks set `EXPECTED_TIP=OLD_TIP`. When the plan explicitly excludes
+features, `OLD_TIP` remains the corrected full source; prepare a separate target
+before reconstructing. Require a complete retained/excluded feature map,
+source-hunk ownership, dependency closure, authorized adaptations, and expected
+source-to-target delta. Missing dependency decisions block affected work.
+
+Create explicit new children of `OLD_TIP` on a separate target-preparation line.
+Apply only planned feature subtractions and adaptations; never rewrite source
+commits or derive this target by copying the rebuilt tip. This phase permits
+new top commits, as the source-fix phase does, not edits of completed revisions.
+Record each target-preparation commit separately from fixes and clean owners.
+Preserve support required by retained consumers and remove excluded-only wiring,
+APIs, configuration, tests, documentation, and generated/dependency artifacts.
+Do not erase base behavior or migrations outside the authorized scope.
+
+Read the complete `OLD_TIP`-to-target diff against the planned exclusion map,
+including hunks in shared files. Check retained production paths, compatibility,
+and absence of excluded entry points; run the relevant behavior/build checks.
+Pin the verified result with a fresh immutable `TARGET_TAG`, record its exact
+commit/tree identities as `EXPECTED_TIP`, and retain the target-preparation
+evidence. The rebuilt stack must match this target, but must not inherit these
+subtraction commits as a shortcut to clean history.
+
+With fixes, separately validate pre-fix-to-`OLD_TIP` as fixes and
+`OLD_TIP`-to-`EXPECTED_TIP` as extraction; inspect the combined delta too, since
+overlapping changes can mask mistakes. A changed selection or adaptation returns
+to planning and gets a fresh target/tag; never move an old tag or accept an
+unexpected rebuilt delta as the new specification.
+
 ## Freeze the original
 
 Use explicit revision expressions, preferably full commit IDs. Naming an
@@ -176,15 +207,20 @@ jj bookmark set "$CLEAN_BOOKMARK" -r "$CLEAN_TIP"
 NEW_STACK="$REBUILD_BASE..$CLEAN_TIP"
 ```
 
-Regardless of order, the clean tip's tree must match the original tip's tree
-before cleanup continues (unless the user approved a content change):
+Regardless of order, the clean tip's tree must match the recorded expected
+target before cleanup continues:
 
 ```sh
-jj diff --from "$ORIGINAL_TIP" --to "$CLEAN_TIP" --summary
+jj diff --from "$EXPECTED_TIP" --to "$CLEAN_TIP" --summary
 ```
 
 If the result is non-empty, stop. The wrong range, base, order, or mapping
 was used.
+
+If extraction leaves no suffix, validate `REBUILD_BASE` against `EXPECTED_TIP`
+and account for every omitted source change. Report that base as `CLEAN_TIP`;
+if a result bookmark is needed, create the fresh clean bookmark there after
+validation. This is a verified extraction, not a history-only no-op.
 
 ## Mutation gate
 

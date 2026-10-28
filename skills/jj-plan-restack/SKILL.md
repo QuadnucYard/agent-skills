@@ -4,13 +4,18 @@ name: jj-plan-restack
 description: >
   Review a Jujutsu stack's behavior and design adoption, then plan coherent
   commit boundaries, dependencies, fixes, and validation. Use for restack
-  planning or review without changing source files, history, refs, or configuration.
+  planning, feature extraction, or post-restack review without changing source
+  files, history, refs, or configuration.
 ---
 
 # Plan a Jujutsu Restack
 
 Produce an actionable reconstruction plan. Review the whole stack before
 choosing boundaries. This skill works independently of `jj-execute-restack`.
+
+For an existing rebuilt stack, follow [review the result](references/review-restack.md)
+instead of assuming the execution report proves correctness. Review is read-only;
+report defects and proposed owners without repairing history.
 
 ## Review and design
 
@@ -37,6 +42,9 @@ choosing boundaries. This skill works independently of `jj-execute-restack`.
 - Propose fixes with acceptance criteria and destination owners; do not implement
   or commit them. Distinguish authorized fixes from recommendations and unresolved
   behavior decisions. A history-only request preserves the source tree.
+- For selective feature extraction, follow [extraction scope](references/feature-extraction.md).
+  Record retained and excluded capabilities, dependency closure, and the expected
+  content delta. Extraction is a content change, not a waiver of verification.
 - Cover the full design and reserve justified future extension boundaries without
   speculative implementations. Preserve meaningful migrations and removals,
   including capabilities absent from the final tree.

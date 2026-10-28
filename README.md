@@ -10,11 +10,11 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | `feature-planning` | Confirm design details and prioritize incremental features with effective tests and evidence-based confidence. |
 | `feature-plan-review` | Audit feature boundaries, dependencies, complexity, and verifiable delivery; reject structurally unclear plans with a rewrite request. |
 | `fix-commit-review` | Audit bug-fix claims, completeness, cost, scope, ownership, and reuse; separate existing defects from commit corrections. |
-| `jj-execute-restack` | Execute a restack plan, apply authorized fixes, and verify the rebuilt stack. |
+| `jj-execute-restack` | Execute restack or feature-extraction plans and verify each rebuilt commit against its intended target. |
 | `jj-commit` | Write or refresh Conventional Commit descriptions and commit verified jj changes. |
 | `jj-patch-stack` | Add fixes without rewriting existing changes, then guide squashing after approval. |
 | `jj-repair-state` | Diagnose and repair damaged Jujutsu metadata. |
-| `jj-plan-restack` | Review a Jujutsu stack and plan boundaries, fixes, and validation without mutations. |
+| `jj-plan-restack` | Plan restacks and feature extraction, or audit rebuilt behavior, boundaries, and preservation without mutations. |
 | `jj-split` | Split mixed jj changes into semantic commits, with existing-feature fixes and refactors first. |
 | `recognize-stack-features` | Infer vertical features, real consumers, and dependencies across original commit boundaries. |
 | `requirement-alignment-check` | Restate requests for confirmation and check refinements against original intent, ambiguities, and acknowledged issues. |

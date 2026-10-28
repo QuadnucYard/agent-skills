@@ -15,6 +15,7 @@ before each operation.
 | Later commit contains hunks for several owners | Map hunks to all destinations, then use explicitly scoped absorb or split. |
 | One feature spanning implementation, integration, and tests | Keep together as a coherent vertical slice. |
 | Several features mixed across crates or layers | Split by semantic feature, including each feature's integration and tests. |
+| Selected features excluded from the result | Reconstruct the dependency-closed retained set; compare to the separately pinned extraction target, accounting for all excluded hunks and shared support. |
 | Pure mechanical movement | Isolate from behavior when both commits remain checkable. |
 | Accidental/noise change | Omit only with approved content change; otherwise preserve it in a coherent commit. |
 | Deletion/removal | Treat as a first-class change; use `jj revert` for a known duplicate change, then add any replacement later. |
@@ -84,11 +85,11 @@ source, not proof that this tactic is safe.
    disposition, use history-aware selective reconstruction instead.
 3. Create a new child of `REBUILD_BASE`; retain the original prefix and do
    not import any original suffix commits.
-4. Restore the old tip's final tree into that new revision for state equality,
+4. Restore the expected target's final tree into that new revision for state equality,
    checking for overwritten fixes as described above:
 
    ```sh
-   jj restore --from "$OLD_TIP" --into <NEW_REVISION>
+   jj restore --from "$EXPECTED_TIP" --into <NEW_REVISION>
    ```
 
    Check `jj help restore` if the installed version differs, and record the
@@ -104,7 +105,9 @@ source, not proof that this tactic is safe.
    creating the next commit.
 7. If a final-state change must be removed or corrected, make the subtraction
    explicit before adding the replacement. Validate the resulting final tree
-   against the original unless the user approved a content change.
+   against `EXPECTED_TIP`. In extraction, never restore the full old tip as a
+   residual: that would reintroduce excluded features. The semantic audit must
+   still account for each excluded intermediate state explicitly.
 
 ### Mixed-source sequencing
 
@@ -118,7 +121,7 @@ minority and must never collectively reproduce the original stack or changed
 suffix.
 
 At every boundary, inspect the complete diff of the next planned commit, its
-source milestone, and the current-tip-to-`OLD_TIP` diff. Confirm that no hunk
+source milestone, and the current-tip-to-`EXPECTED_TIP` diff. Confirm that no hunk
 already introduced is applied again, no required final hunk is lost, and no
 required intermediate state is skipped. If that accounting is uncertain, stop
 and revise the milestone and destination maps; do not collapse to a final-state

@@ -70,6 +70,10 @@ nu --no-config-file check-restack.nu \
 
 `order.json` is an array of revision strings, an exact permutation of
 `BASE..TIP`. Split/hunk reconstruction plans require manual destination mapping.
+Feature extraction is not a permutation: do not pass a shortened selection as
+an ordered check or treat a full-stack prediction as proof of retained-feature
+independence. Use single-change checks only for mechanical evidence, with manual
+dependency closure and exclusion mapping.
 Ordered checks simulate original parent-to-change deltas from `BASE` and list
 reversed dependency candidates in `reordered_dependencies`. Single-change mode
 checks application only, without a stack-wide dependency inventory.

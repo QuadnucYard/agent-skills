@@ -2,26 +2,30 @@
 
 ## Required validation
 
-The clean tip must equal the verified source target. `ORIGINAL_TIP` is the
-corrected source tip when planned fixes were committed, otherwise the pre-fix
-source tip. For both cases:
+The clean tip must equal `EXPECTED_TIP`: the independently prepared extraction
+target when features are excluded, otherwise `ORIGINAL_TIP`. `ORIGINAL_TIP` is
+the corrected full source when fixes exist, otherwise the pre-fix source.
 
 ```sh
-jj diff --from "$ORIGINAL_TIP" --to "$CLEAN_TIP" --summary
-jj diff --from "$ORIGINAL_TIP" --to "$CLEAN_TIP" --git
+jj diff --from "$EXPECTED_TIP" --to "$CLEAN_TIP" --summary
+jj diff --from "$EXPECTED_TIP" --to "$CLEAN_TIP" --git
 ```
 
-With fixes, also inspect the pre-fix-to-corrected and pre-fix-to-clean diffs:
-both must contain exactly the planned, authorized changes. Never claim equality
-to the pre-fix tree when those trees differ.
+With fixes or extraction, inspect the complete pre-fix-to-corrected,
+corrected-to-target, and pre-fix-to-clean diffs. These must account separately
+for authorized fixes, exclusions, and adaptations, with no unexplained hunks.
+Check retained behavior and interactions and absence of excluded entry points.
+Verify the target was prepared and validated independently of clean history;
+matching a target copied from the rebuilt tip proves nothing. Never claim
+equality to a full-source tree when extraction intentionally changes it.
 
 Tip equivalence is necessary but insufficient. Compare the rebuilt sequence to
 the semantic timeline recorded during analysis. Every meaningful incremental
 feature, migration or compatibility stage, deprecation, and intentional
 removal must appear at an appropriate clean commit, including states no longer
 present in `OLD_TIP`. For every omitted original state, verify the recorded
-finding that it was fixup noise, invalid partial work, or otherwise not an
-intended reviewable milestone.
+finding that it was fixup noise, invalid partial work, an authorized feature
+exclusion, or otherwise not an intended reviewable milestone.
 
 Also require:
 
@@ -38,16 +42,20 @@ review-follow-up commits, and every description must be well formatted in the
 repository's commit-message convention (see "Descriptions" in
 `reconstruction.md`). Review every clean commit from oldest to newest:
 inspect its diff, check parent dependencies, and run the narrowest relevant
-build/test/type/lint checks. Do not claim intermediate validity if a check was
+build/test/type checks. Do not claim intermediate validity if a check was
 not run or cannot be run.
 
 This final pass confirms, but does not replace, the manual gate performed
 immediately after each rebuilt commit was created. Every rebuilt slice must
 have a recorded commit-by-commit review. There is no valid batch review of a
-slice. If a later squash, absorb, split, conflict resolution, or description
-rewrite changes an already reviewed commit, its prior validation is stale;
-repeat the full protocol for every rewritten commit and affected descendant
-before continuing the rebuild.
+slice. If a later squash, absorb, split, or conflict resolution changes an
+already reviewed commit's content or parent tree, its prior validation is stale;
+repeat the full protocol for every affected commit and descendant before
+continuing the rebuild. For description-only rewrites, prove unchanged content
+and parent trees, record old-to-new exact identities, and recheck descriptions,
+graph, and refs. Carry forward applicable behavior evidence explicitly; rerun
+checks dependent on revision metadata or changed execution conditions. A new
+commit hash alone does not invalidate content-based behavior evidence.
 
 ## Per-commit check protocol
 
@@ -69,7 +77,8 @@ For each clean commit, from oldest to newest:
    original tag pins the old tip and the clean bookmark identifies the rebuilt
    tip, so checking out an intermediate commit cannot lose either endpoint.
 5. Run checks proportional to the change: focused unit tests first, then the
-   relevant integration tests, build/type checks, lints, and formatting checks.
+   relevant integration tests and build/type checks. Review behavior and design
+   adoption; do not spend review on formatting or lint.
    A refactor must run behavior/regression tests, not only compilation.
 6. Record the review conclusion, exact commands, and outcomes. A failed,
    skipped, or not-manually-reviewed commit blocks the next milestone and
@@ -85,11 +94,15 @@ it requires.
 
 Verify the original commit-ID list is unchanged, that `jj tag list` still
 shows `ORIGINAL_TAG` on the recorded original tip, and that `jj bookmark list`
-shows `CLEAN_BOOKMARK` on `CLEAN_TIP`. Inspect the final graph and confirm the
+shows `CLEAN_BOOKMARK` on `CLEAN_TIP` when a clean bookmark was created. Inspect
+the final graph and confirm the
 clean stack is a separate suffix rooted at `REBUILD_BASE`. Its intersection
 with the original range must be exactly the recorded retained prefix; no
 original suffix commit may appear in the rebuilt suffix. If nothing needed
-rebuilding, the two tips may be identical and no clean bookmark is required.
+rebuilding in a history-only no-op, the two tips may be identical and no clean
+bookmark is required. Extraction can instead end at `REBUILD_BASE` with no
+rebuilt suffix and an optional fresh result bookmark. Verify target equality
+and every exclusion even though no new clean commit exists; this is not a no-op.
 Inspect the full graph:
 
 ```sh
@@ -159,6 +172,13 @@ reported revision with at least its short jj change ID and enough role/ref
 context to disambiguate it. A result is not complete until every item is
 evidenced or explicitly marked unverified.
 
+For extraction, also report retained/excluded features, dependency adaptations,
+target tag and identity, full-source-to-target delta audit, and clean-to-target
+equality. Distinguish source defects, reconstruction defects, plan/scope errors,
+and evidence gaps; the execution report is input to a post-restack review, not
+proof that it passed. Such a review reads both histories and actual parent
+boundaries, reuses only still-valid evidence, and makes no mutations.
+
 ## Definition of done
 
 - When reconstruction occurred, the clean stack is reachable under the new
@@ -167,9 +187,13 @@ evidenced or explicitly marked unverified.
   pinned by the safety tag.
 - Existing bookmarks and tags, including the pre-fix and corrected source tags,
   were not moved or deleted.
-- The original safety tag still targets the exact original tip, and the clean
-  bookmark targets the rebuilt tip.
-- Clean and original tip trees are identical.
+- The original safety tag still targets the exact original tip. If a clean
+  bookmark was created, it targets `CLEAN_TIP`; a clean bookmark is optional
+  when no suffix was rebuilt. Extraction to `REBUILD_BASE` still meets the
+  target contract.
+- Clean and expected-target trees are identical; any difference from the full
+  source is exactly the verified authorized fixes/extraction delta. Extraction
+  target tags and their preparation evidence remain preserved unchanged.
 - Every meaningful incremental state in the original semantic timeline has a
   validated clean destination, including features absent from the final tree;
   every omission has an explicit evidence-backed justification.
@@ -177,14 +201,11 @@ evidenced or explicitly marked unverified.
 - No standalone fixup/WIP history remains.
 - Commits follow dependency order and have coherent final descriptions in the
   repository's commit-message convention.
-- Rebuild-produced content passes the repository's formatter and linters;
-  formatting findings in preserved original content are reported as caveats,
-  not fixed silently.
 - Relevant checks pass at each intermediate commit's own revision; unavailable
   checks block completion. No broken intermediate commits remain.
 - Every rebuilt commit's complete parent diff was manually reviewed when the
-  commit was created. Every commit rewritten by a later multi-destination
-  absorb, squash, split, or descendant rebase was manually reviewed again
-  before rebuilding continued, and every commit was accounted for in the final
-  oldest-to-newest validation; no rebuilt slice was accepted through batch
-  evidence alone.
+  commit was created. Every commit whose content or parent tree changed was
+  manually reviewed again before rebuilding continued. Description-only
+  rewrites have explicit evidence mappings and metadata/graph review. Every
+  commit was accounted for in the final oldest-to-newest validation; no rebuilt
+  slice was accepted through batch evidence alone.
