@@ -1,0 +1,4 @@
+interface:
+  display_name: "Development Workflow"
+  short_description: "Connect requirements, implementation, review, and commits"
+  default_prompt: "Use $development-workflow to carry this development task through the relevant skills, preserving agreed scope and decisions and finishing authorized work with verification and commits."

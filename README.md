@@ -5,6 +5,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | Skill | Purpose |
 | --- | --- |
 | `code-review` | Review requirements, behavior, design quality, and change boundaries. |
+| `development-workflow` | Connect relevant skills from requirements and planning through implementation, review, and verified commits. |
 | `experiment-design-and-audit` | Design experiments and audit settings, execution, results, fair comparisons, and anomalous outcomes. |
 | `feature-planning` | Confirm design details and prioritize incremental features with effective tests and evidence-based confidence. |
 | `feature-plan-review` | Audit feature boundaries, dependencies, complexity, and verifiable delivery; reject structurally unclear plans with a rewrite request. |
@@ -32,6 +33,10 @@ Add `--skill '*'` to install everything, or `--skill '<skill-name>'` to select o
 Omit `--global` for a project installation; replace `codex` with your agent.
 Private repositories require configured GitHub access. Use `--copy` if links are unavailable.
 For npm-based environments, the same skills also install with `npx skills add <repository-url>`.
+
+`development-workflow` routes only to skills in this repository; installing it
+alone does not install the other skills. Install the relevant skills alongside
+it, or select everything with `--skill '*'`.
 
 `jj-plan-restack` and `jj-execute-restack` install independently. Select both for
 the complete workflow. They replace `jj-review-restack` and `jj-clean-restack`;

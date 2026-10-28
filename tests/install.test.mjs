@@ -67,6 +67,7 @@ test("real skills CLI installs available skills with every resource", async () =
 }, 30000);
 
 for (const [name, resource] of [
+  ["development-workflow", "references/skill-routing.md"],
   ["experiment-design-and-audit", "references/report-contract.md"],
   ["recognize-stack-features", "scripts/stack_evidence.py"],
   ["jj-plan-restack", "scripts/analyze-history.nu"],
