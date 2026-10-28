@@ -2,9 +2,21 @@
 
 ## Inventory and semantic timeline
 
-Read every source parent diff and milestone tree, oldest first. Subjects are
-clues, not evidence of intent or dependency. Use the
+Read every source change's full description, parent diff, and milestone tree,
+oldest first, including changes proposed for the retained prefix. Read bodies
+and trailers without truncation; subjects alone lose intent and rationale.
+Descriptions are evidence of stated intent, not proof of behavior or dependency;
+check their claims against the implementation. Use the
 [analysis helpers](dependency-analysis.md) for advisory lineage and conflict data.
+
+Do not strip substantive details to shorten descriptions. Carry still-valid
+behavior, rationale, design decisions, constraints, tradeoffs, compatibility
+notes, and relevant provenance or required trailers into the owning target
+descriptions. Splitting or combining changes redistributes those details with
+their semantic owners. Consolidate repetition and correct stale claims only
+with evidence; record why any substantive detail is superseded, unsupported,
+or intentionally omitted. Do not silently replace a detailed body with a
+subject-only summary.
 
 Classify source changes as coherent intent, incremental feature, migration,
 removal, exact or distributed fixup, mixed purpose, dependency correction, noise,

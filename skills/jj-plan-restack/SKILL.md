@@ -20,7 +20,13 @@ choosing boundaries. This skill works independently of `jj-execute-restack`.
   reads. Preserve files, history, refs, working-copy state, and configuration;
   write only requested planning artifacts and temporary analysis files.
 - Find the requirements in the request or supplied specification. Read every
-  parent diff, relevant milestone tree, final implementation, callers, and tests.
+  source change's full description (subject, body, and trailers), every parent
+  diff, relevant milestone tree, final implementation, callers, and tests.
+  Use `jj --no-pager --ignore-working-copy --at-op <op> log --no-graph -r <source> -T description`
+  for full descriptions at the fixed snapshot; read any truncated output in
+  full before choosing boundaries. Subjects and shortened log views do not
+  replace this reading. Preserve substantive description details in the plan
+  and proposed descriptions; follow the stack-design accounting rules below.
   Review design adoption, observable behavior, errors, compatibility, lifecycle,
   and interactions. Mark unavailable requirements or evidence as unverified.
   Do not spend review time on formatting or linter checks.

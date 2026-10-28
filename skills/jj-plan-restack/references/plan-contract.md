@@ -20,7 +20,10 @@ to implement recommended fixes outside the user's authorized scope.
    source change, meaningful hunk, and state, including removals absent at the tip.
 4. **Target sequence.** Longest unchanged prefix and `REBUILD_BASE`; ordered clean
    commit labels, final descriptions, purposes, sources, dependencies, intended
-   intermediate behavior, and validation. State source tactics and evidence:
+   intermediate behavior, and validation. Include complete proposed subjects,
+   bodies, and applicable trailers, preserving substantive source-description
+   details with their owners and explaining substantive omissions as required
+   by stack design. State source tactics and evidence:
    selective reconstruction, a small confirmed duplicate slice, or a justified
    final-state partition. Reserve relevant extension boundaries, not speculative
    commits. If the whole source qualifies unchanged, state the no-op.

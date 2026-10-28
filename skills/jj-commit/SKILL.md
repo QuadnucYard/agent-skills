@@ -12,6 +12,17 @@ the working-copy change. A request for a message alone authorizes drafting;
 a request to redescribe a change authorizes applying its replacement description,
 without committing or advancing the working copy.
 
+## Red line: serialize description updates
+
+Never update descriptions concurrently in the same repository, even for
+different changes or from separate workspaces. Description rewrites can also
+rewrite descendants; overlapping updates can create divergent changes. Use
+one writer and await each description-changing command, including `jj describe`
+and `jj commit`, before starting the next. Parallel inspection and drafting
+are fine, but agents must hand drafts to the single writer. Before each write,
+refresh the target's current commit ID and full description; if either changed
+since inspection, reconcile the draft before applying it.
+
 ## Message
 
 - Use `type(scope): subject`; omit the scope when it adds no useful context.

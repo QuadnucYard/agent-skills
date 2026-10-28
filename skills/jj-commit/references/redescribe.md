@@ -39,8 +39,11 @@ Use the shared message rules in `SKILL.md` for new descriptions and replacements
    only when it materially affects the description and cannot be recovered.
    Description-only work does not require rerunning code tests and must not
    imply new verification; the commit test gate in `SKILL.md` applies to committing content.
-6. Before applying, confirm the target has not changed since inspection; if
-   its content changed, inspect again and revise the draft. Record the target
+6. Apply updates serially through one writer, following `SKILL.md`'s red line;
+   never run description updates concurrently, even for different targets.
+   Before applying, confirm the target's commit ID and full description have
+   not changed since inspection. If either changed, reread the description and
+   recheck the content before reconciling the draft. Record the target
    and descendant file-tree identities before applying for comparison after. Use
    `jj describe -r <target> -m "message"` with the safe literal argument handling
    in `SKILL.md`'s commit workflow. Never use `jj commit`, edit files, split, squash, or restack just to
