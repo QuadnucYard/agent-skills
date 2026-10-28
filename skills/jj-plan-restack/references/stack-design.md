@@ -69,6 +69,19 @@ adoption rather than size or clean patch application.
   when separate commits would be incomplete or misleading. Keep independently
   useful changes and required migration boundaries distinct; shared files alone
   do not justify squashing.
+- Keep risky performance changes separate; do not squash or absorb them into
+  earlier commits. Trivial, low-risk optimizations and clear fixes for evident
+  performance problems, such as accidentally excessive algorithmic complexity,
+  may be absorbed into their semantic owners when correctness and benefit are
+  clear. Otherwise, split optimization hunks from mixed fixes or refactors so
+  the preceding commits remain independently valid. When correctness or
+  performance benefit is uncertain, put the optimizations in a final suffix
+  ordered by dependency. If other changes depend on them, expose that dependency
+  and revise the boundaries rather than silently folding the optimization
+  earlier. Record the affected workload, comparison baseline, and outstanding
+  checks for later verification. Deferral does not waive required correctness
+  checks; distinguish evident complexity improvements from measured speedups,
+  and mark unmeasured speedup claims unverified.
 - Move independent structural preparation ahead of features that would otherwise
   be rewritten by it. If preparation depends on the feature, extract the
   independent part or plan their final intent together.
