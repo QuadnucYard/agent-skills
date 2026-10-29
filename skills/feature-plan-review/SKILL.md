@@ -38,6 +38,13 @@ not formatting or linting. Scale review depth to the actual risk.
   boundaries. A shared roadmap is valid; placing everything under one feature
   heading does not establish cohesion. Preserve the full agreed outcome when
   separating features, and distinguish feature boundaries from delivery slices.
+- **Unequal feature size and risk:** Flag a large, risky feature bundled with
+  smaller features under one estimate, readiness verdict, or delivery gate.
+  Assess their scope and readiness separately; prevent the larger feature's
+  uncertainty, effort, or failure from obscuring or unnecessarily blocking smaller
+  independent outcomes. Require explicit dependency evidence for joint delivery.
+  Keep genuinely coupled behavior together with bounded increments and checks;
+  a shared roadmap is acceptable, and separation must preserve the agreed scope.
 - **Inter-feature dependencies:** Identify which feature requires which other
   feature, the specific behavior or contract required, why it is required, and
   when it becomes available. Distinguish hard prerequisites from shared
@@ -106,11 +113,22 @@ not formatting or linting. Scale review depth to the actual risk.
   Investigate high-impact uncertainty before expensive dependent work. Keep
   intermediate states compatible and safe; assign temporary bridge removal and
   necessary cleanup to explicit steps. Challenge vague "finish everything" steps.
-- **Priority and confidence:** Justify urgent, required-later, and deferred work
-  using user value, actual constraints, dependencies, and cost of being wrong.
-  Confidence needs evidence and a next check; it is separate from priority.
-  Distinguish planned checks from completed checks. Optional deferrals need reasons,
-  consequences, and reconsideration triggers. Do not invent deadlines or agreement.
+- **Confidence, effort, risk, and expected benefits:** Evaluate all four for each
+  feature, including shared prerequisites, rather than averaging across a bundle.
+  Confidence means confidence in the proposed behavior and approach: give evidence,
+  consequential unknowns, and the next check; distinguish planned from completed
+  checks. Effort covers implementation, integration, validation, migration, and
+  ongoing maintenance where applicable; state the estimate's basis and uncertainty.
+  Risk covers plausible failure, likelihood, impact, affected scope, and mitigation
+  or recovery. Benefits mean the expected user or business gain, who receives it,
+  and how it will be observed; quantify financial profit only when relevant and
+  supported. Qualitative assessments are valid when justified; expose missing
+  evidence instead of inventing precise estimates or scores.
+- **Priority:** Use the separate confidence, effort, risk, and benefit assessments,
+  actual constraints, and dependencies to justify urgent, required-later, and
+  deferred work. High value does not establish high confidence or low risk.
+  Optional deferrals need reasons, consequences, and reconsideration triggers.
+  Do not invent deadlines or agreement.
 - **Effective tests:** Require a meaningful setup, expected observable result, and
   plausible defect each check detects. Could it pass with the behavior broken?
   Flag implementation-mirroring assertions, no-crash checks, and mocks that hide
@@ -139,6 +157,12 @@ approved. A rewrite request is a review outcome, not permission to edit the plan
 
 Unresolved work need not block independent ready slices; a small coherent feature may need
 only one implementation step.
+
+Include a concise per-feature assessment of **confidence, effort, risk, and expected
+benefits**, with evidence or explicit unknowns and the resulting priority and
+readiness implications. Identify shared costs and dependency gates without hiding
+individual assessments in a bundle-wide score. Scale detail to the decision;
+do not omit a dimension merely because no defect was found.
 
 For each substantive root cause, provide **location and evidence**, **consequence**,
 **blocking scope**, **concrete repair**, and **acceptance evidence**. Distinguish
