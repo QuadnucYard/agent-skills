@@ -26,6 +26,13 @@ validated retained-feature target. Preserve the split-only contract here.
   refactors, then new behavior. Dependencies take precedence: a refactor needed
   by a fix comes first; a fix to newly introduced behavior belongs with that
   behavior. Keep implementation, integration, and tests together by purpose.
+- **Separate broad mechanical refactors.** When a change touches many files and
+  a large portion contain only small, repetitive refactors (for example, an API
+  migration), extract that refactor into a separate semantic commit so reviewers
+  can assess the substantive changes independently. Include the supporting API
+  changes and tests needed to keep the refactor valid; order it by dependency.
+  Split hunks in mixed-purpose files rather than moving unrelated behavior with
+  the mechanical edits. Preserve independently valid commits and the final tree.
 - **Account for the whole change.** Include removals, compatibility stages, and
   meaningful states absent from the final tree. Reserve justified future
   extension boundaries without speculative implementation. Treat nonadjacent
