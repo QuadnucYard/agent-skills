@@ -11,10 +11,12 @@ description: >
 
 # Feature Design and Planning
 
-Consider the complete intended feature, then build toward it through small,
-verifiable increments. Do not attempt to deliver the entire product in one
-implementation step. Scale planning detail to the feature's complexity and risk;
-avoid turning a small change into an architecture project.
+Consider the complete intended feature and its foreseeable extensions, while
+delivering the user's main goal as soon as possible. Keep the mainline limited
+to the behavior, prerequisites, and safeguards needed for that goal. Defer all
+optional side features; add selected extensions one small feature at a time
+after the main goal works. Scale planning detail to the feature's complexity
+and risk; avoid turning a small change into an architecture project.
 
 ## Establish the outcome and boundaries
 
@@ -48,7 +50,10 @@ mix them into the main delivery sequence or acceptance criteria, or make them
 prerequisites for independent requested work. For nontrivial additions, discuss
 the design alternatives and consequences before requesting a scope decision;
 approval of the general goal does not settle the added constraint or its value.
-If accepted, confirm design and priority before integrating the addition.
+If accepted for later consideration, keep it deferred. Confirm design, priority,
+and an explicit decision to promote it into delivery before integrating it.
+Resolve optional design questions when selecting that extension; do not let
+their discussion delay independent work on the main goal.
 
 Distinguish optional additions from safeguards needed to satisfy existing
 requirements or contracts. Show the dependency and evidence for a necessary
@@ -90,8 +95,16 @@ keeps justified extensions possible. Compare alternatives only where a material
 tradeoff exists. Explain consequential choices using existing constraints and
 evidence, including migration cost or reversibility where relevant.
 
-If uncertainty could invalidate the architecture or ordering, schedule a bounded
-investigation with a specific question, evidence to collect, and a decision it
+Control architecture without expanding delivery scope: identify the ownership,
+interfaces, data contracts, and dependency direction that let foreseeable
+extensions be added independently. Resolve choices that would lock those paths
+out now, and state how each deferred feature can attach later. Use the smallest
+boundary that preserves that path; implement shared machinery only when current
+behavior needs it. Future extensibility must not become a prerequisite to build
+all future capabilities before delivering the main goal.
+
+If uncertainty could invalidate the main goal's architecture or delivery order,
+schedule a bounded investigation with a specific question, evidence to collect, and a decision it
 will unlock. Distinguish its findings from delivered functionality; remove or
 integrate exploratory code deliberately. Avoid open-ended research and abstractions
 whose only justification is that they might be useful someday.
@@ -105,25 +118,34 @@ Apply delivery priorities only after establishing scope; uncertainty or potentia
 value does not promote an unconfirmed addition into urgent mainline work.
 
 - **Urgent:** needed for the immediate user outcome, a prerequisite that blocks
-  useful progress, or an investigation that could invalidate expensive later work.
+  that outcome, or an investigation needed to avoid invalidating its delivery.
   State why it must happen now and the smallest useful result it can deliver.
 - **Required later:** part of the agreed complete feature, but safely sequenced
   after earlier increments. Give it a concrete delivery step and acceptance check.
   Lower urgency does not remove it from completion criteria.
-- **Deferred:** optional work or a user-confirmed scope change whose current value
-  or design is too uncertain to justify building now. Record the uncertainty,
+- **Deferred:** all optional side features, even when useful or well understood,
+  plus user-confirmed scope changes postponed from current delivery. Record the
   consequence of deferral, evidence needed, and a concrete reconsideration trigger
   such as a resolved dependency, measured threshold, or confirmed user need.
 
 Priority and confidence are separate judgments. A low-confidence decision with a
-large downstream impact may require urgent investigation. An uncertain optional
-extension may be deferred. Do not defer essential correctness, permissions, data
-integrity, or their acceptance checks merely because they are difficult or unclear.
+large downstream impact on the main goal may require urgent investigation.
+Optional extensions remain deferred. Do not defer essential correctness,
+permissions, data integrity, or their acceptance checks merely because they are
+difficult or unclear.
 Reduce uncertainty with a bounded check, or obtain an explicit scope decision.
 Keep deferred work visible without implementing speculative support for it.
 
 ## Build an ordered sequence of increments
 
+- Mark the earliest usable delivery of the main goal and its acceptance check.
+  Every step before it must explain why the goal requires that work now. Remove
+  optional side features from that path, including optional refactors and shared
+  infrastructure justified only by later extensions. Preserve all requirements
+  and safeguards needed for the main goal; a thin mainline must still work.
+- After that delivery, introduce each selected extension through its own small,
+  verifiable increments. Validate its integration before adding the next feature.
+  Do not bundle the deferred feature list into one expansion step or joint gate.
 - Begin with the smallest coherent behavior that can be exercised through the
   relevant real path. Expand capability and integration step by step toward the
   full outcome. Name steps by the behavior or decision they deliver.

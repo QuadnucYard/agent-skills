@@ -30,6 +30,15 @@ not formatting or linting. Scale review depth to the actual risk.
 
 ## Audit the plan
 
+- **Earliest main-goal delivery:** Identify the first usable delivery of the user's
+  main goal and its acceptance evidence. Require every preceding step to justify
+  a necessary behavior, prerequisite, or safeguard. Flag optional side features,
+  refactors, and infrastructure that delay it; defer them even when useful or
+  well understood. Keep the mainline thin without dropping required correctness
+  or agreed behavior. Optional design questions must not block independent main
+  work. After the main goal works, require selected extensions to arrive one small
+  feature at a time with integration evidence before the next; reject a single
+  expansion step or joint gate that adds all deferred features at once.
 - **Unconfirmed scope additions:** Trace proposed behavior and constraints to raw
   requirements, prior user confirmations, or established contracts. Flag invented
   resource budgets, quotas, performance targets, configurable limits, and other
@@ -150,7 +159,11 @@ not formatting or linting. Scale review depth to the actual risk.
   low-impact changes. Reviewing a plan does not require running future tests.
 - **Future extensions:** Name foreseeable variation, the boundary accommodating
   it, and a concrete expansion trigger. Resolve decisions that constrain it now
-  without prebuilding speculative machinery. Consider the full outcome; avoid
+  through clear ownership, interfaces, data contracts, and dependency direction.
+  Check how deferred features can attach independently; flag architecture that
+  forces them into the mainline or requires speculative shared machinery before
+  the main goal works. Preserve extension paths with the smallest sufficient
+  boundaries. Consider the full outcome; avoid
   version labels that conceal unexplained scope cuts.
 
 ## Report findings
