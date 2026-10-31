@@ -34,6 +34,28 @@ avoid turning a small change into an architecture project.
   Reserve these paths through clear ownership and contracts. Do not prebuild
   speculative frameworks, configuration systems, or unused generalizations.
 
+## Keep proposed additions outside the mainline
+
+Trace proposed behavior and constraints to the user's raw requirements, prior
+confirmed decisions, or an established contract. If an addition goes beyond that
+basis, ask the user whether it belongs in scope before treating it as required.
+This includes agent-proposed resource budgets, quotas, performance targets, and
+configurable limits; their usefulness alone does not establish a requirement.
+
+Keep unconfirmed additions in a separate proposal list with their rationale,
+tradeoffs, and pending decision. Do not assign them urgent or required priority,
+mix them into the main delivery sequence or acceptance criteria, or make them
+prerequisites for independent requested work. For nontrivial additions, discuss
+the design alternatives and consequences before requesting a scope decision;
+approval of the general goal does not settle the added constraint or its value.
+If accepted, confirm design and priority before integrating the addition.
+
+Distinguish optional additions from safeguards needed to satisfy existing
+requirements or contracts. Show the dependency and evidence for a necessary
+safeguard; if it introduces a new product policy or an unresolved limit, ask the
+user to decide it and block only the work that depends on that decision. Keep
+foreseeable extensions visible without making them current delivery obligations.
+
 ## Grill and confirm every design detail
 
 Treat design as a dialogue with the user. For every design detail, ask the user
@@ -79,6 +101,8 @@ whose only justification is that they might be useful someday.
 Assign each capability a priority and explain it using user impact, actual timing
 constraints, dependencies, and the cost of being wrong. Confirm these assignments
 with the user rather than inventing deadlines or business urgency.
+Apply delivery priorities only after establishing scope; uncertainty or potential
+value does not promote an unconfirmed addition into urgent mainline work.
 
 - **Urgent:** needed for the immediate user outcome, a prerequisite that blocks
   useful progress, or an investigation that could invalidate expensive later work.

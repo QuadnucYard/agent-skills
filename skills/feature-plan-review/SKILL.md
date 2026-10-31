@@ -30,6 +30,19 @@ not formatting or linting. Scale review depth to the actual risk.
 
 ## Audit the plan
 
+- **Unconfirmed scope additions:** Trace proposed behavior and constraints to raw
+  requirements, prior user confirmations, or established contracts. Flag invented
+  resource budgets, quotas, performance targets, configurable limits, and other
+  additions presented as requirements without that basis. Ask the user whether
+  they belong in scope; nontrivial additions need explicit discussion of design
+  alternatives and consequences before their design and priority can be settled.
+  Require a separate pending proposal list until confirmed, outside the main
+  delivery sequence, acceptance criteria, and urgent or required priorities.
+  Potential value, uncertainty, or a reviewer recommendation does not establish
+  urgency or permission to expand scope. Check claimed safeguard dependencies
+  against evidence: preserve work necessary for existing requirements and
+  contracts, while seeking a user decision for any new policy or unresolved
+  limit. Block only dependent work; independent requested slices can remain ready.
 - **Feature boundaries:** Establish whether the plan describes one coherent
   feature or a bundle of features before assessing individual delivery steps.
   For a bundle, identify each feature's user outcome, responsibilities, owned
