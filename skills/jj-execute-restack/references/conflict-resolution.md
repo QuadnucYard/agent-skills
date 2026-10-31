@@ -9,6 +9,21 @@ Use the plan's advisory preflight evidence when available. Resolve actual rebuil
 conflicts using the correction-child workflow below; predictions do not establish
 behavior or ownership.
 
+## Conflicts in the original stack
+
+A conflict already present in the source may result from intentional feature
+removal, including a deletion conflicting with later edits or dependent code.
+Inspect the conflicting sides, relevant removal commits, requirements, and plan
+before treating it as a source defect or missing dependency. Do not restore an
+intentionally removed feature, its wiring, or its exclusive support merely to
+clear the conflict or make tests pass. Preserve the removal when reconstructing
+the affected commits.
+
+If the evidence does not establish whether the removal was intentional or what
+behavior should remain, ask the user before resolving the affected conflict.
+Leave that decision pending; neither a merge tool's candidate nor a passing build
+establishes intent.
+
 ## Tool and inputs
 
 Use Mergiraf for Rust content conflicts. jj merges and absorbs text, but its

@@ -60,6 +60,11 @@ delta separately, even when clean-to-target is empty.
 3. Compare meaningful migration, introduction, and removal states to the source
    timeline. For extraction, retained capabilities must work without the excluded
    ones; excluded behavior must not leak through retained shared support.
+   If the original stack had conflicts, check whether they resulted from
+   intentional feature removal. Reject resolutions that add intentionally
+   removed features back, even when the rebuilt stack is conflict-free and tests
+   pass. If removal intent remains unclear, ask the user and mark the affected
+   resolution unverified.
 4. Bind validation to exact revisions and parents. Reuse recorded checks when
    those identities and relevant conditions still match. For description-only
    rewrites, prove unchanged content and parent trees, map old evidence to the

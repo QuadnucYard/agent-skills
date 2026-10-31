@@ -42,6 +42,11 @@ report defects and proposed owners without repairing history.
 - Propose fixes with acceptance criteria and destination owners; do not implement
   or commit them. Distinguish authorized fixes from recommendations and unresolved
   behavior decisions. A history-only request preserves the source tree.
+- Conflicts already present in the original stack may result from intentional
+  feature removal. Inspect the conflicting sides, removal history, and stated
+  requirements before proposing a resolution. Do not plan to restore an
+  intentionally removed feature to clear a conflict. If intent remains unclear,
+  ask the user and leave the affected resolution undecided.
 - For selective feature extraction, follow [extraction scope](references/feature-extraction.md).
   Record retained and excluded capabilities, dependency closure, and the expected
   content delta. Extraction is a content change, not a waiver of verification.

@@ -31,6 +31,10 @@ during execution. Do not publish or replace the user's branch implicitly.
   planner if installed, otherwise report the evidence and request an updated
   plan. Unrelated operation-log advancement alone does not invalidate a plan.
   Do not change intended behavior or boundaries silently.
+- Check conflicts already present in the original stack for intentional feature
+  removal; a conflict alone is not evidence of a missing feature or dependency.
+  Do not add removed features back to resolve it. If the plan and source evidence
+  leave intent unclear, ask the user before resolving the affected conflict.
 - Read [scope and safety](references/scope-and-safety.md) before mutations.
   Preserve original commits and the retained prefix. Never bypass immutability,
   arrange history with `jj rebase`, or duplicate the whole stack or suffix.
