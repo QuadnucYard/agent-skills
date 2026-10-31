@@ -26,6 +26,10 @@ validated retained-feature target. Preserve the split-only contract here.
   refactors, then new behavior. Dependencies take precedence: a refactor needed
   by a fix comes first; a fix to newly introduced behavior belongs with that
   behavior. Keep implementation, integration, and tests together by purpose.
+- **Keep fixtures with their implementation.** Reject fixture-only commits unless
+  they add new fixtures to establish baseline behavior or contain a large test
+  change with several new test modules. Harness or test-execution changes are
+  not fixture-only. Otherwise, keep fixtures with the implementation they test.
 - **Separate broad mechanical refactors.** When a change touches many files and
   a large portion contain only small, repetitive refactors (for example, an API
   migration), extract that refactor into a separate semantic commit so reviewers

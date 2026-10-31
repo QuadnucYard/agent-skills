@@ -71,7 +71,10 @@ For each clean commit, from oldest to newest:
    add it at its final location in the introducing commit instead. Keep an
    intermediate location only when a required migration or compatibility stage
    needs it. Resolve these issues before accepting the commit, even when final
-   trees match.
+   trees match. Reject fixture-only commits unless they add new fixtures to
+   establish baseline behavior or contain a large test change with several new
+   test modules. Harness or test-execution changes are not fixture-only.
+   Otherwise, keep fixtures with the implementation they test.
 2. Confirm every referenced symbol,
    schema, generated file, and test fixture is provided by the parent or the
    commit itself.

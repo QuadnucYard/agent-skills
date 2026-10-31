@@ -63,6 +63,11 @@ meaningful introduction and removal states even when both vanish at the tip.
 
 ## Boundaries and order
 
+Reject fixture-only commits unless they add new fixtures to establish baseline
+behavior or contain a large test change with several new test modules. Harness
+or test-execution changes are not fixture-only. Otherwise, keep fixtures with
+the implementation they test.
+
 Respect semantic dependencies first. Among independent units, put the most
 confident, well-understood changes first, using demonstrated correctness and
 adoption rather than size or clean patch application.

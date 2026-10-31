@@ -87,6 +87,10 @@ they touch the same files. Keep necessary wiring and tests with their behavior.
 - Separate unrelated fixes and additions; keep inseparable small cleanup with
   its implementation. Each boundary must work without later repairs and preserve
   necessary compatibility or migration stages.
+- Reject fixture-only commits unless they add new fixtures to establish baseline
+  behavior or contain a large test change with several new test modules. Harness
+  or test-execution changes are not fixture-only. Otherwise, keep fixtures with
+  the implementation they test.
 - Give Feature Follow-ups distinct additions with acceptance criteria,
   prerequisites, and required extension seams. Dependencies take precedence
   over placing additions later. Avoid temporary structures and add-then-move churn.

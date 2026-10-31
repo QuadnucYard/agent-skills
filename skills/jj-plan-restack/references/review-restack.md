@@ -80,6 +80,10 @@ delta separately, even when clean-to-target is empty.
 
 Inspect full parent diffs and trace additions across the rebuilt sequence:
 
+- Reject fixture-only commits unless they add new fixtures to establish baseline
+  behavior or contain a large test change with several new test modules. Harness
+  or test-execution changes are not fixture-only. Otherwise, propose combining
+  fixtures with the implementation they test.
 - Flag blank-line-only changes, including a single added or removed blank
   line, as restack artifacts. Include necessary blank lines in the relevant
   implementation change and remove unrelated edits.
