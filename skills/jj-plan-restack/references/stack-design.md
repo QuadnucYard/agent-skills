@@ -87,8 +87,13 @@ adoption rather than size or clean patch application.
 - Move independent structural preparation ahead of features that would otherwise
   be rewritten by it. If preparation depends on the feature, extract the
   independent part or plan their final intent together.
-- Introduce additions directly in their final module with wiring and callers;
-  preserve an intermediate location only for a real compatibility requirement.
+- Add code at its final location with wiring and callers. If code was added in
+  one place and moved later, including within the same file, place it at the
+  final location in the introducing commit. Keep an intermediate location only
+  when a required migration or compatibility stage needs it.
+- Treat blank-line-only changes, including a single added or removed blank line,
+  as restack artifacts. Include necessary blank lines in the relevant
+  implementation change and omit unrelated edits.
 - Preserve meaningful migration, compatibility, and removal stages. Net-zero
   content does not prove that intermediate behavior is disposable.
 - Retain the longest initial prefix whose content, descriptions, and order fit

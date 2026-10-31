@@ -76,6 +76,21 @@ delta separately, even when clean-to-target is empty.
    target verification and complete exclusion accounting. A stripped feature
    cannot remain in a reused prefix without an explicit valid removal milestone.
 
+### Check for restack artifacts
+
+Inspect full parent diffs and trace additions across the rebuilt sequence:
+
+- Flag blank-line-only changes, including a single added or removed blank
+  line, as restack artifacts. Include necessary blank lines in the relevant
+  implementation change and remove unrelated edits.
+- Flag code added in one place and moved in a later commit, including within
+  the same file. This leaves the restack unclean: add the code at its final
+  location in the introducing commit. Keep an intermediate location only when
+  a required migration or compatibility stage needs it.
+
+Cite the affected hunks and commits. Matching final trees and passing behavior
+checks do not make these commit boundaries clean.
+
 ## Deliver findings
 
 Give each defect its evidence, behavioral or reviewability impact, affected

@@ -64,7 +64,14 @@ For each clean commit, from oldest to newest:
 1. Manually read the complete diff against the commit's actual clean parent;
    do not rely on `--stat`, summaries, tests, or tree equivalence as a proxy.
    Confirm that every hunk belongs to the stated purpose and that no expected
-   hunk is missing.
+   hunk is missing. Flag blank-line-only changes, including a single added or
+   removed blank line, as restack artifacts. Include necessary blank lines in
+   the relevant implementation change and remove unrelated edits. Check for
+   code added in one place and moved later, including within the same file;
+   add it at its final location in the introducing commit instead. Keep an
+   intermediate location only when a required migration or compatibility stage
+   needs it. Resolve these issues before accepting the commit, even when final
+   trees match.
 2. Confirm every referenced symbol,
    schema, generated file, and test fixture is provided by the parent or the
    commit itself.

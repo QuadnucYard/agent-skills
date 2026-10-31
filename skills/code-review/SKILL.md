@@ -97,6 +97,13 @@ For consecutive changes under review, inspect each parent diff and the base-to-t
 result. Trace additions through later changes; a correct tip can hide broken
 boundaries or wasted work. Flag:
 
+- Blank-line-only changes, including a single added or removed blank line.
+  Treat these as restack artifacts: include necessary blank lines in the
+  relevant implementation change and remove unrelated edits.
+- Code added in one place and moved in a later commit, including within the
+  same file. This leaves the restack unclean: add the code at its final location
+  in the introducing commit. Keep an intermediate location only when a required
+  migration or compatibility stage needs it.
 - Features largely rewritten, design reversals, or repeated moves and renames
   without independent value. Introduce the settled design at its original boundary.
 - Fixes to defects introduced within the slice. Put corrections and regression
