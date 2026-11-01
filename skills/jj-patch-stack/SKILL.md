@@ -1,12 +1,14 @@
 ---
 license: MIT
 name: jj-patch-stack
-description: Create additive Jujutsu patch changes for existing revisions while preserving original history, then provide a guide to squash approved patches into their targets. Use when fixes must be layered from oldest to newest and applying them requires separate approval.
+description: Create additive Jujutsu patches for existing revisions, including redistributing fixes collected at the top of a stack, while preserving original history. Provide a guide to squash approved patches into their targets when applying them requires separate approval.
 ---
 
 # JJ Patch Stack
 
 Patch existing revisions by adding new `jj` changes. Keep original changes untouched during preparation, and finish with concrete instructions for applying the patches after approval. Preparing or approving patch content does not authorize applying it; execute the squash guide only when the user explicitly authorizes that history rewrite.
+
+One goal is to prepare the absorption or dissolution of changes collected at the top of a stack into the earlier revisions that own them, without rewriting history during preparation. Reconstruct those changes as additive patches; keep the original top changes intact as source evidence. Folding patches into existing revisions belongs to the separately authorized application phase. Removing source changes is outside that phase's squash-only permission and requires its own explicitly authorized scope.
 
 ## Non-Negotiable Rules
 
@@ -15,7 +17,7 @@ These rules govern patch preparation. "Apply After Approval" permits only the de
 - Use `jj` only. Do not run any `git` command.
 - Do not run `jj squash`, `jj rebase`, `jj abandon`, `jj restore`, or `jj undo`.
 - Never directly edit an already-built change, including your committed patches. Do not use `jj edit` to check out and modify an existing revision. Make corrections in a new additive patch on top of the affected patch; never squash it into an existing change. The only revision you may edit directly is the new patch change under construction while it is `@`.
-- Original targets and committed patches keep the same change ID and commit ID throughout. Corrections remain separate additive patches.
+- Original targets, source top changes, and committed patches keep the same change ID and commit ID throughout. Corrections remain separate additive patches.
 - Process target revisions from oldest to newest.
 - Each patch after the first must have both the current target and the previous patch as parents. This carries the complete patch stack forward without changing either parent.
 - Resolve inherited merge conflicts only in the newly created patch change.
@@ -33,10 +35,23 @@ A patch change must be complete and well formatted before you commit it and move
 - Description: follow the repository's commit-message convention — check recent subjects with `jj log` to detect it (for example Conventional Commits). Use a concise, imperative subject line, and a body only when the reasoning is not obvious from the diff. Never leave the description empty or placeholder.
 - A committed patch is an existing change: never edit it in place. If a check problem appears after committing, create a new additive patch on top, fix it there, verify, and commit it separately.
 
+## Examples and Strategy Selection
+
+Choose the strategy by ownership and dependencies, rather than assuming every fix is a direct copy of a diff. These examples illustrate different cases; they are not an exhaustive list of supported fixes.
+
+- **A new bug fix:** an earlier revision introduces an incorrect boundary check, but no fix exists yet. Implement the correction and its regression test in a new child of that target, then carry it forward through the later targets.
+- **A fix already collected at the top:** a top change repairs a parser introduced earlier. Reconstruct the parser fix and its test in a patch on the owning revision. Preserve the top change; do not invoke `jj absorb` or move its contents out of it during preparation.
+- **Several independent fixes in one top change:** the top change repairs both parsing and caching introduced by different revisions. Separate the fixes by behavior and ownership, even when they touch the same file, then build patches from the older target to the newer one.
+- **A fix with a prerequisite:** a top fix calls a helper introduced only in a later revision. Either express the fix using the earlier revision's existing facilities and adapt it later, or place it at the earliest target where the required behavior and helper coexist. Do not copy an unrelated later feature into an earlier target merely to make the patch compile.
+- **A fix that changes shape across the stack:** an early correction touches an API that a later target renames or replaces. Implement the correction against the early API, then resolve the inherited conflict and preserve the same behavior in the new patch on the later target. An automatically merged result still needs behavior checks.
+- **A partially redundant or mixed top change:** some top edits are already satisfied by earlier patches, while others introduce an independent feature. Do not duplicate the satisfied edits or silently discard the feature. Record which edits are covered and keep the remaining feature as an explicit residual change or separate follow-up scope.
+
+For existing top changes, record the source commit IDs, map each relevant behavior to its target, and account for any residual work. Build from the intended targets, using the source changes as references rather than adding them as parents and inheriting all their edits. For pure redistribution, compare the completed patch tip's tree with the original source tip's tree; they should match. If additional fixes or excluded work intentionally change the result, explain those differences and verify the intended behavior instead of claiming tree equality. Include any retained source changes and residual work in the application guide so that later integration does not apply the same fix twice.
+
 ## Workflow
 
 1. Run `jj status` and inspect the relevant graph with `jj log`. Preserve unrelated work. If the working copy contains changes whose ownership is unclear, stop and ask before proceeding.
-2. Identify every target revision and order them by ancestry, oldest first. If the order is ambiguous, do not guess.
+2. Identify every target revision and order them by ancestry, oldest first. If the order is ambiguous, do not guess. When fixes already exist in top changes, map their ownership, dependencies, and residual work as described in "Examples and Strategy Selection" before constructing patches.
 3. For the oldest target, call the immutable revision `target-1` and create a child:
 
    ```text
