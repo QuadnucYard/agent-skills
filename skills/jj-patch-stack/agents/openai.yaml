@@ -1,4 +1,4 @@
 interface:
   display_name: "JJ Patch Stack"
-  short_description: "Add fixes without rewriting existing jj history"
-  default_prompt: "Use $jj-patch-stack to patch these revisions from oldest to newest without modifying existing history, then provide concrete squash instructions for applying the patches after explicit approval."
+  short_description: "Map fixes and insertions without rewriting jj history"
+  default_prompt: "Use $jj-patch-stack to represent the intended fixes and insertions in an additive graph without modifying existing history. Verify a mapping for every change in the intended final stack without rebuilding it, and provide squash instructions only for patches that fold into existing targets after explicit approval."
