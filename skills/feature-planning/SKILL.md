@@ -213,7 +213,27 @@ checks from checks already performed. A confident design is not a verified resul
 
 ## Deliver and evaluate the plan
 
-Present the intended outcome, confirmed design decisions, ordered steps with
+Begin every delivered plan, including provisional plans, with the required feature
+and its decomposition so the user can verify that the planned feature matches
+their intent. Unroll it step by step:
+
+1. **Raw request:** preserve the user's original request verbatim before
+   interpreting it. Keep assumptions and agent proposals separate.
+2. **Requirement decomposition:** derive the intended outcome, required
+   capabilities, and observable behaviors from that request. Show how each level
+   follows from the preceding one, retaining links to its source requirement or
+   confirmed decision rather than jumping straight to implementation tasks.
+3. **Discussion revisions:** retain an ordered record of changes and
+   clarifications, including the prior interpretation, the revised requirement,
+   its source and rationale, and confirmation status. Preserve superseded decisions
+   as history while making the current requirement clear; never silently replace
+   the raw request or treat an unconfirmed proposal as agreed scope.
+
+Use this opening section as the basis for the rest of the plan. Trace current
+requirements to delivery steps and acceptance checks so omissions and unintended
+additions can be identified, and update those links when discussion changes scope.
+
+Then present the intended outcome, confirmed design decisions, ordered steps with
 their priorities, tests, and confidence, and the explicit extension boundaries.
 List deferred capabilities with reasons and reconsideration triggers. Keep pending
 questions visible and dependent steps provisional. Do not impose a fixed number
