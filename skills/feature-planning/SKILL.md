@@ -47,8 +47,8 @@ configurable limits; their usefulness alone does not establish a requirement.
 Keep unconfirmed additions in a separate proposal list with their rationale,
 tradeoffs, and pending decision. Do not assign them urgent or required priority,
 mix them into the main delivery sequence or acceptance criteria, or make them
-prerequisites for independent requested work. For nontrivial additions, discuss
-the design alternatives and consequences before requesting a scope decision;
+prerequisites for independent requested work. When considering a nontrivial
+addition for delivery, discuss design alternatives and consequences before requesting a scope decision;
 approval of the general goal does not settle the added constraint or its value.
 If accepted for later consideration, keep it deferred. Confirm design, priority,
 and an explicit decision to promote it into delivery before integrating it.
@@ -61,14 +61,27 @@ safeguard; if it introduces a new product policy or an unresolved limit, ask the
 user to decide it and block only the work that depends on that decision. Keep
 foreseeable extensions visible without making them current delivery obligations.
 
-## Grill and confirm every design detail
+## Prioritize design questions and confirm decisions
 
-Treat design as a dialogue with the user. For every design detail, ask the user
-to explicitly confirm the decision before treating it as settled. Existing explicit
+Treat design as a dialogue with the user. Confirm each design decision needed
+for selected delivery before treating it as settled; deferred possibilities do
+not need detailed design now. Existing explicit
 answers count as confirmation; do not repeatedly ask about unchanged decisions.
+Classify each question before asking it and show that priority to the user:
+
+- **Required now:** its answer changes the main goal's correctness, feasibility,
+  or a choice that would be costly to reverse now. Explain the affected work and
+  why the decision cannot wait; block only that work.
+- **Required later:** it belongs to agreed scope but does not affect the current
+  increment. State when it must be resolved and keep earlier independent work moving.
+- **Deferred possibility:** it concerns an optional or immature extension. Record
+  the possibility and a reconsideration trigger; defer detailed design questions
+  until selecting it for delivery. If a decision is needed now only to preserve
+  an extension path, ask about that minimal boundary, not the whole future feature.
 
 - Keep a decision record with the question, concrete proposal or alternatives,
-  rationale, and status: confirmed, pending, or conflicting. Cover behavior and
+  rationale, priority and its reason, affected work, resolution trigger, and status:
+  confirmed, pending, or conflicting. Cover behavior and
   exclusions, interfaces, data semantics, permissions, failures, compatibility,
   migration, rollout, extension boundaries, priorities, and acceptance criteria
   wherever they apply. Include the decision to defer or omit a concern.
@@ -136,6 +149,19 @@ difficult or unclear.
 Reduce uncertainty with a bounded check, or obtain an explicit scope decision.
 Keep deferred work visible without implementing speculative support for it.
 
+Readiness is a separate gate from priority and scope approval. Never schedule an
+immature or unsound feature for implementation, even as an early prerequisite
+or an automatic follow-on after the main goal. Interest or user confirmation
+alone does not establish feasibility or a coherent design. For an optional idea,
+reserve only a brief possibility, known uncertainty, reconsideration trigger,
+and the smallest existing boundary that keeps it possible; no speculative APIs,
+configuration, abstractions, scaffolding, or implementation tasks are needed.
+Promote it only after evidence supports its behavior and approach, material
+contradictions are resolved, and the user selects its design and delivery priority.
+If an immature capability is essential to agreed scope, retain the obligation
+but schedule only a bounded investigation or redesign before dependent delivery.
+An unsound approach must be replaced or rejected, not implemented provisionally.
+
 ## Build an ordered sequence of increments
 
 - Mark the earliest usable delivery of the main goal and its acceptance check.
@@ -143,8 +169,8 @@ Keep deferred work visible without implementing speculative support for it.
   optional side features from that path, including optional refactors and shared
   infrastructure justified only by later extensions. Preserve all requirements
   and safeguards needed for the main goal; a thin mainline must still work.
-- After that delivery, introduce each selected extension through its own small,
-  verifiable increments. Validate its integration before adding the next feature.
+- After that delivery, introduce each selected, implementation-ready extension
+  through its own small, verifiable increments. Validate its integration before adding the next feature.
   Do not bundle the deferred feature list into one expansion step or joint gate.
 - Begin with the smallest coherent behavior that can be exercised through the
   relevant real path. Expand capability and integration step by step toward the

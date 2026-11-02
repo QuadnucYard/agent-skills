@@ -30,21 +30,39 @@ not formatting or linting. Scale review depth to the actual risk.
 
 ## Audit the plan
 
+- **Design-question priority:** Require each design question to distinguish a
+  decision needed now, a decision needed before a later agreed increment, and a
+  deferred possibility. Check its consequence, affected work, and resolution
+  trigger. Flag optional design dialogue that delays independent main-goal work;
+  ask only about a minimal extension boundary when that is all that matters now.
+- **Feature maturity:** Assess readiness separately from scope approval and
+  delivery priority. Reject implementation steps for immature or unsound features,
+  including speculative prerequisites and automatic post-main-goal expansions.
+  For optional ideas, require only a brief possibility, uncertainty, reconsideration
+  trigger, and minimal extension boundary; remove premature detailed designs,
+  scaffolding, and implementation commitments. Promotion requires evidence of
+  feasibility and coherent behavior, resolved material contradictions, and a
+  confirmed design and delivery priority. For essential but immature capabilities,
+  retain agreed scope and require bounded investigation or redesign first;
+  block dependent implementation, not independent ready slices. An unsound approach
+  needs replacement or rejection, not provisional implementation.
 - **Earliest main-goal delivery:** Identify the first usable delivery of the user's
   main goal and its acceptance evidence. Require every preceding step to justify
   a necessary behavior, prerequisite, or safeguard. Flag optional side features,
   refactors, and infrastructure that delay it; defer them even when useful or
   well understood. Keep the mainline thin without dropping required correctness
   or agreed behavior. Optional design questions must not block independent main
-  work. After the main goal works, require selected extensions to arrive one small
+  work. After the main goal works, require selected, ready extensions to arrive one small
   feature at a time with integration evidence before the next; reject a single
   expansion step or joint gate that adds all deferred features at once.
 - **Unconfirmed scope additions:** Trace proposed behavior and constraints to raw
   requirements, prior user confirmations, or established contracts. Flag invented
   resource budgets, quotas, performance targets, configurable limits, and other
   additions presented as requirements without that basis. Ask the user whether
-  they belong in scope; nontrivial additions need explicit discussion of design
-  alternatives and consequences before their design and priority can be settled.
+  they belong in scope when considering promotion into delivery; nontrivial
+  additions need explicit discussion of design alternatives and consequences
+  before their design and priority can be settled. Do not demand detailed design
+  for possibilities that remain deferred.
   Require a separate pending proposal list until confirmed, outside the main
   delivery sequence, acceptance criteria, and urgent or required priorities.
   Potential value, uncertainty, or a reviewer recommendation does not establish

@@ -92,6 +92,14 @@ change a central interpretation, its consequence, and the evidence/decision
 needed. Allow independent preparation to continue. Reserve extension paths by
 recording follow-up questions, needed evidence, and reconsideration triggers;
 do not defer the current comparison's essential controls to a later study.
+When asking about a design choice, state whether it is required now for validity,
+required before a later agreed phase, or a deferred follow-up, with the affected
+work and resolution trigger. Do not schedule immature or unsound optional features,
+instrumentation, or follow-up studies as early prerequisites. Reserve them with
+brief questions and reconsideration triggers, using existing boundaries where
+possible. Essential uncertainty calls for a bounded pilot or redesign before
+dependent execution; a high priority or approved goal does not make an unsound
+approach ready to run.
 
 Methodological context: [NIST design selection](https://www.itl.nist.gov/div898/handbook/pri/section3/pri33.htm),
 [blocking](https://www.itl.nist.gov/div898/handbook/pri/section3/pri332.htm),

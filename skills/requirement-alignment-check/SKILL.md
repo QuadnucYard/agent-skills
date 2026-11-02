@@ -115,6 +115,13 @@ Check for:
   outcome. For foreseeable extensions, check decisions that would constrain them
   now and state what boundary remains open; do not turn speculative possibilities
   into mandatory features or prebuilt infrastructure.
+  Distinguish a future possibility from a commitment to deliver it: scope approval
+  or a priority label does not establish that a design is mature or sound. Flag
+  refinements that turn immature ideas into early implementation obligations;
+  preserve the possibility with a brief note and minimal boundary instead. Keep
+  essential agreed requirements visible when their approach needs investigation
+  or redesign. When asking about a design decision, state whether it is required
+  now, required before later agreed work, or deferred, and what depends on it.
 
 Challenge apparent equivalence with concrete witnesses: could a result satisfy
 the refinement while violating a source obligation? Could the refinement reject

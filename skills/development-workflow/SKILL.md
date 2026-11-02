@@ -65,6 +65,15 @@ Keep proposed decisions separate from confirmations, and planned checks separate
 from executed evidence. Do not replace original requirements with an agent's
 restatement or a review verdict. When inputs change, invalidate only affected
 decisions, plans, and verification; retain evidence that still applies.
+Carry each design question's priority (required now, required later, or deferred),
+affected work, and resolution trigger across handoffs. Preserve feature readiness
+separately from approval and priority: an immature or unsound idea must not become
+an implementation task through planning, review, or execution handoff. Keep optional
+possibilities as brief notes with uncertainty, reconsideration triggers, and minimal
+extension boundaries. Before promotion, require feasibility evidence, a coherent
+design without material contradictions, and confirmed design and delivery priority.
+For essential immature work, carry a bounded investigation or redesign gate while
+retaining the agreed obligation; continue independent ready increments.
 
 Local plan files are deliberately untracked. Do not investigate their tracking
 status or reread them merely to confirm a write. Read a plan when its content is

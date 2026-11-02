@@ -15,6 +15,11 @@ to implement recommended fixes outside the user's authorized scope.
    criteria, authorized behavior changes, recommendations, and unresolved
    decisions. Give each proposed fix a stable label, verification, and clean
    destination. The executor will bind labels to actual verified top commits.
+   Label design questions by priority and affected work, with resolution triggers.
+   Keep immature optional features outside executable fixes and target commits;
+   record only minimal extension possibilities. Essential immature designs require
+   an investigation or redesign gate, not speculative implementation. Preserve
+   source content unless a correction or exclusion is authorized.
 3. **History accounting.** Original inventory, semantic timeline, and complete
    redistribution map from [stack design](stack-design.md). Account for every
    source change, meaningful hunk, and state, including removals absent at the tip.

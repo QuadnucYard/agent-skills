@@ -1,4 +1,4 @@
 interface:
   display_name: "Feature Planning"
   short_description: "Confirm designs and prioritize verifiable feature steps"
-  default_prompt: "Use $feature-planning to question and confirm every design detail, prioritize urgent and deferred capabilities, and plan actionable increments with effective tests and evidence-based confidence."
+  default_prompt: "Use $feature-planning to label design-question priorities, confirm decisions at the needed stage, gate implementation on feature maturity, reserve immature extensions with minimal effort, and plan actionable increments with effective tests and evidence-based confidence."

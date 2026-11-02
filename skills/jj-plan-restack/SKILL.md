@@ -53,6 +53,13 @@ report defects and proposed owners without repairing history.
 - Cover the full design and reserve justified future extension boundaries without
   speculative implementations. Preserve meaningful migrations and removals,
   including capabilities absent from the final tree.
+- Label design questions as required now, required before later dependent work,
+  or deferred, with consequences and resolution triggers. Do not introduce
+  immature or unsound feature implementations as fixes or early prerequisites;
+  reserve optional possibilities with a brief note and minimal existing boundary.
+  Essential uncertainty needs bounded investigation or redesign before dependent
+  execution. If unsound behavior already exists in the source, report it and seek
+  an authorized correction; a history-only restack must still preserve the tree.
 
 ## Deliver the plan
 
