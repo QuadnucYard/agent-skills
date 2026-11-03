@@ -3,7 +3,8 @@ license: MIT
 name: feature-planning
 description: >
   Design software features and turn requirements into actionable, incremental
-  implementation plans with user-confirmed design details, feature priorities,
+  implementation plans through plain-language discussion of feature breakdown,
+  design choices, and risks, with user-confirmed decisions, feature priorities,
   evidence-based confidence, and effective tests.
   Use when planning a new feature, extending existing behavior, or breaking
   a feature proposal into verifiable delivery steps.
@@ -35,6 +36,39 @@ and risk; avoid turning a small change into an architecture project.
   boundary accommodates it, and what change would justify extending that boundary.
   Reserve these paths through clear ownership and contracts. Do not prebuild
   speculative frameworks, configuration systems, or unused generalizations.
+
+## Build a shared understanding through discussion
+
+Discuss the feature with the user before finalizing its design or delivery plan.
+Use simple, familiar words suited to the user's knowledge; explain necessary
+technical terms when first used. Start with what the user will be able to do,
+using concrete inputs, actions, results, and failure examples before introducing
+implementation details.
+
+- Break the requested feature into understandable capabilities together with
+  the user. Explain what each part does, why it is needed, and how the parts
+  connect to deliver the complete outcome. Invite corrections to the breakdown
+  before using it as the basis for design choices or implementation steps.
+- Identify the design points within those parts: choices that change behavior,
+  responsibilities, how parts interact, or future extensions. Discuss the
+  consequential choices as they arise instead of presenting a finished design
+  for blanket approval. Reuse decisions the user has already made.
+- For each consequential choice, describe the proposed behavior with an example,
+  explain realistic alternatives and their tradeoffs, and give a recommendation
+  with reasons. Make clear what the user is deciding and what it changes.
+- Explain material risks in practical terms: what could go wrong, who or what
+  would be affected, what evidence is missing, and how the design or a planned
+  check addresses it. Surface remaining uncertainty and costly-to-reverse choices
+  before asking the user to decide; a risk label alone is not an explanation.
+- At meaningful decision points, recap the resulting design in plain language,
+  including how the parts work together, the main risks, and what remains open.
+  Ask focused questions that let the user correct the design and resolve pending
+  choices. Do not infer understanding or agreement from silence or a generic
+  approval; do not repeatedly reconfirm unchanged answers.
+
+Carry these explanations and the user's corrections into the plan. A detailed
+plan file does not replace the conversation needed for the user to understand
+the proposed design and its consequences.
 
 ## Keep proposed additions outside the mainline
 
@@ -259,8 +293,11 @@ Use this opening section as the basis for the rest of the plan. Trace current
 requirements to delivery steps and acceptance checks so omissions and unintended
 additions can be identified, and update those links when discussion changes scope.
 
-Then present the intended outcome, confirmed design decisions, ordered steps with
-their priorities, tests, and confidence, and the explicit extension boundaries.
+Then explain in plain language how the confirmed design works and how its parts
+fit together, including the material risks, planned safeguards, and remaining
+uncertainty discussed with the user. Present the intended outcome, confirmed
+design decisions, ordered steps with their priorities, tests, and confidence,
+and the explicit extension boundaries.
 List deferred capabilities with reasons and reconsideration triggers. Keep pending
 questions visible and dependent steps provisional. Do not impose a fixed number
 of stages or leave the final step as an unexplained instruction to finish
