@@ -489,6 +489,7 @@ Use this catalog as a set of tests, not as a quota. Apply all universal sections
 
 - Identify system boundary, actors, external dependencies, and trust boundaries.
 - Check that requirements drive architecture rather than preferred technology.
+- When assessing complexity or feasibility, distinguish complexity inherent in the problem or required feature from integration difficulty caused by the existing architecture. Cite requirements and implementation evidence, allow mixed causes, and mark unknowns. Assess avoidable complexity introduced by the proposal separately; architectural friction alone does not establish that scope must shrink or a broad refactor is necessary.
 - Check separation of concerns and ownership boundaries.
 - Check that static facts, runtime behavior, policy, transport, persistence, and presentation live in appropriate layers.
 - Check public interfaces, inputs, outputs, invariants, preconditions, postconditions, and error semantics.

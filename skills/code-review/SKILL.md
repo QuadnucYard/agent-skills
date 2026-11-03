@@ -39,6 +39,12 @@ Trace success, failure, and boundary paths across components.
 - **Adoption:** Verify that callers use the design coherently and obsolete paths
   disappear or have an explicit compatibility purpose. Flag unused abstractions,
   duplicated sources of truth, and incomplete migrations.
+- **Complexity source:** Distinguish complexity inherent in required behavior
+  from integration difficulty caused by the existing architecture. Cite the
+  contracts and code responsible; both may contribute, and missing evidence
+  leaves attribution open. Identify avoidable complexity introduced by this
+  change separately. Compare bounded preparation with direct integration before
+  recommending structural changes; preserve required behavior.
 - **Simplification and quality:** Challenge redundant branches, duplicated logic,
   unnecessary state, indirection, configuration, and generic machinery. Assess
   responsibilities, dependency direction, API clarity, and testability. Propose

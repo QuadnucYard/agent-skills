@@ -137,6 +137,23 @@ Classify each question before asking it and show that priority to the user:
 
 ## Choose a proportionate design
 
+When assessing complexity or explaining why a feature is hard to deliver,
+distinguish its sources explicitly:
+
+- **Inherent problem or feature complexity:** required rules, states,
+  interactions, and safeguards that remain even with a well-fitting architecture.
+- **Existing architecture friction:** current coupling, misplaced ownership,
+  incompatible interfaces, or missing extension seams that make integration hard.
+
+Both can contribute. Cite the requirements and implementation evidence for each;
+mark uncertain attribution and name the investigation needed. Separately identify
+avoidable complexity introduced by the proposal. Explain these sources to the
+user and keep their effort and risk visible in the plan. For architectural
+friction, compare a bounded structural change with direct integration, including
+migration cost and reversibility. Difficulty does not make broad refactoring
+necessary or authorize it, and architectural friction does not justify cutting
+required behavior or describing the feature itself as inherently complex.
+
 Prefer the simplest design that satisfies the complete current requirements and
 keeps justified extensions possible. Compare alternatives only where a material
 tradeoff exists. Explain consequential choices using existing constraints and

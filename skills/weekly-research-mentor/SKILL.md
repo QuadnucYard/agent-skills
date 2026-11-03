@@ -23,6 +23,7 @@ Read the update as a mentor listening in real time. Check:
 - claims and transitions: missing premise, unexplained causal step, ambiguous referent, logical jump, or conclusion stronger than the evidence;
 - methods and evidence: what was done, what was observed, what is inferred, baselines/comparators, assumptions, uncertainty, and limitations;
 - progress reporting: the goal, completed work, deviation from plan, current blocker, and the concrete next step;
+- complexity and implementation difficulty, when claimed: distinguish what is inherent in the problem or required feature from what the existing architecture makes hard to integrate; ask for supporting requirements and code evidence, allow mixed causes, and keep uncertain attribution explicit rather than accepting it as grounds for scope cuts or broad refactoring;
 - narrative structure: identify the main line from research question through current evidence to the conclusion or next decision, and distinguish it from supporting details, side investigations, implementation detours, and unrelated observations;
 - audience fit: whether someone with common background can reconstruct the argument without knowing the project history;
 - likely mentor questions, alternative interpretations, failure cases, and decisions the group needs to make.

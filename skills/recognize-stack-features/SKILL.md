@@ -127,6 +127,13 @@ production behavior they preserve or repair. Keep genuinely independent support,
 verification, documentation, and noise visible without forcing every source hunk
 to be a new feature. Uncertainty is a reported gap, not evidence of independence.
 
+When complexity or coupling affects inferred boundaries, distinguish interactions
+required by the feature's contract from dependencies imposed by the existing
+architecture. Cite requirements and producer/consumer paths, allowing mixed or
+uncertain causes. Do not treat architectural entanglement as proof that outcomes
+are one feature. Record the actual dependency and any bounded separation proposal
+without assuming that the architecture can be changed within this task.
+
 ## Hand off a reusable feature map
 
 Use stable feature labels independent of source commit numbers. Scale the detail

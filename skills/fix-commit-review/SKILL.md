@@ -39,6 +39,11 @@ conclusions provisional. Never invent history, measurements, or test results.
   defect through observable behavior; mocks must not hide it.
 - **Worthwhile cost:** Weigh impact, frequency, and urgency against complexity,
   maintenance, compatibility, operational risk, runtime, and memory costs.
+  Separate complexity inherent in the required repair from difficulty imposed by
+  the existing architecture, and from avoidable machinery added by the fix.
+  Cite contract and implementation evidence; allow mixed causes and mark unknowns.
+  Compare bounded structural preparation with a direct repair before attributing
+  the whole cost to the problem or recommending broad refactoring.
   Challenge expensive machinery or performance loss for minor, non-urgent
   problems. Compare smaller repairs, workarounds, or retaining an accepted
   limitation. Small defects can still merit repair. Support material performance

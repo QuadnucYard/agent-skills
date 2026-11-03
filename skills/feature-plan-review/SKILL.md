@@ -114,6 +114,13 @@ not formatting or linting. Scale review depth to the actual risk.
   unused abstractions, duplicate sources of truth, old paths left active, and
   incomplete migrations. Resolve consequential ambiguity before dependent work.
 - **Complexity:** Compare with the simplest design satisfying the requirements.
+  Require an explicit distinction between complexity inherent in required rules,
+  states, and interactions and integration difficulty caused by the existing
+  architecture. Both may contribute; check the requirement and code evidence,
+  or mark attribution unverified. Assess avoidable complexity added by the
+  proposal separately. Check that estimates and proposed structural preparation
+  reflect these sources rather than treating all difficulty as feature complexity
+  or using it to justify scope cuts or an unsupported broad refactor.
   Challenge unnecessary layers, services, dependencies, configuration, frameworks,
   duplicate state, and temporary bridges. Identify the concrete burden and offer
   a simpler alternative preserving behavior and justified extension seams.

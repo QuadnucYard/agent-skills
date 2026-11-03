@@ -58,6 +58,10 @@ artifact. Carry forward only what downstream work needs:
   revisions, dependencies, and the next concrete action.
 - Requirement-to-increment coverage, findings and their owners, checks actually
   run against identified content, and remaining completion gaps.
+- Complexity attribution: what is inherent in required behavior, what difficulty
+  comes from the existing architecture, and what avoidable complexity the proposal
+  adds. Carry evidence, mixed causes or unknowns, and consequences for effort,
+  risk, and any bounded structural preparation across planning and review.
 - For history operations, the selected skill's exact source snapshot, protected
   refs, revision mapping, and validation checkpoint.
 
@@ -105,6 +109,11 @@ and name justified extension boundaries and their reconsideration triggers
 without building speculative machinery. Name increments by outcomes rather than
 release shortcuts such as `V1`. An accepted early increment does not waive the
 remaining requirements.
+
+When implementation proves harder than expected, distinguish inherent feature
+complexity from friction in the existing architecture using actual contracts and
+code. Revise affected estimates or propose bounded preparation on that evidence;
+do not silently cut scope or expand the task into a broad refactor.
 
 For a bug fix, establish the violated contract and root cause before choosing a
 repair. Use a discriminating regression check when warranted. For performance

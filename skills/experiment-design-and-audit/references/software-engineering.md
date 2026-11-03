@@ -65,6 +65,13 @@ needs treatment/task ordering and carryover considered. Shared repositories or
 participants who exchange solutions can create interference; repeated tasks by
 the same developer are not automatically independent evidence.
 
+When classifying task complexity or explaining delivery difficulty, distinguish
+complexity inherent in the required problem or feature from integration friction
+caused by the target repository's existing architecture. Record supporting task
+contracts and architectural evidence; allow mixed causes and mark unknowns.
+Account for this distinction in task selection, matching, and interpretation so
+repository-specific friction is not attributed solely to the feature or tool.
+
 For adoption/before-after comparisons, examine concurrent process/staff/workload
 changes, time trends, self-selection, attrition, and spillovers. Distinguish
 observational association from an identified causal effect. Record consent,

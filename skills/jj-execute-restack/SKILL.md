@@ -75,6 +75,12 @@ during execution. Do not publish or replace the user's branch implicitly.
 
 ## Deviations and reporting
 
+When unexpected complexity affects execution, distinguish inherent feature
+requirements from difficulty imposed by the existing architecture and from
+reconstruction mechanics. Cite source evidence and mark mixed or uncertain causes.
+Return changed structural needs to planning within the existing authorization;
+do not turn integration difficulty into an implicit refactoring mandate.
+
 Repair reconstruction mistakes within the existing plan through verified
 correction children. New source defects, changed dependencies, ambiguous
 ownership, or different commit purposes return to planning. Do not smuggle

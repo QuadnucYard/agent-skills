@@ -26,6 +26,11 @@ validated retained-feature target. Preserve the split-only contract here.
   refactors, then new behavior. Dependencies take precedence: a refactor needed
   by a fix comes first; a fix to newly introduced behavior belongs with that
   behavior. Keep implementation, integration, and tests together by purpose.
+- **Explain complexity and coupling.** Distinguish inherent feature interactions
+  from difficulty caused by the existing architecture, citing contracts and code
+  and marking mixed or uncertain causes. Architectural entanglement does not make
+  distinct outcomes one feature. Preserve actual dependencies; splitting alone
+  does not authorize a refactor to remove them.
 - **Keep fixtures with their implementation.** Reject fixture-only commits unless
   they add new fixtures to establish baseline behavior or contain a large test
   change with several new test modules. Harness or test-execution changes are

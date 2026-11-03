@@ -63,6 +63,14 @@ meaningful introduction and removal states even when both vanish at the tip.
 
 ## Boundaries and order
 
+When complexity affects boundaries or proposed preparation, distinguish inherent
+feature rules and interactions from integration difficulty imposed by the existing
+architecture. Cite contracts and source paths; record mixed causes or uncertainty
+and distinguish avoidable complexity added within the stack. Do not merge distinct
+features merely because the architecture entangles them. Preserve actual
+dependencies and compare bounded structural preparation with direct integration;
+a history-only restack does not authorize an architectural redesign.
+
 Reject fixture-only commits unless they add new fixtures to establish baseline
 behavior or contain a large test change with several new test modules. Harness
 or test-execution changes are not fixture-only. Otherwise, keep fixtures with
