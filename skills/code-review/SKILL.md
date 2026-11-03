@@ -57,6 +57,17 @@ Trace success, failure, and boundary paths across components.
   interfaces, and acyclic dependencies, preserving behavior and invariants.
   Use responsibility and coupling, not arbitrary line counts; avoid mechanical
   fragmentation or catch-all utility modules.
+- **Logical item order:** Check that related declarations and cases follow a
+  coherent domain, lifecycle, or dependency order, especially enum variants and
+  tests. Group related enum variants and place new ones with their semantic
+  peers. Group tests by behavior and order cases so the progression from ordinary
+  behavior to boundaries and failures is easy to follow. Use the domain and
+  established local organization to choose the order; do not impose alphabetical
+  sorting or flag an equally clear alternative. Explain how scattered or
+  misplaced items obscure relationships or coverage. Before recommending a
+  reorder, check implicit discriminants, derived ordering, serialization,
+  iteration, and test execution dependencies; preserve required behavior and
+  compatibility.
 
 Use focused behavioral tests or reproductions to resolve material uncertainty,
 and honor required repository checks. Distinguish execution from inspection.
