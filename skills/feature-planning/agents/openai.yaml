@@ -1,4 +1,4 @@
 interface:
   display_name: "Feature Planning"
   short_description: "Discuss feature breakdown, design choices, and risks"
-  default_prompt: "Use $feature-planning to discuss and decompose the requested feature with me in plain language, explain how the proposed design works and its material risks, resolve prioritized design choices, gate implementation on feature maturity, preserve future extension paths, and plan actionable increments with effective tests and evidence-based confidence."
+  default_prompt: "Use $feature-planning to discuss and decompose the requested feature with me in plain language, develop and explain concrete architecture and important data type designs with me using examples and tradeoffs before recording them in the plan, explain material risks, resolve prioritized design choices, gate implementation on feature maturity, preserve future extension paths, and plan actionable increments with effective tests and evidence-based confidence."

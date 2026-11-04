@@ -4,8 +4,8 @@ name: feature-planning
 description: >
   Design software features and turn requirements into actionable, incremental
   implementation plans through plain-language discussion of feature breakdown,
-  design choices, and risks, with user-confirmed decisions, feature priorities,
-  evidence-based confidence, and effective tests.
+  architecture, important data types, and risks, with user-confirmed decisions,
+  feature priorities, evidence-based confidence, and effective tests.
   Use when planning a new feature, extending existing behavior, or breaking
   a feature proposal into verifiable delivery steps.
 ---
@@ -53,6 +53,14 @@ implementation details.
   responsibilities, how parts interact, or future extensions. Discuss the
   consequential choices as they arise instead of presenting a finished design
   for blanket approval. Reuse decisions the user has already made.
+- Develop and explain the architecture and important data type designs with the
+  user during this discussion; recording specifications in the plan alone does
+  not satisfy this requirement. Walk through concrete inputs, component
+  interactions, representative data values, state changes, and failure cases.
+  Explain why responsibilities and type boundaries belong where proposed, which
+  invalid states the types prevent, and how foreseeable extensions fit. Discuss
+  consequential alternatives and resolve the user's questions and corrections
+  before treating those design choices as confirmed.
 - For each consequential choice, describe the proposed behavior with an example,
   explain realistic alternatives and their tradeoffs, and give a recommendation
   with reasons. Make clear what the user is deciding and what it changes.
@@ -172,6 +180,38 @@ schedule a bounded investigation with a specific question, evidence to collect, 
 will unlock. Distinguish its findings from delivered functionality; remove or
 integrate exploratory code deliberately. Avoid open-ended research and abstractions
 whose only justification is that they might be useful someday.
+
+## Design architecture and important data types with the user
+
+Provide concrete architecture and important data type designs in the design
+discussion, explain and resolve their consequential choices with the user, and
+carry the resulting designs into every delivered plan, including provisional
+plans. A specification without that discussion is insufficient. Scale their depth to
+the feature's complexity; a small change may need only a concise description of
+the existing architecture and types it reuses. Do not omit these designs or
+replace them with a list of files to change. Mark unresolved choices as pending
+and keep dependent implementation provisional.
+
+- **Architecture:** identify the components and their responsibilities, ownership,
+  interfaces, dependency direction, and integration with existing code. Walk through
+  the main input-to-result flow and relevant failure paths, showing where state
+  lives and which component enforces each important rule. Explain material design
+  tradeoffs, compatibility or migration needs, and the boundaries reserved for
+  foreseeable extensions without building speculative machinery.
+- **Important data types:** define the domain, state, and boundary types that carry
+  the feature's important contracts. Use concise declarations, schemas, or field
+  tables where they clarify the design. Specify meaningful fields and their types,
+  identity and relationships, valid variants or states, invariants, and how those
+  invariants are enforced. Explain ownership and lifecycle, state transitions, and
+  error representations where relevant. Cover serialization, persistence, and
+  compatibility when data crosses those boundaries. Identify existing types to
+  reuse or change; if no new types are needed, state that and describe the relevant
+  existing contracts.
+- Connect the designs: show how the important types pass through component
+  interfaces and how responsibilities preserve their invariants. Map the design
+  changes to delivery increments and acceptance checks. Resolve decisions needed
+  for current correctness and extension boundaries now; retain explicit triggers
+  for deferred detail rather than leaving gaps that block implementation.
 
 ## Prioritize capabilities and uncertainty
 
@@ -310,7 +350,8 @@ Use this opening section as the basis for the rest of the plan. Trace current
 requirements to delivery steps and acceptance checks so omissions and unintended
 additions can be identified, and update those links when discussion changes scope.
 
-Then explain in plain language how the confirmed design works and how its parts
+Then provide the required architecture and important data type designs described
+above. Explain in plain language how the confirmed design works and how its parts
 fit together, including the material risks, planned safeguards, and remaining
 uncertainty discussed with the user. Present the intended outcome, confirmed
 design decisions, ordered steps with their priorities, tests, and confidence,
