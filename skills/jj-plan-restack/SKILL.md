@@ -50,6 +50,11 @@ report defects and proposed owners without repairing history.
 - For selective feature extraction, follow [extraction scope](references/feature-extraction.md).
   Record retained and excluded capabilities, dependency closure, and the expected
   content delta. Extraction is a content change, not a waiver of verification.
+- If the mainline must preserve behavior, record the behavior baseline and route
+  every feature or fix that changes it to residuals, including work already in
+  the source stack. Preserve requested reference work on side branches at the
+  appropriate milestones, not in the mainline. Follow the
+  [behavior-preserving contract](references/feature-extraction.md#behavior-preserving-mainline).
 - Cover the full design and reserve justified future extension boundaries without
   speculative implementations. Preserve meaningful migrations and removals,
   including capabilities absent from the final tree.

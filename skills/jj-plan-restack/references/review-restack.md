@@ -22,6 +22,10 @@ reconstruct evidence from both histories and state what remains unverified;
 never infer authorization for omissions from the result itself.
 
 - History only: require source-to-clean tree equality.
+- Behavior-preserving mainline: verify the explicit baseline contract and reject
+  behavior-changing features/fixes on the mainline, including ones absorbed into
+  refactors. Check residual side-branch ownership, branch points, dependencies,
+  and reference bookmarks; use extraction equality when the source mixes both.
 - Authorized fixes: require equality to the verified corrected source and
   account for the complete original-to-corrected delta.
 - Feature extraction: require equality to the independently prepared retained

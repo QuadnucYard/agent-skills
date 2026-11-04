@@ -4,6 +4,30 @@ Use when the user requests only part of a stack, including stripping features
 from the rebuilt result. The original stack and refs remain preserved. Do not
 drop behavior merely because a commit looks unrelated or is difficult to apply.
 
+## Behavior-preserving mainline
+
+When the user requires a behavior-preserving mainline, record the exact behavior
+baseline and its contracts; do not assume the full source tip is that baseline.
+Keep only behavior-preserving work on the mainline. Treat every feature or fix
+that changes the baseline as a residual, whether already in the source or newly
+proposed. A useful or authorized fix still changes behavior and does not belong
+on this mainline. Repairs to reconstruction mistakes restore the baseline;
+they do not authorize repairing baseline defects.
+
+Map residual hunks, integration, tests, and dependencies separately from retained
+refactors. When residuals are to be kept, plan separate semantic side branches
+and fresh reference bookmarks. For `A -> B -> C`, a residual may branch from
+`B` or `C`, according to its prerequisites, without becoming a mainline ancestor.
+Do not absorb it into a refactor or merge it back to satisfy source-tip equality.
+If retained work needs a residual's behavior, revise the boundary or report the
+dependency conflict; do not silently relax behavior preservation.
+
+Use the extraction target protocol below when the source mixes retained work
+and residuals. Verify mainline behavior against the recorded baseline, and its
+tree against the independently prepared target. Audit every residual's content,
+branch point, and preservation destination. Ordinary history-only restacks still
+preserve the source tree; they do not implicitly request this narrower mainline.
+
 ## Define the retained contract
 
 Inventory the whole source before selecting. Record each feature as retained,

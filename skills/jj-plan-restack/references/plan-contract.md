@@ -11,6 +11,12 @@ to implement recommended fixes outside the user's authorized scope.
    tree identities, and operation ID in an internal snapshot record; reference
    it from the plan. Use short change IDs plus descriptions in user-facing views.
    Record unsupported graph shapes or policy decisions as blockers.
+   For a behavior-preserving mainline, name the exact behavior baseline and
+   contracts. Map all behavior-changing features/fixes to residuals, with branch
+   points, dependencies, checks, and fresh bookmarks for work kept as reference.
+   Include these branches separately from the ordered mainline; use the
+   [behavior-preserving contract](feature-extraction.md#behavior-preserving-mainline)
+   and extraction target when the source contains residual behavior.
 2. **Review and fixes.** Requirements, evidence-backed findings, acceptance
    criteria, authorized behavior changes, recommendations, and unresolved
    decisions. Give each proposed fix a stable label, verification, and clean
@@ -33,8 +39,9 @@ to implement recommended fixes outside the user's authorized scope.
    final-state partition. Reserve relevant extension boundaries, not speculative
    commits. If the whole source qualifies unchanged, state the no-op.
 5. **Preservation and completion.** Existing refs and original revisions remain
-   unchanged. Reserve fresh safety-tag and clean-bookmark names; only the latter
-   may move. With authorized fixes, the clean tree equals the verified corrected
+   unchanged. Reserve fresh safety-tag, clean-bookmark, and planned residual
+   bookmark names; only these new bookmarks may move. With authorized fixes
+   intended for the mainline, the clean tree equals the verified corrected
    source and its delta from the pre-fix source is exactly those fixes. Otherwise
    it equals the original source. For [feature extraction](feature-extraction.md),
    include the retained/excluded map, dependency closure, authorized adaptations,

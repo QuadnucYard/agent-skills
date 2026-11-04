@@ -43,6 +43,11 @@ during execution. Do not publish or replace the user's branch implicitly.
   workflow-owned rebuilt revisions, with evidence handled as described below.
   Scope squash/absorb to their mapped owners; revision checkouts for
   validation remain allowed without modifying those commits.
+- For a behavior-preserving mainline, require an explicit behavior baseline and
+  residual mapping. No feature or fix that changes that baseline may enter the
+  mainline, even if present in the source or separately authorized. Preserve
+  requested residuals on side branches from dependency-appropriate milestones;
+  the source-fix phase below must not promote them into the mainline target.
 
 ## Fix, reconstruct, verify
 

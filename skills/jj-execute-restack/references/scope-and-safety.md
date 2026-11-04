@@ -1,5 +1,22 @@
 # Scope And Safety
 
+## Behavior-preserving mainline
+
+If the plan requires behavior preservation, its explicit baseline governs the
+mainline. Route every behavior-changing feature or fix to residuals; source
+membership or separate fix authorization does not override this constraint.
+Do not include residual fixes in the corrected mainline target. Use the
+extraction-target phase when the source includes residual behavior, and verify
+the retained result against the baseline contract as well as the target tree.
+
+For residuals requested for reference, build separate workflow-owned branches
+from their planned dependency-appropriate milestones, each with a fresh bookmark.
+Record their revisions separately from `NEW_STACK` and correction children;
+they must not be mainline ancestors. Apply the mutation gate and per-commit
+validation to each residual branch. Pure reconstruction repairs restore the
+planned baseline; new source defects remain residual recommendations unless
+their implementation is authorized on a side branch.
+
 ## Planned source fixes
 
 Verify the plan's exact source snapshot, relevant refs, and unrelated working-copy
@@ -52,8 +69,8 @@ unexpected rebuilt delta as the new specification.
 ## Freeze the original
 
 Use explicit revision expressions, preferably full commit IDs. Naming an
-existing ref the user points at is fine. The only bookmark this workflow may
-create or move is the new dedicated `CLEAN_BOOKMARK`:
+existing ref the user points at is fine. This workflow may create or move only
+the new dedicated `CLEAN_BOOKMARK` and explicitly planned fresh residual bookmarks:
 
 ```sh
 BASE=<parent-or-base>
@@ -233,6 +250,9 @@ Before every `jj abandon`, `absorb`, `describe`, `diffedit`, `duplicate`,
 2. Confirm every rewritten revision is in `NEW_STACK` or is an explicitly
    recorded temporary correction child owned by this reconstruction. A
    correction branch need not be an ancestor of the current clean tip.
+   Planned residual branches have their own explicit owned revision sets and
+   may be mutated under the same protections; never count them as `NEW_STACK`
+   or use squash/absorb to move their behavior into the mainline.
 3. Confirm no rewritten target intersects `OLD_STACK` or `BASE`. A parent
    used by `new` is read-only and may be `REBUILD_BASE`.
 4. Prefer a narrow revision/path selection over `mutable()`, `all()`, or
@@ -243,11 +263,11 @@ Before every `jj abandon`, `absorb`, `describe`, `diffedit`, `duplicate`,
 6. For `restore`, confirm the intended state equality and inspect overwritten
    fixes and hunk ownership/timing as described in the reconstruction reference.
 
-Useful checks (`CORRECTION_REVSET` is the explicitly recorded correction-child
-set, or `none()` when no correction exists):
+Useful checks (`CORRECTION_REVSET` and `RESIDUAL_REVSET` are the explicitly
+recorded owned correction-child and residual sets, or `none()` when absent):
 
 ```sh
-jj log -r "(<TARGET_REVSET>) & ($NEW_STACK | ($CORRECTION_REVSET))" \
+jj log -r "(<TARGET_REVSET>) & ($NEW_STACK | ($CORRECTION_REVSET) | ($RESIDUAL_REVSET))" \
   -T 'commit_id.short() ++ " " ++ description.first_line() ++ "\\n"'
 jj log -r "(<TARGET_REVSET>) & ($OLD_STACK)"
 ```
@@ -259,7 +279,8 @@ immutability protection.
 ## Reference and publication rules
 
 Never repoint, move, or delete a pre-existing bookmark or tag, and never
-move the safety tag. The only movable reference is the newly created
-`CLEAN_BOOKMARK`, which must point to the current rebuilt tip. Never force-push
+move the safety tag. Movable references are limited to the newly created
+`CLEAN_BOOKMARK`, which must point to the current rebuilt tip, and planned fresh
+residual bookmarks, each pointing to its validated branch tip. Never force-push
 the clean stack over the original. Publishing, if requested, is a separate
 explicit operation after validation.

@@ -2,6 +2,17 @@
 
 ## Required validation
 
+For a behavior-preserving mainline, verify the recorded baseline contract at
+every retained boundary. Reject any feature/fix that changes it, even when
+folded into a refactor or present in the source. If residual behavior was removed
+from the source, use the independently prepared extraction target for tree
+equality; full-source equality would reintroduce the excluded behavior. Audit
+each preserved residual against its branch parent, run its relevant checks,
+verify its fresh bookmark and absence from mainline ancestry, and report its
+source mapping and branch point separately. Account for unimplemented residual
+recommendations without creating commits. Tree equality alone does not prove behavior
+preservation, and baseline defects are not permission to change that baseline.
+
 The clean tip must equal `EXPECTED_TIP`: the independently prepared extraction
 target when features are excluded, otherwise `ORIGINAL_TIP`. `ORIGINAL_TIP` is
 the corrected full source when fixes exist, otherwise the pre-fix source.
