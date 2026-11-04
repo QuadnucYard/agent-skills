@@ -300,6 +300,10 @@ For **each step**, provide:
    and any relevant failure or compatibility case.
 4. **Confidence:** low, medium, or high, with supporting evidence, remaining
    uncertainty, and the next check that could increase or reduce confidence.
+5. **Commit boundaries:** the small, coherent commits that deliver the step,
+   each with its purpose and verification. Split a step into multiple commits
+   when it contains independently reviewable changes; keep required tests with
+   the behavior they verify and preserve coherent intermediate states.
 
 Use confidence as a reasoned judgment, not a fabricated probability. High means
 direct evidence supports the approach and important risks have effective checks;
@@ -361,12 +365,28 @@ questions visible and dependent steps provisional. Do not impose a fixed number
 of stages or leave the final step as an unexplained instruction to finish
 everything else.
 
+Every delivered plan, including each local plan file, must contain an explicit
+**Implementation contract** for the implementing agent. Include these obligations
+in the plan itself rather than relying on this skill being loaded during execution:
+
+- Implement in fine-grained, coherent commits following the planned boundaries.
+  Do not squeeze the implementation into one large commit or accumulate all
+  increments for a single final commit.
+- Verify each commit's behavior with its applicable acceptance checks and commit
+  the completed unit before advancing to the next. Keep related implementation
+  and tests together; do not split merely by file or create broken intermediate
+  commits to meet an arbitrary size or count.
+- If evidence requires changing the sequence or boundaries, update the remaining
+  plan while preserving small, independently reviewable commits. Reconfirm any
+  changed design decisions before dependent work.
+
 When writing a local plan file, treat it as deliberately untracked. Do not check
 its tracking status or reread it solely to confirm the write.
 
 For a planning-only request, deliver the plan without implementing the feature.
-When implementation is authorized, execute one increment at a time, inspect the
-result, run its checks, and update confidence before progressing. Passing checks
+When implementation is authorized, follow the plan's implementation contract:
+execute one commit unit at a time, inspect the result, run its checks, commit the
+verified unit, and update confidence before progressing. Passing checks
 must support the claimed behavior; failures or contradictory evidence require
 fixing the step or revising dependent steps. Report the remaining gap to the full
 outcome. Reconfirm new or changed design details with the user before dependent
