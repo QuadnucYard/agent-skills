@@ -10,7 +10,8 @@ license: MIT
 
 Split selected changes into **independently valid semantic commits**, preserving
 the combined final tree. Splitting does not authorize additional behavior fixes.
-Selecting only some resulting features is a restack extraction, not a split
+Selecting only some resulting features for the mainline, including routing
+redundant work to residual side branches, is a restack extraction, not a split
 with tree equality waived. Use `jj-plan-restack` and `jj-execute-restack` when
 available, or an equivalent explicit selection/dependency plan and independently
 validated retained-feature target. Preserve the split-only contract here.
@@ -47,6 +48,17 @@ validated retained-feature target. Preserve the split-only contract here.
   extension boundaries without speculative implementation. Treat nonadjacent
   selections as separate groups unless intervening commits are in scope;
   resolve merge semantics before flattening a graph.
+- **Route user-declared redundant work to residuals.** When the user identifies
+  features or fixes as redundant, classify them as residuals outside the retained
+  mainline. If they are to be kept for later reference, preserve them as separate
+  semantic commits on side branches rooted at the milestone that supplies their
+  dependencies. For a mainline `A -> B -> C`, a residual can branch from `B` or
+  `C`; it need not follow the mainline tip. Keep its implementation, integration,
+  and tests together, and keep dependencies needed by retained features on the
+  mainline. Resolve any conflict between redundancy and a retained dependency
+  in the extraction plan. Record each residual's purpose, branch point, and
+  preservation destination; calling work redundant does not authorize deleting
+  its history. Do not merge reference-only residuals back into the mainline.
 
 Local plan files are deliberately untracked: do not check their tracking status
 or reread them merely to confirm a write.
@@ -81,9 +93,15 @@ or reread them merely to confirm a write.
   `jj diff --from SOURCE_TIP --to RESULT_TIP --summary`; verify source preservation
   and complete source-to-result mapping. Tree equality alone does not validate
   intermediate behavior. Track any separately authorized content fixes explicitly.
+  For an extraction with residual branches, use the extraction workflow's
+  independently validated retained-feature target for mainline verification;
+  account for every excluded concern and validate each preserved residual
+  against its own branch parent. Do not restore the source tree onto the
+  mainline to force equality and thereby reintroduce redundant work.
 - **Descriptions and handoff:** redescribe every result by its actual purpose
   and motivation, especially the residual. Advance only a fresh result bookmark
   after validation. Report ordered change IDs, mapping, safety tag/bookmark, and
-  checks or limits; leave a clean working copy. Keep the last validated milestone
+  checks or limits, including each preserved residual's branch point and a fresh
+  bookmark for later reference; leave a clean working copy. Keep the last validated milestone
   on failure and inspect intervening operations before recovery. Publish only
   when requested.
