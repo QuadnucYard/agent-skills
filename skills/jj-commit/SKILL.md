@@ -23,6 +23,20 @@ are fine, but agents must hand drafts to the single writer. Before each write,
 refresh the target's current commit ID and full description; if either changed
 since inspection, reconcile the draft before applying it.
 
+## Red line: stop on unexpected divergence
+
+After each repository mutation, check for newly divergent changes. If unexpected
+divergence appears after an operation, stop further mutations immediately.
+Report the operation and affected changes, inspect the operation log and
+divergent versions without changing them, and ask for the user's approval to
+undo the offending operation. Do not automatically abandon a version, resolve
+the divergence, or continue the task.
+
+Only after explicit approval, undo the identified operation, taking care not to
+revert unrelated or concurrent work. Verify that the prior state is restored
+and the unexpected divergence is gone before proceeding with the task. If a
+safe undo is unclear or divergence remains, stop and report the blocker.
+
 ## Message
 
 - Use `type(scope): subject`; omit the scope when it adds no useful context.
