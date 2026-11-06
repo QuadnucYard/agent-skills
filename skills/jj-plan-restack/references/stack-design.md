@@ -2,6 +2,12 @@
 
 ## Inventory and semantic timeline
 
+Execute `recognize-stack-features` and discuss its map with the user as required
+by the entrypoint. Use the resulting feature ownership and dependency evidence
+to build the views below; do not infer features from source commit boundaries.
+Feature boundaries do not dictate one commit per feature: preserve meaningful
+incremental milestones and shared prerequisite order.
+
 Read every source change's full description, parent diff, and milestone tree,
 oldest first, including changes proposed for the retained prefix. Read bodies
 and trailers without truncation; subjects alone lose intent and rationale.

@@ -29,6 +29,9 @@ to implement recommended fixes outside the user's authorized scope.
 3. **History accounting.** Original inventory, semantic timeline, and complete
    redistribution map from [stack design](stack-design.md). Account for every
    source change, meaningful hunk, and state, including removals absent at the tip.
+   Include the map produced by `recognize-stack-features`, the user's corrections
+   and confirmed decisions, and unresolved questions. Pending feature discussion
+   or required scope decisions block an executable handoff.
 4. **Target sequence.** Longest unchanged prefix and `REBUILD_BASE`; ordered clean
    commit labels, final descriptions, purposes, sources, dependencies, intended
    intermediate behavior, and validation. Include complete proposed subjects,

@@ -21,6 +21,11 @@ trusting mutable change IDs or a bookmark name. If records are missing,
 reconstruct evidence from both histories and state what remains unverified;
 never infer authorization for omissions from the result itself.
 
+Execute the entrypoint's mandatory feature recognition and user discussion for
+this review. Reconcile source and rebuilt capabilities, adoption, and ownership;
+discuss inferred feature boundaries before finalizing boundary findings. An
+existing plan or matching final trees do not replace this step.
+
 - History only: require source-to-clean tree equality.
 - Behavior-preserving mainline: verify the explicit baseline contract and reject
   behavior-changing features/fixes on the mainline, including ones absorbed into

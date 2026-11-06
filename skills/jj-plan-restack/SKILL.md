@@ -12,6 +12,8 @@ description: >
 
 Produce an actionable reconstruction plan. Review the whole stack before
 choosing boundaries. This skill works independently of `jj-execute-restack`.
+Feature recognition and user discussion below are mandatory for both planning
+and result review.
 
 For an existing rebuilt stack, follow [review the result](references/review-restack.md)
 instead of assuming the execution report proves correctness. Review is read-only;
@@ -35,7 +37,8 @@ report defects and proposed owners without repairing history.
   Review design adoption, observable behavior, errors, compatibility, lifecycle,
   and interactions. Mark unavailable requirements or evidence as unverified.
   Do not spend review time on formatting or linter checks.
-- Follow [stack design](references/stack-design.md) for the inventory, semantic
+- Execute `recognize-stack-features` to establish the feature map, then follow
+  [stack design](references/stack-design.md) for the inventory, semantic
   timeline, redistribution map, boundaries, and order. Use the read-only
   [analysis helpers](references/dependency-analysis.md) for advisory evidence;
   textual applicability does not establish semantic dependency or ownership.
@@ -66,6 +69,31 @@ report defects and proposed owners without repairing history.
   execution. If unsound behavior already exists in the source, report it and seek
   an authorized correction; a history-only restack must still preserve the tree.
 
+## Recognize features and discuss with the user
+
+Read and execute `recognize-stack-features` against the pinned source stack
+before choosing target commit boundaries or order. A commit inventory, helper
+output, or a final-tree partition does not replace feature recognition. If the
+skill is unavailable, report the missing prerequisite rather than silently
+substituting an abbreviated analysis. For result review, also reconcile the
+rebuilt stack's actual capabilities and adoption with the source feature map.
+
+Present the evidence-backed map to the user: outcomes, production adoption,
+source ownership, dependencies, meaningful intermediate or removed capabilities,
+and unresolved gaps. Explain proposed splits or combinations and justified
+future extension boundaries. Ask the user to confirm or correct the inferred
+feature scope, boundaries, and intent, highlighting decisions that affect
+retention, exclusion, or behavior. Wait for their response and reconcile it with
+the evidence before finalizing the plan or boundary findings; do not treat
+silence as agreement. Prior explicit decisions can settle individual questions,
+but do not replace presenting and discussing the recognized map.
+
+Record the resulting decisions and remaining uncertainty. Continue independent
+read-only investigation while awaiting the discussion, but do not mark the plan
+executable while this step or a required behavior decision remains unresolved.
+If later evidence materially changes the map, discuss the affected decisions
+again before finalizing the revised boundaries.
+
 ## Deliver the plan
 
 Use the [handoff contract](references/plan-contract.md). Retain the longest
@@ -77,6 +105,7 @@ commit and operation identities in a separate internal snapshot record. Local
 plan files are deliberately untracked: do not check their tracking status or
 reread them merely to confirm they were written.
 
-For an execution request, continue with `jj-execute-restack` after planning when
-available and authorized. Planning creates no new approval requirement. If the
-executor is unavailable, deliver the plan and report that execution needs it.
+For an execution request, continue with `jj-execute-restack` after the required
+feature discussion and completed planning when available and authorized. Do not
+ask for an additional execution approval merely because planning is complete.
+If the executor is unavailable, deliver the plan and report that execution needs it.
