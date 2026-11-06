@@ -18,7 +18,9 @@ Use the shared message rules in `SKILL.md` for new descriptions and replacements
    inspect the parents when the merge itself is the point of the change.
 3. Compare every substantive claim in the old description with what the
    target currently delivers relative to its parents. Treat the old text as
-   context, not proof. Identify surviving intent, newly added behavior,
+   context, not proof. Trust only substantive descriptions, checked against code
+   and consumers. A `refactor` may add a feature; choose the type by actual effects.
+   Identify surviving intent, newly added behavior,
    removed or split-out work, and superseded approaches. Read relevant code,
    documentation, and tests before asserting behavior; consult prior versions
    only when they help recover a rationale that still applies. Do not invent

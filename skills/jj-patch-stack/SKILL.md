@@ -39,6 +39,9 @@ A patch change must be complete and well formatted before you commit it and move
 
 Choose the strategy by ownership and dependencies, rather than assuming every fix is a direct copy of a diff. These examples illustrate different cases; they are not an exhaustive list of supported fixes.
 
+Trust only substantive descriptions, checked against code and consumers.
+A `refactor` may add a feature; assign patch ownership by actual effects.
+
 - **A new bug fix:** an earlier revision introduces an incorrect boundary check, but no fix exists yet. Implement the correction and its regression test in a new child of that target, then carry it forward through the later targets.
 - **A fix already collected at the top:** a top change repairs a parser introduced earlier. Reconstruct the parser fix and its test in a patch on the owning revision. Preserve the top change; do not invoke `jj absorb` or move its contents out of it during preparation.
 - **Several independent fixes in one top change:** the top change repairs both parsing and caching introduced by different revisions. Separate the fixes by behavior and ownership, even when they touch the same file, then build patches from the older target to the newer one.

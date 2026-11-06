@@ -16,6 +16,8 @@ evidence-backed findings; do not spend review time on formatting or linter check
 
 - Identify the target, base, and scope. Inspect the whole change or stack before
   judging individual boundaries.
+- Trust descriptions only when substantive, and verify against code and consumers.
+  A `refactor` label may hide a new feature; classify actual effects.
 - Find the original requirements, acceptance criteria, constraints, and
   exclusions in the conversation or supplied issue/specification. If missing,
   explicitly ask the user for them. Continue independent checks while waiting,

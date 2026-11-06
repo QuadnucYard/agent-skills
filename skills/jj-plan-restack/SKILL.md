@@ -34,6 +34,8 @@ report defects and proposed owners without repairing history.
   full before choosing boundaries. Subjects and shortened log views do not
   replace this reading. Preserve substantive description details in the plan
   and proposed descriptions; follow the stack-design accounting rules below.
+  Trust only substantive descriptions, checked against code and consumers.
+  A `refactor` may add a feature; classify actual effects and flag uncertainty.
   Review design adoption, observable behavior, errors, compatibility, lifecycle,
   and interactions. Mark unavailable requirements or evidence as unverified.
   Do not spend review time on formatting or linter checks.

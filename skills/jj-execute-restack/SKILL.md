@@ -31,6 +31,8 @@ during execution. Do not publish or replace the user's branch implicitly.
   planner if installed, otherwise report the evidence and request an updated
   plan. Unrelated operation-log advancement alone does not invalidate a plan.
   Do not change intended behavior or boundaries silently.
+- Trust only substantive descriptions, checked against code and consumers.
+  A `refactor` may add a feature; correct misclassified plans before mutation.
 - Check conflicts already present in the original stack for intentional feature
   removal; a conflict alone is not evidence of a missing feature or dependency.
   Do not add removed features back to resolve it. If the plan and source evidence

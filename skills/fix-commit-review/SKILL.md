@@ -19,6 +19,9 @@ merges. Read the message, issue, contracts, diff, relevant implementation,
 callers, and tests. Separate symptom, expected behavior, root cause, and scope.
 Assess each substantive fix claim independently.
 
+Trust descriptions only when substantive, and verify against code and consumers.
+A claimed fix or refactor may add a feature; classify actual effects.
+
 Prefer a focused reproduction that fails on the base and passes after the fix,
 asserting the required result. Distinguish execution from inspection. Request
 material missing requirements while continuing independent checks; keep affected

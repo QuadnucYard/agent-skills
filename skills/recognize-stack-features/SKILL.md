@@ -55,8 +55,10 @@ Read every parent diff, the base-to-tip result, relevant intermediate trees, and
 the surrounding implementations and callers. Commit messages and existing slices
 are search hints only: both may describe bad grouping. Infer what changed from
 code and actual use; supplied requirements establish intended outcomes, while
-inferred intent remains provisional. Do not spend recognition time on formatting
-or linter checks.
+inferred intent remains provisional. Trust descriptions only when their behavior,
+scope, and rationale are substantive, then verify against code and consumers.
+A `refactor` label may hide a new feature; classify actual effects and flag gaps.
+Do not spend recognition time on formatting or linter checks.
 
 For repeatable evidence collection in Git or colocated jj repositories, use the
 bundled Python 3.11+ helper with Git supporting `--attr-source`, from this skill's

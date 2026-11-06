@@ -23,6 +23,8 @@ validated retained-feature target. Preserve the split-only contract here.
   inspect the selected parent diffs and meaningful intermediate states, then map
   every concern to an ordered destination. Use the planner for broader design
   questions when installed; a clear local split needs no full restack plan.
+- **Verify purpose.** Trust only substantive descriptions, checked against code
+  and consumers. A `refactor` may add a feature; split and order by actual effects.
 - **Existing features first.** Order existing-feature fixes, preparatory
   refactors, then new behavior. Dependencies take precedence: a refactor needed
   by a fix comes first; a fix to newly introduced behavior belongs with that
