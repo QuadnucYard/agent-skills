@@ -41,7 +41,10 @@ report defects and proposed owners without repairing history.
   Do not spend review time on formatting or linter checks.
 - Execute `recognize-stack-features` to establish the feature map, then follow
   [stack design](references/stack-design.md) for the inventory, semantic
-  timeline, redistribution map, boundaries, and order. Use the read-only
+  timeline, redistribution map, boundaries, and order. Each source-commit summary
+  must include later code fate, consumer status at introduction and tip, and
+  development-line membership from recognition, with evidence or explicit gaps.
+  Use the read-only
   [analysis helpers](references/dependency-analysis.md) for advisory evidence;
   textual applicability does not establish semantic dependency or ownership.
 - Propose fixes with acceptance criteria and destination owners; do not implement

@@ -35,7 +35,14 @@ Present all three views; a final-tree partition cannot replace history analysis:
 
 1. **Original inventory.** Every source commit, including the retained prefix:
    short change ID, description, behavior/state introduced or removed,
-   dependencies, and later revisions of that state.
+   dependencies, and later revisions of that state. Include the recognition
+   inventory's explicit later-code-fate, consumer-status, and development-line
+   fields for each commit, with affected hunks/symbols and revision evidence.
+   Show which code is later refactored or replaced, which lacks consumers at
+   introduction or the tip, and where adoption first occurs or is lost. Use
+   explicit none/not-applicable/unverified findings rather than silent blanks.
+   Define stable development-line labels and their purposes; map mixed commits
+   to every relevant line without confusing lines with branches or features.
 2. **Redistribution map.** Every source change, meaningful hunk, and state:
    destination label(s), disposition (retain, reconstruct, duplicate, split,
    squash, absorb, reorder, or omit), and evidence-backed reason. Enumerate all
@@ -43,6 +50,9 @@ Present all three views; a final-tree partition cannot replace history analysis:
    work, or explicitly scoped feature exclusions rather than silently dropping
    a reviewable milestone. In extraction, map excluded hunks and dependency
    adaptations as fully as retained work; follow [extraction scope](feature-extraction.md).
+   Carry development-line labels into destinations so regrouping remains
+   traceable; justify any consolidation of later refactors or delayed adoption
+   against the meaningful intermediate states in the source inventory.
 3. **Target sequence.** Entire clean stack including the retained prefix:
    ordered label, final description, purpose, source changes/hunks, parent and
    semantic dependencies, intended state, and behavioral validation. Show where

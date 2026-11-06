@@ -29,6 +29,9 @@ to implement recommended fixes outside the user's authorized scope.
 3. **History accounting.** Original inventory, semantic timeline, and complete
    redistribution map from [stack design](stack-design.md). Account for every
    source change, meaningful hunk, and state, including removals absent at the tip.
+   Retain each commit's later code fate, consumer status at introduction and tip,
+   adopting/refactoring revisions, and development-line labels and definitions;
+   carry line membership through the redistribution map to target owners.
    Include the map produced by `recognize-stack-features`, the user's corrections
    and confirmed decisions, and unresolved questions. Pending feature discussion
    or required scope decisions block an executable handoff.

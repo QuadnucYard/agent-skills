@@ -136,6 +136,37 @@ uncertain causes. Do not treat architectural entanglement as proof that outcomes
 are one feature. Record the actual dependency and any bounded separation proposal
 without assuming that the architecture can be changed within this task.
 
+## Record each commit's role and later fate
+
+Include a source-commit inventory alongside the feature map. For every commit,
+give its revision, actual behavior or state change, and these explicit fields;
+split the evidence by hunk or symbol when a commit mixes work:
+
+- **Later code fate:** whether code introduced or changed here is later
+  refactored, moved, replaced, corrected, or removed within the inspected scope.
+  Name the affected code and later revisions, distinguish structural changes
+  from contract changes, and identify any meaningful intermediate state. Report
+  no later change found or unverified when appropriate; a later edit to the same
+  file alone does not establish that this code was refactored.
+- **Consumer status:** whether each changed producer or mechanism has a real
+  production consumer at this commit and at the selected tip. Identify existing
+  consumers, the first later adopting revision, and any subsequent loss of use.
+  Explicitly list code still lacking consumers, or justify its independent
+  contract under the rules above. Distinguish verified absence from incomplete
+  tracing; tests and hypothetical future adoption do not close the gap.
+- **Development line:** stable label(s) for the coherent thread of work advanced
+  by this commit, such as a capability, migration, or structural refactor. Define
+  each line's purpose and connect its commits, feature owners, and dependencies.
+  A line may span several features or commits; it is neither a Git branch nor
+  proof of a single feature boundary. Assign mixed commits to multiple lines
+  with their respective hunks; identify shared support and uncertain membership
+  rather than forcing one classification from chronology or shared files.
+
+Carry these fields into any per-commit summary handed to a calling workflow.
+Use the code timeline and adoption evidence to classify development lines, not
+commit titles alone. Later refactoring or delayed adoption informs ownership;
+it does not by itself make a meaningful source milestone disposable.
+
 ## Hand off a reusable feature map
 
 Use stable feature labels independent of source commit numbers. Scale the detail
