@@ -25,6 +25,12 @@ during execution. Do not publish or replace the user's branch implicitly.
   original inventory and semantic timeline, complete redistribution map,
   ordered target commits, authorized fixes, per-boundary checks, final-tree
   target, and unresolved decisions. Missing decisions block affected work.
+- Require the selection mode: partial feature picking, or a full rebuild with
+  focused work first and other features last. Follow the
+  [scope and suffix contract](references/scope-and-safety.md#partial-porting-and-presence-only-suffixes).
+  An explicit presence-only suffix waiver overrides the validation gates below
+  for that suffix; preserve and report its contributions without claiming it
+  verified. Out-of-focus work alone does not imply a waiver.
 - For another destination branch, require its pinned `DESTINATION_BASE`, the
   fully/partially ported and superseded mapping, remaining dependency closure,
   and an integration-target contract. Follow

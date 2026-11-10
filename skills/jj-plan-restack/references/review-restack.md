@@ -5,7 +5,18 @@ contract. Resolve explicit `BASE`, `SOURCE_TIP`, `CLEAN_TIP`, the fixed read
 operation, and any corrected-source or extraction target. Read without
 snapshotting the working copy. Do not move refs, repair commits, or write code.
 
-Establish whether the result is complete. For a partial rebuild, record the
+First distinguish a completed selective port from an unfinished rebuild. Judge
+a selected port only against its requested capabilities and dependency closure;
+excluded/deferred features are not missing deliveries. For a full focused
+rebuild with an explicit presence-only suffix waiver, apply behavior/design
+review, per-commit verification, and target equality only through `FOCUS_TIP`.
+Check the suffix's requested contribution presence and source/ref preservation,
+and report known gaps without treating waived checks as completion blockers.
+Do not infer a waiver or certify the full stack from the prefix. These scope
+rules override whole-stack review requirements below, including full-target
+equality and validated intermediate boundaries for the waived suffix.
+
+Establish whether the result is complete. For an unfinished rebuild, record the
 last validated milestone and any later unvalidated work separately. Apply the
 final-target equality checks below only to a completed result. Compare a partial
 result to that milestone's intended content and acceptance criteria, using its

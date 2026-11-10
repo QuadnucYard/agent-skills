@@ -4,6 +4,42 @@ Use when the user requests only part of a stack, including stripping features
 from the rebuilt result. The original stack and refs remain preserved. Do not
 drop behavior merely because a commit looks unrelated or is difficult to apply.
 
+## Partial porting or a focused full rebuild
+
+Establish which output the user wants; feature picking need not rebuild the
+whole source stack. Both modes select semantic changes across commits: each
+source commit may contribute focused hunks, shared prerequisites, and unrelated
+work. Do not treat commit boundaries as selection boundaries.
+
+- **Partial restack/porting (feature picking):** rebuild only the requested
+  capabilities and their available dependency closure. Record other work as
+  excluded or deferred, with source ownership and the missing prerequisites
+  that would make later porting possible. An unrelated feature whose dependency
+  has not been ported does not block the selected result. If a selected change
+  needs that dependency, include an authorized prerequisite, use an evidenced
+  adaptation, or mark that selected part blocked; never silently omit it or
+  expand the selection. Deferred work need not be reconstructed or verified.
+  Compare the completed selection to its extraction/integration target, not
+  to the full source. This is a completed scoped result, not an interrupted
+  attempt to rebuild every feature.
+- **Full rebuild with a focused prefix:** account for and rebuild all requested
+  source work, placing the features of interest first and the rest in a trailing
+  suffix. Keep prerequisites in dependency order. If focused work depends on
+  out-of-focus work, move the necessary support into the verified prefix or
+  report the ordering conflict; the prefix must work without its suffix.
+  Out-of-focus does not mean excluded. If the user explicitly requests only
+  its presence, preserve that suffix without requiring design/behavior review,
+  per-commit build/tests, or a validated suffix target. Record the waiver and
+  exact boundary; otherwise normal whole-stack verification applies.
+
+For presence-only work, retain source-to-result contribution accounting and
+source/ref protections. Record known conflicts, missing dependencies, and
+unverified behavior without repairing them merely to satisfy waived checks.
+Do not claim the complete stack is verified. Reserve later validation at the
+first deferred prerequisite/feature boundary, with the evidence still needed.
+This trailing-suffix mode differs from behavior-preserving mainline residuals,
+which remain on separate branches when that contract is requested.
+
 ## Behavior-preserving mainline
 
 When the user requires a behavior-preserving mainline, record the exact behavior

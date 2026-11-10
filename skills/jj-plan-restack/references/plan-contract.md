@@ -8,6 +8,14 @@ to implement recommended fixes outside the user's authorized scope.
 
 For a different destination base, apply the contract below in addition to these
 contents; it replaces same-base source-tree equality and prefix assumptions.
+Also record whether the request is partial feature picking or a full rebuild
+with a focused prefix, following [scope modes](feature-extraction.md#partial-porting-or-a-focused-full-rebuild).
+Map focused, prerequisite, excluded/deferred, and trailing contributions per
+source hunk. Record missing-dependency deferral triggers. For an explicitly
+presence-only suffix, name the verified-prefix boundary, waived checks, intended
+suffix presence, and separate completion criteria. Whole-stack validation and
+validated-target requirements then apply only to the verified scope; source/ref
+preservation and contribution accounting still cover the whole result.
 
 1. **Scope and snapshot.** Repository, explicit base and source tip, linear
    source range, relevant refs and working-copy state. Keep exact commit IDs,

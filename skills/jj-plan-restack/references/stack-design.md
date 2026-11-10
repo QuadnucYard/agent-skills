@@ -83,6 +83,13 @@ meaningful introduction and removal states even when both vanish at the tip.
 
 ## Boundaries and order
 
+For partial feature picking, sequence only the selected dependency-closed work;
+defer unrelated work blocked by unported prerequisites. For a full focused
+rebuild, place out-of-focus features last, splitting mixed source commits by
+contribution. Dependency order takes precedence: a focused prerequisite cannot
+remain only in the suffix. Carry any explicit presence-only verification waiver
+with the suffix's owners; do not infer a waiver from low priority alone.
+
 When complexity affects boundaries or proposed preparation, distinguish inherent
 feature rules and interactions from integration difficulty imposed by the existing
 architecture. Cite contracts and source paths; record mixed causes or uncertainty

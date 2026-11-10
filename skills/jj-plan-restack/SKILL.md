@@ -62,6 +62,10 @@ report defects and proposed owners without repairing history.
 - For selective feature extraction, follow [extraction scope](references/feature-extraction.md).
   Record retained and excluded capabilities, dependency closure, and the expected
   content delta. Extraction is a content change, not a waiver of verification.
+- Distinguish [partial porting from a full rebuild with a focused prefix](references/feature-extraction.md#partial-porting-or-a-focused-full-rebuild).
+  Select semantic contributions across mixed commits. In a full rebuild, move
+  out-of-focus work last; an explicit user request may make that suffix
+  presence-only, overriding whole-stack review/validation requirements for it.
 - If the mainline must preserve behavior, record the behavior baseline and route
   every feature or fix that changes it to residuals, including work already in
   the source stack. Preserve requested reference work on side branches at the

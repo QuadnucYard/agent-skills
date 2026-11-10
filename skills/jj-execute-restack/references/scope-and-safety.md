@@ -1,5 +1,35 @@
 # Scope And Safety
 
+## Partial porting and presence-only suffixes
+
+For partial restack/porting, reconstruct selected semantic contributions from
+all relevant source commits, not just whole picked commits. Keep unrelated work
+excluded/deferred even when it cannot yet port because its prerequisites are
+missing. Only missing dependencies of selected work block that work. Map any
+required support or authorized adaptation explicitly; do not silently broaden
+the selection. Use the extraction/integration target for the selected result.
+
+For a full focused rebuild, build and verify the dependency-complete focused
+prefix first, then append the remaining features in dependency order. Record
+its exact endpoint as `FOCUS_TIP`, its independently prepared comparison target
+as `FOCUS_EXPECTED_TIP`, and preserve that endpoint under a fresh focus bookmark
+before appending the suffix. The focus bookmark is an additional workflow-owned
+ref; it must not advance into unverified suffix work. Record its checkpoint and
+any rewritten identity explicitly. The full result still uses `CLEAN_TIP` and
+the dedicated result bookmark; that name alone does not certify validation.
+
+Only an explicit user request permits a presence-only suffix. For that suffix,
+waive design/behavior review, per-commit checks, validated target preparation,
+and verified-child/validated-bookmark advancement gates; reconstruction and
+correction children may proceed without those checks. Preserve original history,
+scope mutations to workflow-owned revisions, and account for each requested
+contribution's actual destination. A subject-only placeholder is not presence.
+Record known conflicts, unavailable dependencies, and skipped verification;
+do not undertake unrequested repairs. If ordering would require focused work to
+depend on this suffix, return the boundary to planning. Report completion as a
+verified focused prefix plus a preserved, unverified suffix, never a verified
+full stack. Normal validation remains required when no waiver exists.
+
 ## Behavior-preserving mainline
 
 If the plan requires behavior preservation, its explicit baseline governs the

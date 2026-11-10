@@ -2,6 +2,23 @@
 
 ## Required validation
 
+Apply validation to the requested scope. A completed partial port is checked
+against its selected-feature target; unrelated deferred work and its missing
+dependencies do not block it. Selected work still requires its prerequisites.
+
+For a full rebuild with an explicit presence-only suffix waiver, the contract
+in [scope and safety](scope-and-safety.md#partial-porting-and-presence-only-suffixes)
+overrides the whole-stack gates and definition of done below. Apply full
+per-commit review/checks and target equality to `FOCUS_TIP` against
+`FOCUS_EXPECTED_TIP`. Preserve the focus bookmark while the result bookmark
+reaches the full `CLEAN_TIP`. For the suffix require contribution presence and
+source/ref preservation accounting, not behavior checks, design review, or
+validated full-tip equality. Known suffix failures/conflicts or waived checks
+do not block this requested delivery and must be reported as unverified.
+Do not let suffix work rewrite the validated prefix without invalidating and
+rechecking affected prefix evidence. Report the verified scope, full rebuilt
+scope, waiver, skipped checks, and deferred prerequisites separately.
+
 For a behavior-preserving mainline, verify the recorded baseline contract at
 every retained boundary. Reject any feature/fix that changes it, even when
 folded into a refactor or present in the source. If residual behavior was removed
