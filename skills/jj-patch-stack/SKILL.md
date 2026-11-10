@@ -125,6 +125,21 @@ Standalone insertions have no squash destination. Mark them as retained final ch
 
 Explain that applying the patches rewrites target and descendant commit IDs, automatically rebases descendants, and normally abandons emptied patch changes. Target change IDs remain usable across these rewrites. This ends the preparation phase's commit-ID preservation guarantee. Approval must cover the affected history; it does not authorize pushing or bypassing configured immutable revisions.
 
+### Script for conflict-free stacks
+
+Use [squash_patches.py](scripts/squash_patches.py) from the target repository with Python 3.10+ and `jj` on `PATH`. Give it the reviewed full commit IDs as `PATCH_COMMIT:TARGET_COMMIT` pairs, oldest first. Use the same target for its corrective patches. Replace `<skill-dir>` with the installed skill directory.
+
+```sh
+python "<skill-dir>/scripts/squash_patches.py" PATCH_1_COMMIT:TARGET_1_COMMIT PATCH_3_COMMIT:TARGET_3_COMMIT
+python "<skill-dir>/scripts/squash_patches.py" --apply REVIEWED_OPERATION PATCH_1_COMMIT:TARGET_1_COMMIT PATCH_3_COMMIT:TARGET_3_COMMIT
+```
+
+The first command previews the pairs and affected descendants. Review that output and use its operation ID with the same pairs only after the user authorizes the rewrite. Run with an empty working copy and exclusive access to the repository. The script uses change IDs across rewrites, keeps target descriptions, and compares each completed target with its reviewed patch tree. It stops on a mismatch or conflict and prints the starting operation ID. Earlier squashes can remain after a stop. Verify any trailing mapped revisions, affected bookmarks, and behavior after it succeeds, as in step 4 below.
+
+Use the manual sequence for stacks that expect temporary conflicts, need updated target descriptions, or lack a single cumulative patch chain.
+
+### Manual sequence
+
 Once application is authorized:
 
 1. Recheck `jj --no-pager status` and the relevant `jj --no-pager log`. Confirm that the patch/target mapping still matches the reviewed commit IDs, inspect affected descendants and bookmarks, and preserve unrelated working-copy edits. If the reviewed content or rewrite scope changed, refresh the guide and obtain approval for that change before applying. Record the pre-application operation ID with `jj --no-pager op log --limit 1` for recovery; do not run recovery commands automatically.
