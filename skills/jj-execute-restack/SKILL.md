@@ -25,6 +25,11 @@ during execution. Do not publish or replace the user's branch implicitly.
   original inventory and semantic timeline, complete redistribution map,
   ordered target commits, authorized fixes, per-boundary checks, final-tree
   target, and unresolved decisions. Missing decisions block affected work.
+- For another destination branch, require its pinned `DESTINATION_BASE`, the
+  fully/partially ported and superseded mapping, remaining dependency closure,
+  and an integration-target contract. Follow
+  [destination preparation](references/scope-and-safety.md#another-destination-base);
+  old-source-tip equality does not apply to this mode.
 - Compare exact source commit identities, trees, relevant refs, and working-copy
   state to the plan. Short change IDs alone cannot detect rewritten versions.
   Drift blocks affected mutations until an updated plan is available; use the
@@ -58,9 +63,12 @@ during execution. Do not publish or replace the user's branch implicitly.
    Record their source mapping and inspect the complete intentional delta.
    Pin the corrected source with a fresh immutable tag when fixes exist; it is
    now `OLD_TIP`, the corrected full source. Without fixes, reuse the source tag.
-   For extraction, prepare the separate retained-feature target described in
+   For same-base extraction, prepare the separate retained-feature target described in
    [scope and safety](references/scope-and-safety.md#prepare-an-extraction-target).
-   Set `EXPECTED_TIP` to that pinned target; otherwise it is `OLD_TIP`.
+   For another destination base, prepare and pin the integration target using
+   the destination-preparation contract, composing extraction when requested.
+   Set `EXPECTED_TIP` to the applicable pinned target; only a same-base rebuild
+   without extraction uses `OLD_TIP` directly.
 2. **Build one milestone.** Follow [reconstruction](references/reconstruction.md)
    from the recorded `REBUILD_BASE`. Use original diffs and milestone trees,
    duplication only for a small manually confirmed reusable slice, and final-state
@@ -74,7 +82,8 @@ during execution. Do not publish or replace the user's branch implicitly.
    owners and affected descendants oldest first.
 4. **Finish.** Prove clean-tip tree equality with `EXPECTED_TIP`, and that
    the pre-fix-to-clean delta contains precisely the authorized fixes and
-   extraction changes. Audit the target delta independently of the rebuilt tip.
+   extraction changes, plus the accounted destination integration delta when
+   changing bases. Audit the target delta independently of the rebuilt tip.
    Verify
    preserved source IDs/refs, retained-prefix identity, separate suffix, semantic
    milestones, and per-commit evidence. Apply the
@@ -107,7 +116,7 @@ description-only rewrites, prove those trees unchanged, record old-to-new exact
 identities, and recheck descriptions, graph, refs, and metadata-sensitive checks;
 applicable behavior evidence may carry forward. See the
 [validation protocol](references/validation-and-recovery.md) for details. A no-op
-needs no clean bookmark; extraction with no rebuilt suffix follows the explicit
+needs no clean bookmark; extraction or destination integration with no rebuilt suffix follows the explicit
 empty-result rules there.
 
 Report findings addressed, final order and source mapping, safety tags, clean

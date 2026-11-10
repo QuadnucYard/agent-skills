@@ -16,6 +16,7 @@ before each operation.
 | One feature spanning implementation, integration, and tests | Keep together as a coherent vertical slice. |
 | Several features mixed across crates or layers | Split by semantic feature, including each feature's integration and tests. |
 | Selected features excluded from the result | Reconstruct the dependency-closed retained set; compare to the separately pinned extraction target, accounting for all excluded hunks and shared support. |
+| Rebuild onto another branch, often a newer trunk | Start at the pinned destination; skip evidenced fully ported/superseded work and rebuild only the still-needed remainder of partial ports. Compare to the independent integration target. |
 | Pure mechanical movement | Isolate from behavior when both commits remain checkable. |
 | Accidental/noise change | Omit only with approved content change; otherwise preserve it in a coherent commit. |
 | Deletion/removal | Treat as a first-class change; use `jj revert` for a known duplicate change, then add any replacement later. |
@@ -40,6 +41,11 @@ and hunk ownership. For example, restoring a later snapshot can hide a missed
 comment update by introducing it in the wrong commit; fix its actual owner.
 To pick all or most of one change, use `jj duplicate` within the confirmed-slice
 limits below. Reconstruct substantially redistributed changes from diffs and edits.
+
+On a different destination base, original snapshots are evidence of intent,
+not replacement trees. Restoring them can erase newer destination work or
+resurrect superseded code. Use only planned remaining deltas and adaptations;
+state restoration must target the independently verified integration state.
 
 ### History-aware selective reconstruction
 

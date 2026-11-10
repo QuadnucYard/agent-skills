@@ -49,7 +49,11 @@ report defects and proposed owners without repairing history.
   textual applicability does not establish semantic dependency or ownership.
 - Propose fixes with acceptance criteria and destination owners; do not implement
   or commit them. Distinguish authorized fixes from recommendations and unresolved
-  behavior decisions. A history-only request preserves the source tree.
+  behavior decisions. A same-base history-only request preserves the source tree.
+- When rebuilding onto another branch, typically a newer trunk, follow
+  [destination-base planning](references/plan-contract.md#another-destination-base).
+  Pin the destination separately from the source base; account for fully or
+  partially ported and superseded work before choosing retained commits.
 - Conflicts already present in the original stack may result from intentional
   feature removal. Inspect the conflicting sides, removal history, and stated
   requirements before proposing a resolution. Do not plan to restore an
@@ -72,7 +76,7 @@ report defects and proposed owners without repairing history.
   reserve optional possibilities with a brief note and minimal existing boundary.
   Essential uncertainty needs bounded investigation or redesign before dependent
   execution. If unsound behavior already exists in the source, report it and seek
-  an authorized correction; a history-only restack must still preserve the tree.
+  an authorized correction; a same-base history-only restack must still preserve the tree.
 
 ## Recognize features and discuss with the user
 
@@ -102,7 +106,8 @@ again before finalizing the revised boundaries.
 ## Deliver the plan
 
 Use the [handoff contract](references/plan-contract.md). Retain the longest
-unchanged prefix; a later fix targeting it moves the affected boundary into the
+unchanged prefix compatible with the destination ancestry; a later fix
+targeting it moves the affected boundary into the
 rebuilt suffix. If no changes are needed, report a no-op.
 
 Use short jj change IDs with descriptions in user-facing material; keep exact

@@ -26,14 +26,22 @@ this review. Reconcile source and rebuilt capabilities, adoption, and ownership;
 discuss inferred feature boundaries before finalizing boundary findings. An
 existing plan or matching final trees do not replace this step.
 
-- History only: require source-to-clean tree equality.
+- Same-base history only: require source-to-clean tree equality.
+- Another destination base: resolve the pinned destination and independent
+  integration target. Require clean-to-target equality, not old-source-to-clean
+  equality. Audit destination-to-target and source-to-target deltas separately.
+  Verify fully/partially ported and superseded dispositions against destination
+  implementations, consumers, and tests; only the still-needed remainder belongs
+  in rebuilt commits. Check preserved destination fixes/removals and actual-base
+  compatibility. An empty patch or conflict does not justify skipping work.
+  Apply this comparison mode together with fixes/extraction when requested.
 - Behavior-preserving mainline: verify the explicit baseline contract and reject
   behavior-changing features/fixes on the mainline, including ones absorbed into
   refactors. Check residual side-branch ownership, branch points, dependencies,
   and reference bookmarks; use extraction equality when the source mixes both.
-- Authorized fixes: require equality to the verified corrected source and
+- Same-base authorized fixes: require equality to the verified corrected source and
   account for the complete original-to-corrected delta.
-- Feature extraction: require equality to the independently prepared retained
+- Same-base feature extraction: require equality to the independently prepared retained
   target and audit the full-source-to-target delta against retained/excluded
   ownership and dependency decisions. Follow [extraction scope](feature-extraction.md).
 
@@ -84,10 +92,13 @@ delta separately, even when clean-to-target is empty.
    available; report unavailable evidence. Do not spend review on format or lint.
 5. Verify original commit identities and existing refs, safety/target tags,
    retained-prefix identity, and a separate rebuilt suffix rooted at the declared
-   base. Inspect conflicts and unexplained empty or temporary commits. A declared
-   no-op may share the original tip. Extraction with no rebuilt suffix may end
+   base. For another destination, distinguish source commits already inherited
+   through destination ancestry from reused prefix or newly rebuilt work. Inspect
+   conflicts and unexplained empty or temporary commits. A declared same-base
+   no-op may share the original tip. Extraction or fully supplied/superseded work
+   with no rebuilt suffix may end
    at `REBUILD_BASE` with an optional fresh result bookmark; it still requires
-   target verification and complete exclusion accounting. A stripped feature
+   target verification and complete exclusion/skip accounting. A stripped feature
    cannot remain in a reused prefix without an explicit valid removal milestone.
 
 ### Check for restack artifacts

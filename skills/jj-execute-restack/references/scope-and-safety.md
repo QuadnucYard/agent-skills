@@ -37,7 +37,10 @@ planning and repeat the source-fix phase with fresh target records and tags.
 
 ## Prepare an extraction target
 
-Ordinary restacks set `EXPECTED_TIP=OLD_TIP`. When the plan explicitly excludes
+This preparation applies on the same base. For another base, compose extraction
+into the integration target in [destination preparation](#another-destination-base).
+
+Same-base restacks without extraction set `EXPECTED_TIP=OLD_TIP`. When the plan explicitly excludes
 features, `OLD_TIP` remains the corrected full source; prepare a separate target
 before reconstructing. Require a complete retained/excluded feature map,
 source-hunk ownership, dependency closure, authorized adaptations, and expected
@@ -65,6 +68,37 @@ With fixes, separately validate pre-fix-to-`OLD_TIP` as fixes and
 overlapping changes can mask mistakes. A changed selection or adaptation returns
 to planning and gets a fresh target/tag; never move an old tag or accept an
 unexpected rebuilt delta as the new specification.
+
+## Another destination base
+
+Keep `BASE` and `OLD_STACK` tied to the source. Verify and protect the exact
+`DESTINATION_BASE` commit/tree from the plan and set `REBUILD_BASE` to it,
+rather than defaulting to `BASE` or an unrelated source-prefix tip. Normally
+there is no reusable source prefix; original commits already in destination
+ancestry are base-provided history, not replay candidates. Never rewrite the
+destination or move its existing refs. Destination drift requires replanning,
+not silently following a moved branch.
+
+Before clean reconstruction, prepare the independent integration target as
+new children of the pinned destination on a separate preparation line. Apply
+only the mapped still-needed source intent, authorized fixes/extraction, and
+planned adaptations. Skip fully ported or superseded work; for partially ported
+changes apply only the unsupplied remainder. Verify destination implementations,
+consumers, and tests support every skip and dependency substitution. A conflict,
+empty patch, or matching subject does not prove equivalence. Uncertain or newly
+discovered supersession returns to planning before dropping affected hunks.
+
+Preserve destination fixes, intentional removals, compatibility, and migrations.
+Do not restore the old full tree over the destination. When composing extraction,
+exclude only the planned source contribution; removing destination-provided
+behavior requires explicit scope. Audit destination-to-target and source-to-target
+diffs against the mapping, separating inherited destination changes, skipped
+source work, adaptations, and authorized fixes/exclusions. Run the relevant
+integration/behavior checks, pin the verified target with a fresh immutable tag,
+and record its exact identity as `EXPECTED_TIP`. Never copy the rebuilt tip to
+prepare it. The old source and destination need not equal this tree; clean-to-
+`EXPECTED_TIP` equality remains required. If nothing remains to port, validate
+the destination as the target and result, accounting for every skipped change.
 
 ## Freeze the original
 
@@ -142,7 +176,7 @@ confirmed as fully or mostly suitable for the clean history. Duplication must
 not collectively reproduce the original stack, even through several separate
 commands or slices.
 
-Verify the plan's longest initial prefix whose content, descriptions, and order
+For same-base reconstruction, verify the plan's longest initial prefix whose content, descriptions, and order
 already fit the final plan. Record its full
 commit IDs and set `REBUILD_BASE` to its tip, or `BASE` if no prefix qualifies.
 A later fixup targeting a prefix commit makes that commit part of the suffix

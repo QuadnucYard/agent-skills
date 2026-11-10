@@ -48,7 +48,10 @@ Present all three views; a final-tree partition cannot replace history analysis:
    squash, absorb, reorder, or omit), and evidence-backed reason. Enumerate all
    owners for distributed fixups. Explain omissions as noise, invalid partial
    work, or explicitly scoped feature exclusions rather than silently dropping
-   a reviewable milestone. In extraction, map excluded hunks and dependency
+   a reviewable milestone. For another destination base, also map fully/partially
+   ported and superseded work to evidenced destination contracts; skip only the
+   supplied or obsolete portion and assign remaining hunks to clean owners.
+   In extraction, map excluded hunks and dependency
    adaptations as fully as retained work; follow [extraction scope](feature-extraction.md).
    Carry development-line labels into destinations so regrouping remains
    traceable; justify any consolidation of later refactors or delayed adoption
@@ -127,7 +130,9 @@ adoption rather than size or clean patch application.
 - Preserve meaningful migration, compatibility, and removal stages. Net-zero
   content does not prove that intermediate behavior is disposable.
 - Retain the longest initial prefix whose content, descriptions, and order fit
-  the plan. A later correction targeting a prefix owner moves that owner and
+  the plan and whose ancestry satisfies the requested destination base. For a
+  different base, follow the destination/prefix contract in `plan-contract.md`.
+  A later correction targeting a prefix owner moves that owner and
   subsequent changes into the rebuilt suffix. Never retain scattered originals
   after divergence.
 

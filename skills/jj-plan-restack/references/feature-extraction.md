@@ -25,7 +25,7 @@ dependency conflict; do not silently relax behavior preservation.
 Use the extraction target protocol below when the source mixes retained work
 and residuals. Verify mainline behavior against the recorded baseline, and its
 tree against the independently prepared target. Audit every residual's content,
-branch point, and preservation destination. Ordinary history-only restacks still
+branch point, and preservation destination. Same-base history-only restacks still
 preserve the source tree; they do not implicitly request this narrower mainline.
 
 ## Define the retained contract
@@ -53,6 +53,12 @@ A feature added and removed within the source still needs an explicit historical
 disposition. The retained prefix ends before the first excluded or adapted owner.
 
 ## Specify the target before rebuilding
+
+For another destination base, compose extraction into the integration target
+described in [the handoff contract](plan-contract.md#another-destination-base).
+Prepare it on the destination, preserving destination-provided behavior unless
+its removal is explicitly authorized; the same-base child-of-source preparation
+below does not apply.
 
 The handoff names the extraction request, retained/excluded feature map,
 dependency decisions, authorized adaptations and fixes, and expected full delta

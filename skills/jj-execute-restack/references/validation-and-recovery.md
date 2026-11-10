@@ -13,8 +13,9 @@ source mapping and branch point separately. Account for unimplemented residual
 recommendations without creating commits. Tree equality alone does not prove behavior
 preservation, and baseline defects are not permission to change that baseline.
 
-The clean tip must equal `EXPECTED_TIP`: the independently prepared extraction
-target when features are excluded, otherwise `ORIGINAL_TIP`. `ORIGINAL_TIP` is
+The clean tip must equal `EXPECTED_TIP`: the independently prepared integration
+target for another destination base (composing extraction when requested), the
+extraction target for same-base exclusions, otherwise `ORIGINAL_TIP`. `ORIGINAL_TIP` is
 the corrected full source when fixes exist, otherwise the pre-fix source.
 
 ```sh
@@ -29,6 +30,16 @@ Check retained behavior and interactions and absence of excluded entry points.
 Verify the target was prepared and validated independently of clean history;
 matching a target copied from the rebuilt tip proves nothing. Never claim
 equality to a full-source tree when extraction intentionally changes it.
+
+For another destination base, old-source-to-clean equality is not required.
+Verify the pinned destination and inspect destination-to-target as well as
+source-to-target diffs. Account separately for inherited destination changes,
+fully/partially ported or superseded work, remaining contributions, and planned
+adaptations/fixes/exclusions. Verify skip evidence, dependency substitutions,
+destination fixes/removals, and behavior against the actual parent contracts.
+Do not use final-tree equality to excuse replaying already supplied changes or
+resurrecting obsolete implementations. Report the destination, integration
+target, and skip mapping alongside the source and clean identities.
 
 Tip equivalence is necessary but insufficient. Compare the rebuilt sequence to
 the semantic timeline recorded during analysis. Every meaningful incremental
@@ -117,13 +128,20 @@ Verify the original commit-ID list is unchanged, that `jj tag list` still
 shows `ORIGINAL_TAG` on the recorded original tip, and that `jj bookmark list`
 shows `CLEAN_BOOKMARK` on `CLEAN_TIP` when a clean bookmark was created. Inspect
 the final graph and confirm the
-clean stack is a separate suffix rooted at `REBUILD_BASE`. Its intersection
+clean stack is a separate suffix rooted at `REBUILD_BASE`. For same-base rebuilding, its intersection
 with the original range must be exactly the recorded retained prefix; no
 original suffix commit may appear in the rebuilt suffix. If nothing needed
 rebuilding in a history-only no-op, the two tips may be identical and no clean
 bookmark is required. Extraction can instead end at `REBUILD_BASE` with no
 rebuilt suffix and an optional fresh result bookmark. Verify target equality
 and every exclusion even though no new clean commit exists; this is not a no-op.
+
+For another destination base, exclude destination ancestry when computing the
+new suffix; source commits already inherited there are not reconstruction
+rewrites. When all work is supplied or superseded, `CLEAN_TIP=REBUILD_BASE` is
+a valid completed integration after target verification and complete skip
+accounting. Preserve the destination and all original IDs/refs in either case.
+
 Inspect the full graph:
 
 ```sh
@@ -213,7 +231,8 @@ boundaries, reuses only still-valid evidence, and makes no mutations.
   when no suffix was rebuilt. Extraction to `REBUILD_BASE` still meets the
   target contract.
 - Clean and expected-target trees are identical; any difference from the full
-  source is exactly the verified authorized fixes/extraction delta. Extraction
+  source is exactly the verified authorized fixes/extraction delta and, for
+  another base, the accounted destination integration delta. Integration/extraction
   target tags and their preparation evidence remain preserved unchanged.
 - Every meaningful incremental state in the original semantic timeline has a
   validated clean destination, including features absent from the final tree;
