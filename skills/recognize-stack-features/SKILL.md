@@ -10,7 +10,8 @@ license: MIT
 
 # Recognize Stack Features
 
-Recover the capabilities a stack actually delivers and the changes each needs.
+Recover the capabilities a stack actually delivers, the changes each needs, and
+how they combine to address the larger problem.
 Produce an evidence-backed feature map for a calling workflow. Recognition alone
 does not authorize code edits, history changes, or implementation of missing work.
 
@@ -136,6 +137,36 @@ uncertain causes. Do not treat architectural entanglement as proof that outcomes
 are one feature. Record the actual dependency and any bounded separation proposal
 without assuming that the architecture can be changed within this task.
 
+## Tell the big picture
+
+Identify whether the stack's features combine into a solution to a larger
+problem. State that problem, the intended outcome, and the observable conditions
+that would establish success. Use supplied requirements when available; label
+inferred goals and success conditions as provisional. Do not invent a unifying
+goal for unrelated work or treat the stack's implemented subset as the full goal.
+
+Keep the big-picture narrative focused on the primary goal. Omit internal fixes,
+refactors, and migrations from that narrative unless they are themselves the
+primary goal; retain their ownership, dependencies, and evidence in the detailed
+feature map and commit inventory. Assess their effect on goal completion without
+turning supporting implementation work into additional headline goals.
+
+Explain how the features cooperate to produce the overall outcome, including
+base-provided capabilities and prerequisites outside the stack. Connect each
+required success condition to feature labels and concrete end-to-end evidence.
+Check the composition itself: individually complete features may still leave
+missing integration, incompatible contracts, or uncovered paths between them.
+Serving one larger goal does not erase independently meaningful feature boundaries.
+
+Assess whether the selected tip meets the overall goal: met, partially met,
+unmet, or unverified, with reasons grounded in the evidence. Distinguish known
+delivery gaps from missing validation or uncertain intent; passing component
+tests alone does not prove the combined solution works. Keep intermediate
+achievements separate from what remains usable at the tip. Identify required
+remaining work separately from optional future extensions, naming the existing
+owners and contracts those extensions would build on without counting them as
+present delivery.
+
 ## Record each commit's role and later fate
 
 Include a source-commit inventory alongside the feature map. For every commit,
@@ -168,6 +199,11 @@ commit titles alone. Later refactoring or delayed adoption informs ownership;
 it does not by itself make a meaningful source milestone disposable.
 
 ## Hand off a reusable feature map
+
+Lead with the big picture: the larger problem and primary goal(s), how
+the features form the solution, and the goal assessment with supporting evidence
+and remaining gaps. Preserve this assessment when handing the map to a calling
+workflow so it can judge overall completion as well as individual features.
 
 Use stable feature labels independent of source commit numbers. Scale the detail
 to the stack, but retain these facts for each candidate:
@@ -206,5 +242,6 @@ name and consume this map; this skill requires no companion skill.
 | A helper changes; unchanged production callers already reach it. | Adoption can be complete without editing a caller; trace the changed effect through those callers. |
 | A complete export path is followed by optional compression and its wiring. | Two vertical capabilities if export works without compression; compression depends on export. |
 | Export and upload share a new encoder. | Distinct outcomes can share support; assign its introduction to a complete adopter or justify independent value. |
+| Export and upload are complete, but the stated goal is automatic off-site backup and nothing connects them. | Preserve the two feature boundaries; the larger goal is only partially met because the automatic end-to-end path is missing. |
 | A new API has only tests and an unused export. | Incomplete or unused support unless an independently useful external contract is established. |
 | A migration enables a real compatibility path and a later commit removes it. | Preserve the meaningful intermediate outcome even if the tip no longer contains it. |
