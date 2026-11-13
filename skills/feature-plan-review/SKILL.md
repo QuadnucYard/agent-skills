@@ -113,6 +113,15 @@ not formatting or linting. Scale review depth to the actual risk.
 - **Design adoption:** Check actual callers, ownership, and integration. Flag
   unused abstractions, duplicate sources of truth, old paths left active, and
   incomplete migrations. Resolve consequential ambiguity before dependent work.
+- **Concrete implementation design:** Require important modules with existing or
+  proposed locations, responsibilities, key function or method signatures,
+  input/output/error contracts, and concrete caller wiring. Require definitions
+  of important new or changed data structures with fields and types, variants,
+  relationships, invariants, and enforcement; identify existing types reused
+  unchanged. Walk a fixture through these interfaces and state transitions.
+  Conceptual layers, diagrams, or file lists alone are insufficient. Missing
+  consequential design choices block dependent steps; do not demand speculative
+  implementation detail for deferred possibilities.
 - **Complexity:** Compare with the simplest design satisfying the requirements.
   Require an explicit distinction between complexity inherent in required rules,
   states, and interactions and integration difficulty caused by the existing
@@ -176,12 +185,24 @@ not formatting or linting. Scale review depth to the actual risk.
   deferred work. High value does not establish high confidence or low risk.
   Optional deferrals need reasons, consequences, and reconsideration triggers.
   Do not invent deadlines or agreement.
+- **Acceptance and regression fixtures:** Require concrete reproducible cases in
+  the plan or referenced repository fixtures, with initial state, input or action,
+  independently justified expected result, execution boundary and command or
+  harness, and owning step. New-feature fixtures must define acceptance criteria
+  that implementation will make pass. Fix fixtures must expose the reported
+  defect on unfixed behavior and pass after the repair with the same expectation;
+  unrelated harness or build failures do not count. A promise to add tests or
+  supplementary unit tests alone is insufficient. Missing fixtures block the
+  affected implementation steps; distinguish planned checks from observed evidence.
 - **Effective tests:** Require a meaningful setup, expected observable result, and
   plausible defect each check detects. Could it pass with the behavior broken?
   Flag implementation-mirroring assertions, no-crash checks, and mocks that hide
   the contract under review. Cover relevant boundaries and failures at appropriate
   test levels; avoid redundant coverage. Concrete manual checks can suffice for
-  low-impact changes. Reviewing a plan does not require running future tests.
+  low-impact changes when expressed as reproducible fixtures with concrete
+  expectations. Reject tautological checks, expectations derived from the same
+  implementation, unchecked copied output, and assertions only about mock setup.
+  Reviewing a plan does not require running future tests.
 - **Future extensions:** Name foreseeable variation, the boundary accommodating
   it, and a concrete expansion trigger. Resolve decisions that constrain it now
   through clear ownership, interfaces, data contracts, and dependency direction.

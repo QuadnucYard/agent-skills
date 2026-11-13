@@ -58,6 +58,9 @@ artifact. Carry forward only what downstream work needs:
   revisions, dependencies, and the next concrete action.
 - Requirement-to-increment coverage, findings and their owners, checks actually
   run against identified content, and remaining completion gaps.
+- Concrete module interfaces and important data structure definitions, plus
+  acceptance and regression fixtures with setup, inputs, independent expectations,
+  execution methods, owners, and observed or pending baseline results.
 - Complexity attribution: what is inherent in required behavior, what difficulty
   comes from the existing architecture, and what avoidable complexity the proposal
   adds. Carry evidence, mixed causes or unknowns, and consequences for effort,
@@ -116,7 +119,11 @@ code. Revise affected estimates or propose bounded preparation on that evidence;
 do not silently cut scope or expand the task into a broad refactor.
 
 For a bug fix, establish the violated contract and root cause before choosing a
-repair. Use a discriminating regression check when warranted. For performance
+repair. Carry a concrete regression fixture that fails for the defect before
+the repair and passes afterward with the same expectation. For new features,
+carry acceptance fixtures and implement the behavior to make them pass.
+Supplementary unit tests may cover other behavior; avoid tautologies and
+expectations derived from the implementation itself. For performance
 claims or uncertain experimental results, take the experiment route before
 treating a measurement as a design decision.
 

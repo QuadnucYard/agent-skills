@@ -32,6 +32,13 @@ preservation and contribution accounting still cover the whole result.
    criteria, authorized behavior changes, recommendations, and unresolved
    decisions. Give each proposed fix a stable label, verification, and clean
    destination. The executor will bind labels to actual verified top commits.
+   Include concrete module interfaces, caller wiring, and important data structure
+   definitions for planned changes, or identify unchanged contracts being reused.
+   Carry acceptance fixtures for features and regression fixtures for fixes,
+   including setup, input, independent expected result, execution method, and
+   owner. Require the executor to make feature fixtures pass and demonstrate fix
+   fixtures failing for the defect before repair and passing afterward without
+   weakening expectations. Separate planned checks from already observed results.
    Label design questions by priority and affected work, with resolution triggers.
    Keep immature optional features outside executable fixes and target commits;
    record only minimal extension possibilities. Essential immature designs require

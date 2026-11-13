@@ -198,9 +198,14 @@ and keep dependent implementation provisional.
   lives and which component enforces each important rule. Explain material design
   tradeoffs, compatibility or migration needs, and the boundaries reserved for
   foreseeable extensions without building speculative machinery.
+  Name the important modules and their existing or proposed locations, the key
+  functions or methods they expose, and their input, output, and error contracts.
+  Show signatures or equivalent interface definitions and concrete caller wiring;
+  conceptual layers or a diagram alone do not constitute an implementation design.
+  Distinguish inspected existing symbols from proposed ones.
 - **Important data types:** define the domain, state, and boundary types that carry
-  the feature's important contracts. Use concise declarations, schemas, or field
-  tables where they clarify the design. Specify meaningful fields and their types,
+  the feature's important contracts. Provide concrete declarations, schemas, or
+  field tables for important new or changed structures. Specify meaningful fields and their types,
   identity and relationships, valid variants or states, invariants, and how those
   invariants are enforced. Explain ownership and lifecycle, state transitions, and
   error representations where relevant. Cover serialization, persistence, and
@@ -296,8 +301,8 @@ For **each step**, provide:
    affected boundaries, prerequisites, and why it belongs at this point in the plan.
 2. **Actions:** concrete changes, in enough detail that implementation can start;
    identify relevant components without inventing uninspected file paths.
-3. **Acceptance and tests:** observable completion criteria, discriminating checks,
-   and any relevant failure or compatibility case.
+3. **Acceptance fixtures and tests:** concrete fixtures with observable completion
+   criteria, how to exercise them, and any relevant failure or compatibility case.
 4. **Confidence:** low, medium, or high, with supporting evidence, remaining
    uncertainty, and the next check that could increase or reduce confidence.
 5. **Commit boundaries:** the small, coherent commits that deliver the step,
@@ -313,6 +318,22 @@ checks from checks already performed. A confident design is not a verified resul
 
 ## Plan tests that can expose defects
 
+- Provide concrete fixtures for each new feature or fix in the plan, not just a
+  promise to add tests. A fixture is a reproducible case: setup or initial state,
+  specific input or action, independently justified expected output or state,
+  and the public boundary and command or harness that exercises it. Include the
+  case inline or reference an existing repository fixture; name its owning step.
+- For a new feature, the fixtures serve as acceptance criteria. Plan the
+  implementation to make them pass through the real behavior path.
+- For a fix, provide a regression fixture that fails on the unfixed behavior
+  because of the reported defect and passes after the repair. Plan to run the
+  same case and expectation before and after the fix; a missing harness, build
+  failure, or unrelated error does not demonstrate reproduction. Record observed
+  results only when actually run; otherwise mark the baseline check as pending.
+- Additional unit tests may cover rules, boundaries, and failure paths, but do
+  not replace the required acceptance or regression fixtures. Reuse existing
+  fixtures when they meet these requirements; no separate fixture file format
+  or test level is mandatory.
 - Tie each check to a requirement, risk, or plausible regression. State the input
   or setup, expected observable result, and the defect it would detect. If a test
   would still pass with that defect present, strengthen its assertion or replace it.
@@ -327,6 +348,10 @@ checks from checks already performed. A confident design is not a verified resul
   with the same algorithm under test, assert only that execution did not crash, or
   mock away the integration whose behavior needs verification. Use controlled
   dependencies when needed, while preserving the contract being tested.
+  Derive fixture expectations from requirements, established contracts, or an
+  independent oracle. Avoid tautologies such as comparing output with itself,
+  copying actual output into expectations without checking it, or asserting
+  only values configured on a mock.
 - Match effort to impact. Avoid brittle assertions about internal call order,
   snapshots without a behavioral purpose, and tests that merely mirror code.
   Identify manual or exploratory checks when automation would add little value;
@@ -376,6 +401,9 @@ in the plan itself rather than relying on this skill being loaded during executi
   the completed unit before advancing to the next. Keep related implementation
   and tests together; do not split merely by file or create broken intermediate
   commits to meet an arbitrary size or count.
+- Make the planned acceptance fixtures pass. For fixes, first demonstrate the
+  regression fixture failing for the defect, then passing after the repair.
+  Preserve independent expectations; do not weaken fixtures to fit the code.
 - If evidence requires changing the sequence or boundaries, update the remaining
   plan while preserving small, independently reviewable commits. Reconfirm any
   changed design decisions before dependent work.

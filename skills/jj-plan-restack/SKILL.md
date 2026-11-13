@@ -50,6 +50,20 @@ report defects and proposed owners without repairing history.
 - Propose fixes with acceptance criteria and destination owners; do not implement
   or commit them. Distinguish authorized fixes from recommendations and unresolved
   behavior decisions. A same-base history-only request preserves the source tree.
+- For planned features or fixes, specify the concrete affected modules, key
+  function signatures and caller wiring, and important data structures with
+  fields, types, variants, and invariants. Identify existing contracts reused
+  unchanged; conceptual descriptions alone do not settle implementation choices.
+  Do not introduce new design merely to reorganize unchanged history.
+- Provide reproducible fixtures for planned features and fixes: setup, input or
+  action, independently justified expected result, execution boundary and command
+  or harness, and destination owner. New-feature fixtures define acceptance
+  criteria the implementation must make pass. Fix fixtures must fail for the
+  reported defect before the repair and pass afterward with the same expectation;
+  unrelated build or harness failures do not count. Reuse source fixtures where
+  sufficient; distinguish planned checks from observed evidence. Additional unit
+  tests can cover behavior but cannot replace these fixtures. Avoid tautologies,
+  implementation-derived expectations, and mocks that hide the checked contract.
 - When rebuilding onto another branch, typically a newer trunk, follow
   [destination-base planning](references/plan-contract.md#another-destination-base).
   Pin the destination separately from the source base; account for fully or
