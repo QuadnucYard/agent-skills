@@ -56,6 +56,9 @@ scope; do not pretend the necessary upstream checks were completed.
   justification as a measure of the intended construct.
 - Separate evidence, assumptions, unresolved decisions, and proposed work. Ask
   targeted questions when missing answers can change validity or interpretation.
+  When asking the user to decide, use simple, direct language to explain what
+  each choice changes about what is measured or what the results can show.
+  Avoid jargon and overly formal wording. Use a short example if it helps.
   Propose justified choices where useful, but do not invent thresholds, sample
   sizes, historical decisions, or observations. Mark dependent work not ready
   while critical questions remain; continue useful independent work.

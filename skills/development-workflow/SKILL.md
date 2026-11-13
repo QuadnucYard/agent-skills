@@ -88,13 +88,20 @@ needed for implementation or substantive review.
 
 ## Connect requirements, planning, and implementation
 
+When asking the user to make a design decision, use the simplest precise
+language. Avoid jargon and overly formal wording. Say what each choice changes
+and include a short example when it helps the user see the difference.
+
 1. **Establish understanding.** Use `requirement-alignment-check` for a new or
    materially changed request, or to compare a refined specification with the
    original. Honor its confirmation requirement and reuse existing explicit
    confirmations. Request understanding does not authorize extra operations.
 2. **Plan where design is needed.** Use `feature-planning` for new capabilities
-   or extensions requiring design and delivery decisions. Carry confirmed
-   requirements into its design dialogue; preserve its pending-decision gates.
+   or extensions requiring design and delivery decisions, and for system
+   redesigns. Carry confirmed requirements into its design dialogue and
+   preserve its pending-decision gates. For redesigns, carry forward the current
+   behavior as the baseline and document any verified defect the redesign itself
+   would fix.
    A localized repair with an established contract can proceed through focused
    investigation and relevant existing coverage or a focused regression check
    without a full feature plan.

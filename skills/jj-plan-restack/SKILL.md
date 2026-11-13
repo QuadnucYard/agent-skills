@@ -110,7 +110,10 @@ source ownership, dependencies, meaningful intermediate or removed capabilities,
 and unresolved gaps. Explain proposed splits or combinations and justified
 future extension boundaries. Ask the user to confirm or correct the inferred
 feature scope, boundaries, and intent, highlighting decisions that affect
-retention, exclusion, or behavior. Wait for their response and reconcile it with
+retention, exclusion, or behavior. When asking the user to decide, use simple,
+direct language and say what each choice would keep, remove, or change. Avoid
+jargon and overly formal wording. Give a short example when it makes the
+difference clearer. Wait for their response and reconcile it with
 the evidence before finalizing the plan or boundary findings; do not treat
 silence as agreement. Prior explicit decisions can settle individual questions,
 but do not replace presenting and discussing the recognized map.

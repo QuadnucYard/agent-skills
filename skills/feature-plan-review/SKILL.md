@@ -24,6 +24,9 @@ not formatting or linting. Scale review depth to the actual risk.
   Verify reuse and compatibility claims; do not invent paths or evidence.
 - Request consequential missing inputs while continuing independent checks.
   Keep affected conclusions **provisional**; silence is not confirmation.
+- When asking the user to decide, explain what each choice would change in
+  simple, direct language. Avoid jargon and overly formal wording. Give a short
+  example when it helps the user see the difference.
 - Review only unless changes are authorized. Local plans are deliberately
   untracked: read them as review input, without investigating tracking status
   or rereading solely to confirm an authorized write.
@@ -134,6 +137,12 @@ not formatting or linting. Scale review depth to the actual risk.
   duplicate state, and temporary bridges. Identify the concrete burden and offer
   a simpler alternative preserving behavior and justified extension seams.
   Do not simplify away required safeguards or judge complexity by file counts.
+- **Redesign behavior:** Compare the proposed behavior with what users and
+  callers observe today. For changes beyond the user's requested behavior,
+  require evidence of a real defect and show how the proposed structural change
+  fixes it as part of the redesign. Flag behavior drift and repairs that need
+  independent changes. Check that the plan verifies preservation and covers
+  any accepted defect with a regression fixture.
 - **Vertical slices:** Check each delivery step individually: does it deliver a
   narrow behavior through the necessary layers, with **observable effects now**?
   Name the entry point and changed result exercisable when that step completes.

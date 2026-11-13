@@ -43,6 +43,9 @@ or implementation plan does not substitute for restating what the user wants.
 - Present the restatement before dependent refinement, review conclusions, or
   implementation. Ask a focused question such as "Does this capture what you want?"
   and identify any specific interpretation that needs a decision.
+- When asking the user to choose, explain what each interpretation would mean in
+  the simplest precise language. Avoid jargon and overly formal wording. Use a
+  short example when it helps show how the outcomes differ.
 - Wait for explicit confirmation or correction before treating the restatement as
   agreed or proceeding with work that depends on it. Continue independent,
   read-only investigation when useful. Silence and elapsed time are not confirmation.

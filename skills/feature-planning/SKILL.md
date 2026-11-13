@@ -6,8 +6,8 @@ description: >
   implementation plans through plain-language discussion of feature breakdown,
   architecture, important data types, and risks, with user-confirmed decisions,
   feature priorities, evidence-based confidence, and effective tests.
-  Use when planning a new feature, extending existing behavior, or breaking
-  a feature proposal into verifiable delivery steps.
+  Use when planning a new feature, extending existing behavior, redesigning
+  an existing system, or breaking a proposal into verifiable delivery steps.
 ---
 
 # Feature Design and Planning
@@ -53,6 +53,12 @@ implementation details.
   responsibilities, how parts interact, or future extensions. Discuss the
   consequential choices as they arise instead of presenting a finished design
   for blanket approval. Reuse decisions the user has already made.
+- When discussing a system redesign, start from the behavior users and callers
+  observe today. Preserve it outside the changes the user requested. Limit any
+  additional behavior change to a real defect that the proposed structural
+  change resolves as part of the redesign itself. Show what should happen,
+  what goes wrong today, and how the redesign fixes it. Keep fixes that need
+  independent behavior changes outside the redesign scope.
 - Develop and explain the architecture and important data type designs with the
   user during this discussion; recording specifications in the plan alone does
   not satisfy this requirement. Walk through concrete inputs, component
@@ -127,10 +133,16 @@ Classify each question before asking it and show that priority to the user:
   exclusions, interfaces, data semantics, permissions, failures, compatibility,
   migration, rollout, extension boundaries, priorities, and acceptance criteria
   wherever they apply. Include the decision to defer or omit a concern.
-- Ask focused questions in manageable batches. Explain the tradeoff and offer a
-  recommendation when evidence supports one. Use available question tools or
-  direct conversational questions, and wait for the user's answers. A generic
-  request to approve the whole plan does not confirm its individual details.
+- Ask focused questions in manageable batches. Explain the tradeoff in the
+  simplest words that keep the meaning precise. Avoid jargon and overly formal
+  language. Say what happens with each choice and what the user gains or gives
+  up. Use a short example when it makes the difference clearer. For example,
+  "If an import has one bad row, should we save the good rows right away and
+  list the bad row for you to fix, or save nothing so your data stays as it is
+  until you can import the whole file?" Offer a recommendation when evidence
+  supports one. Use available question tools or direct conversational questions,
+  and wait for the user's answers. A generic request to approve the whole plan
+  does not confirm its individual details.
 - Do not accept ambiguous terms such as "fast," "large," or "handles errors."
   Ask for concrete inputs, outputs, limits, units, examples, and failure behavior
   until the interpretation is unambiguous. Expose contradictions and obtain a
