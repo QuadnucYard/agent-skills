@@ -107,6 +107,14 @@ needed for implementation or substantive review.
    behavior. Keep wiring, migration, and necessary tests with their owning
    behavior. Report a blocker when required evidence or tooling is unavailable.
 
+   For feature work in a Jujutsu repository with a Rust workspace, prefer a
+   separate `jj workspace` under the primary checkout's Cargo target directory,
+   such as `target/jj-workspaces/<feature>`. Set `CARGO_TARGET_DIR` for Cargo
+   commands in the feature checkout to the absolute path of the primary
+   checkout's Cargo target directory so both checkouts reuse cached builds.
+   An unscoped `cargo clean` against that directory deletes the nested
+   checkouts along with the build artifacts.
+
 Cover the full intended outcome and interactions. Resolve correctness gaps now,
 and name justified extension boundaries and their reconsideration triggers
 without building speculative machinery. Name increments by outcomes rather than
