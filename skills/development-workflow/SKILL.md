@@ -128,6 +128,8 @@ without building speculative machinery. Name increments by outcomes rather than
 release shortcuts such as `V1`. An accepted early increment does not waive the
 remaining requirements.
 
+**Do not add any compatibility layer or adapter unless explicitly required.**
+
 When implementation proves harder than expected, distinguish inherent feature
 complexity from friction in the existing architecture using actual contracts and
 code. Revise affected estimates or propose bounded preparation on that evidence;
@@ -156,6 +158,13 @@ then recheck affected behavior. Return to requirements or planning when a findin
 changes a contract or dependency. Required follow-ups remain completion gaps;
 optional refinements do not silently expand scope. Re-review only affected paths
 unless new evidence widens the risk.
+
+In jj repositories, preserve existing commits when making required changes,
+including fixes found during review. Commit the work as a separate, reviewable
+change and report its change ID to the user. Rewriting existing history,
+including folding the work into an earlier commit with `jj squash` or
+`jj absorb`, requires explicit user approval for that rewrite. Authorization to
+implement or commit the work covers the new change only.
 
 Reviews focus on behavior and design adoption, not formatting or linting. Run
 required repository checks as execution verification, keeping their results
