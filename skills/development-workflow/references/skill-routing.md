@@ -32,6 +32,7 @@ an automatic post-implementation checklist.
 | --- | --- | --- |
 | Understand a stack's actual capabilities and dependencies | `recognize-stack-features` | Read-only evidence for reviews, splits, and restack planning; reuse an existing feature inventory when still valid. |
 | Describe or finish ordinary jj work | `jj-commit` | Owns descriptions and ordinary task commits; description-only and message-only requests retain their scope. |
+| Develop a jj stack in an isolated workspace or review and apply targeted fixes there | `jj-development-workflow` | Owns workspace setup and retirement, additive commits, and descriptions that capture attribution, progress, and intended integration. |
 | Split a bounded set of mixed jj changes into semantic units | `jj-split` | Preserve combined behavior and original history as specified; splitting grants no behavior-fix authority. |
 | Review a jj stack and design a broader reconstruction | `jj-plan-restack` | Owns read-only review, source snapshot, semantic timeline, redistribution, boundaries, and handoff. |
 | Reconstruct a jj stack from an actionable plan | `jj-execute-restack` | Owns authorized fixes, source protection, separate reconstruction, milestone checks, final-tree proof, and recovery. |
@@ -49,7 +50,9 @@ inventory to the owning review or history workflow. A straightforward local
 split does not require a full reconstruction. Preserve a patch-only request's
 additive guarantees instead of substituting a restack.
 
-For ordinary jj task boundaries use `jj-commit`. During a specialized history
+For isolated quick development or review and fix mode, use
+`jj-development-workflow` for workspace and commit boundaries. For standalone
+descriptions and ordinary commits, use `jj-commit`. During a specialized history
 operation, its owner also owns conflict handling, mutation restrictions, and
 recovery. Use the target repository's language and testing conventions directly
 when implementing changes; this collection's workflow adds no separate language
