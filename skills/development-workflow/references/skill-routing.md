@@ -13,6 +13,7 @@ current task, keeping routing within this collection.
 | Establish understanding or compare refined requirements with the original | `requirement-alignment-check` | Confirmed understanding, authoritative obligations, alignment gaps, ambiguity dispositions, acceptance criteria. |
 | Design a feature or extension and sequence its implementation | `feature-planning` | Confirmed design decisions, ordered working increments, dependencies, validation, confidence, and extension boundaries. |
 | Audit a supplied or newly produced substantive implementation plan | `feature-plan-review` | Readiness judgment, structural repairs, dependency gates, missing acceptance cases, and unresolved decisions. |
+| Plan or audit how architecture and observable behavior evolve across commits | `temporal-architecture-review` | Per-commit architecture diagrams, active feature dependencies and consumer paths, public contract changes, and behavior-check expectations. When comparing plan and history, preserve both sequences and map between them. |
 | Review implemented code, a PR, or a stack | `code-review` | Conformance and adoption findings, categories, acceptance impact, owners, and focused verification. |
 | Audit claims made by a bug-fix commit | `fix-commit-review` | Claim status, root-cause completeness, cost and ownership findings, existing-feature repairs versus corrections to the reviewed commit. |
 

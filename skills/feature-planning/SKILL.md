@@ -272,6 +272,10 @@ An unsound approach must be replaced or rejected, not implemented provisionally.
 
 ## Build an ordered sequence of increments
 
+When the plan calls for diagrams of how architecture and public contracts evolve
+across commits, use `temporal-architecture-review` when available. Carry the
+confirmed requirements and existing behavior into the proposed commit sequence.
+
 - Mark the earliest usable delivery of the main goal and its acceptance check.
   Every step before it must explain why the goal requires that work now. Remove
   optional side features from that path, including optional refactors and shared

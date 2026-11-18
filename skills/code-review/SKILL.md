@@ -118,7 +118,11 @@ they touch the same files. Keep necessary wiring and tests with their behavior.
 
 For consecutive changes under review, inspect each parent diff and the base-to-tip
 result. Trace additions through later changes; a correct tip can hide broken
-boundaries or wasted work. Flag:
+boundaries or wasted work. For a requested commit-by-commit architecture audit,
+use `temporal-architecture-review` when available and reuse its findings about
+consumer paths and public contracts.
+
+Flag:
 
 - Blank-line-only changes, including a single added or removed blank line.
   Treat these as restack artifacts: include necessary blank lines in the

@@ -21,6 +21,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | `requirement-alignment-check` | Restate requests for confirmation and check refinements against original intent, ambiguities, and acknowledged issues. |
 | `rust-style-guide` | Apply personal Rust conventions for project layout, naming, types, control flow, and error handling. |
 | `seminar-supervisor` | Critique arguments and designs for substantive defects. |
+| `temporal-architecture-review` | Plan or audit how component contracts, feature dependencies, and tests evolve across commits. |
 | `weekly-research-mentor` | Rehearse and review research updates. |
 
 ## Install

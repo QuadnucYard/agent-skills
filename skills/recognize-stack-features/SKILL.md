@@ -231,7 +231,9 @@ Keep feature recognition separate from commit scheduling: a feature can have
 meaningful incremental milestones, and shared prerequisites need explicit order.
 The calling review, split, or restack skill decides target commits, fixes, and
 mutations within its own authorization. Other skills can invoke this skill by
-name and consume this map; this skill requires no companion skill.
+name and consume this map. For a commit-by-commit architecture audit,
+`temporal-architecture-review` can reuse the map's feature ownership, consumer
+paths, and revision evidence. This skill requires no companion skill.
 
 ## Boundary examples
 

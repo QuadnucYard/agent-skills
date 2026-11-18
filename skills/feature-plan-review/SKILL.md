@@ -33,6 +33,11 @@ not formatting or linting. Scale review depth to the actual risk.
 
 ## Audit the plan
 
+When the review calls for tracing architecture across proposed commits, use
+`temporal-architecture-review` when available to check when capabilities,
+consumer paths, and public contracts become available. Use those findings in
+the plan's readiness assessment.
+
 - **Design-question priority:** Require each design question to distinguish a
   decision needed now, a decision needed before a later agreed increment, and a
   deferred possibility. Check its consequence, affected work, and resolution
