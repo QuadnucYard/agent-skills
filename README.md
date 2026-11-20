@@ -4,6 +4,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 
 | Skill | Purpose |
 | --- | --- |
+| `academic-paper-writing` | Draft and revise academic papers with properly placed definitions and evidence-backed claims. |
 | `code-review` | Review requirements, behavior, design quality, and change boundaries. |
 | `development-workflow` | Connect relevant skills from requirements and planning through implementation, review, and verified commits. |
 | `experiment-design-and-audit` | Design experiments and audit settings, execution, results, fair comparisons, and anomalous outcomes. |
