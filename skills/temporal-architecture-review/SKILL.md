@@ -129,6 +129,11 @@ A small local cleanup does not automatically need a new epoch; the trigger is a 
 
 ## Output contract
 
+In Plan mode, put an explicit as-of date (`YYYY-MM-DD`) at the top of every
+delivered plan, including provisional plans. Use the date the plan was prepared
+or last substantively revised. Tie any relative timing to a stated date or
+milestone.
+
 Produce, in this order (condense only if a section is truly inapplicable):
 
 1. **Scope and generation plan:** Baseline, `R_i` IDs, each `g/short-name`, category, requirement, observable result or refactor invariant, and excluded changes.

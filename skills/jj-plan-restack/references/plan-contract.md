@@ -6,6 +6,11 @@ to implement recommended fixes outside the user's authorized scope.
 
 ## Required contents
 
+Put an explicit as-of date (`YYYY-MM-DD`) at the top of every delivered plan,
+including provisional plans and local plan files. Use the date the plan was
+prepared or last substantively revised. Tie any relative timing to a stated date
+or milestone. Record the repository snapshot separately as specified below.
+
 For a different destination base, apply the contract below in addition to these
 contents; it replaces same-base source-tree equality and prefix assumptions.
 Also record whether the request is partial feature picking or a full rebuild

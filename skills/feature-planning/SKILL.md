@@ -375,9 +375,13 @@ checks from checks already performed. A confident design is not a verified resul
 
 ## Deliver and evaluate the plan
 
-Begin every delivered plan, including provisional plans, with the required feature
-and its decomposition so the user can verify that the planned feature matches
-their intent. Unroll it step by step:
+Put an explicit as-of date (`YYYY-MM-DD`) at the top of every delivered plan,
+including provisional plans and local plan files. Use the date the plan was
+prepared or last substantively revised. Tie any relative timing to a stated date
+or milestone.
+
+Follow the date with the required feature and its decomposition so the user can
+verify that the planned feature matches their intent. Unroll it step by step:
 
 1. **Raw request:** preserve the user's original request verbatim before
    interpreting it. Keep assumptions and agent proposals separate.

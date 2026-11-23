@@ -66,10 +66,13 @@ not globally block a sound narrow conclusion over unrelated missing evidence.
 
 ## Deliverables
 
-For a **plan**, provide the operational question and claim map, design/comparison
-matrix, measurement and analysis rules, collection/execution procedure, artifacts
-to retain, resource/stop/recovery conditions, unresolved decisions, and readiness
-for the next step. Distinguish required current work from optional follow-ups.
+For a **plan**, including a provisional plan, start with an explicit as-of date
+(`YYYY-MM-DD`), using the date it was prepared or last substantively revised. Tie
+any relative timing to a stated date or milestone. Provide the operational
+question and claim map, design/comparison matrix, measurement and analysis rules,
+collection/execution procedure, artifacts to retain, resource/stop/recovery
+conditions, unresolved decisions, and readiness for the next step. Distinguish
+required current work from optional follow-ups.
 
 For an **audit**, lead with what the evidence can support and the decisive limits.
 State assessed scope and evidence, reconcile material settings and attempts,
