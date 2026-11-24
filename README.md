@@ -18,6 +18,7 @@ Reusable workflows for coding and research agents. Requires Bun 1.3.14+ and Git.
 | `jj-repair-state` | Diagnose and repair damaged Jujutsu metadata. |
 | `jj-plan-restack` | Plan restacks and feature extraction, or audit rebuilt behavior, boundaries, and preservation without mutations. |
 | `jj-split` | Split mixed jj changes into semantic commits, with existing-feature fixes and refactors first. |
+| `pull-upstream-changes` | Merge selected upstream features into a fork or migrate Rust callers to updated crate APIs, with smoke tests at integration checkpoints. |
 | `recognize-stack-features` | Infer vertical features, real consumers, and dependencies across original commit boundaries. |
 | `requirement-alignment-check` | Restate requests for confirmation and check refinements against original intent, ambiguities, and acknowledged issues. |
 | `rust-style-guide` | Apply personal Rust conventions for project layout, naming, types, control flow, and error handling. |
