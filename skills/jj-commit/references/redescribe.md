@@ -25,8 +25,11 @@ Use the shared message rules in `SKILL.md` for new descriptions and replacements
    documentation, and tests before asserting behavior; consult prior versions
    only when they help recover a rationale that still applies. Do not invent
    motivations or carry unsupported claims forward.
-4. Write one coherent description of the resulting change. Consolidate
-   squashed messages around the combined outcome, remove repetition and
+4. Write one coherent description for the resulting change's intended purpose.
+   Keep applicable plans, findings, blockers, or measurements for work that
+   remains provisional or exploratory. For changes being prepared to land,
+   consolidate squashed messages around the delivered outcome and carry forward
+   only the evidence and decisions that still explain it. Remove repetition and
    obsolete claims, and reflect fixes and the scope remaining after a split.
    Reconsider the type, scope, subject, body, breaking-change notice, and
    references rather than preserving the old subject by default. Preserve

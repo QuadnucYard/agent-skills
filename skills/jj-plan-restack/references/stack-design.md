@@ -25,6 +25,12 @@ with evidence; record why any substantive detail is superseded, unsupported,
 or intentionally omitted. Do not silently replace a detailed body with a
 subject-only summary.
 
+For descriptions intended to land, keep findings and measurements that support
+the resulting behavior or design. Keep provisional plans, progress, blockers,
+and exploration evidence unrelated to the result in the preserved source history
+or the planning record. Attribute any retained measurement to the revision and
+conditions actually measured.
+
 Classify source changes as coherent intent, incremental feature, migration,
 removal, exact or distributed fixup, mixed purpose, dependency correction, noise,
 or description cleanup. For each state, identify what becomes true, whether later

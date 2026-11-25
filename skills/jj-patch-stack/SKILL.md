@@ -33,7 +33,12 @@ Read-only commands such as `jj status`, `jj log`, `jj show`, and `jj diff` are a
 A patch change must be complete and well formatted before you commit it and move on to the next target.
 
 - Content: run the repository's formatter and linters on the changed files (for example `cargo fmt --check` and `cargo clippy` in a Rust repo) and fix any findings inside the same new change before committing. Never commit knowingly unformatted or failing code.
-- Description: follow the repository's commit-message convention — check recent subjects with `jj log` to detect it (for example Conventional Commits). Use a concise, imperative subject line, and a body only when the reasoning is not obvious from the diff. Never leave the description empty or placeholder.
+- Description follows the repository's commit-message convention. Use a
+  concise, imperative subject. For a patch intended to land independently,
+  explain the repair and its rationale and keep process notes in the handoff.
+  For a patch intended to fold later, record the target change ID, the finding
+  behind the patch, progress toward the repair, and any remaining work or blockers.
+  Use a substantive description for every patch.
 - A committed patch is an existing change: never edit it in place. If a check problem appears after committing, create a new additive patch on top, fix it there, verify, and commit it separately.
 
 ## Examples and Strategy Selection
@@ -152,7 +157,12 @@ Once application is authorized:
 
    `patch-n` and `target-n` stand for the recorded change IDs. Use change IDs for these commands because earlier squashes change later commit IDs. Do not use bare `jj squash` or `jj squash -r patch-n`: later patches have multiple parents, and their destination must be explicit. Each command moves that patch's own delta; inherited earlier fixes move with the earlier target rewrites. Do not squash every patch into the final target.
 
-   For a single target, run only its pair. For additional targets, extend the sequence in the same order. Fold a patch and then its corrective patches, in dependency order, into the same original target before moving to the next target; never use an emptied patch as the destination. Keep the target description with `--use-destination-message`, or replace that flag with `-m "<complete updated target description>"` when the approved fix changes the target's intent.
+   For a single target, run only its pair. For additional targets, extend the sequence in the same order. Fold a patch and then its corrective patches, in dependency order, into the same original target before moving to the next target; never use an emptied patch as the destination.
+
+   Keep the target description with `--use-destination-message` if it still
+   fits. Use `-m "<complete updated target description>"` when the approved
+   fix changes what the message needs to explain. Keep patch progress and fold
+   instructions out of a merge-ready target's description.
 3. After each squash, inspect the rewritten target and pending patches with `jj --no-pager log`, `jj --no-pager show -r target-n`, and focused diffs. Re-resolve the remaining change IDs before continuing; stop if a source or destination is missing, divergent, or ambiguous. An early squash can temporarily conflict in a later target whose approved patch already carries the resolution. Continue only when that resolution is accounted for in the next planned squashes; stop on unexpected conflicts rather than inventing new fixes. Each target must be conflict-free and pass its focused checks after all its patches have been folded.
 4. After the last squash, compare the last patched target with its reviewed tree and check the final mapped target for conflicts:
 

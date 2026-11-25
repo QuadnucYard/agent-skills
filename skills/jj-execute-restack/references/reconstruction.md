@@ -251,9 +251,12 @@ order.
 ## Descriptions
 
 Describe only duplicate or newly reconstructed revisions. State what the
-commit accomplishes and why when non-obvious. Do not mention `fixup`, `wip`,
-review cleanup, or the restacking process. The final history should read as
-intentional history.
+commit accomplishes and why when non-obvious. Write merge-ready descriptions
+around delivered behavior and consequential decisions. Keep findings or measured
+effects that justify the result, with their original revision and conditions
+when relevant. Omit provisional plans, progress, blocker notes, `fixup`, `wip`,
+and restacking instructions from those descriptions. Preserve useful working
+context in the source history and execution records.
 
 Format every description in the repository's commit-message convention —
 check recent subjects with `jj log` to detect it (for example Conventional

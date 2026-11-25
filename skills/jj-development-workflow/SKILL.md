@@ -62,19 +62,27 @@ folding patches, and publishing are distinct operations with their own scope.
   Preserve all finished commits and descriptions. Keep amendments, rebases,
   squashes, absorbs, and abandonment of completed revisions outside this mode.
   Moving to a newer integration base or cleaning up history is a separate task.
-- Expect the development stack to include changes with different destinations.
-  Write the purpose, impact, and dependencies in each change's description,
-  followed by the agent identity if an agent made the commit. Record the
-  intended disposition for trunk, such as land independently, fold into
-  change `<change-id>`, replace before landing, keep as an experiment outside
-  trunk, or pending a named decision. These are instructions for the eventual
-  integration, carried in the description.
-- Record progress a reviewer needs, including key decisions, limitations,
-  behavior verified, and remaining work or checks. Use stable jj change IDs
-  for dependencies, superseded work, and fold targets. Record an exact commit
-  ID when the evidence depends on a specific tree. If a later change alters
-  a prior disposition or resolves a limitation, record that update in the
-  later description.
+- Choose each description by intended use. Follow the message guidance in
+  `jj-commit` when available.
+  - **Land independently.** Explain the delivered behavior, motivation, and
+    consequential design decisions. Keep progress, blockers, integration
+    instructions, and routine checks in the handoff.
+  - **Amend, fold, or replace later.** Reference the step-by-step plan when
+    available and identify the step covered. Record progress and verification
+    so far, findings, deviations, blockers, and the next step. State the
+    intended disposition, including a named decision when integration is
+    pending. Use stable jj change IDs for dependencies and fold targets. If a
+    later checkpoint changes the disposition or resolves a blocker, record the
+    update there.
+  - **Explore.** Start from the goal or question and choose how to investigate
+    when the method is open. Record the approach actually tried and the results.
+    For runtime, compile time, or other comparisons, identify the exact baseline
+    and candidate revisions, the conditions, values, units, and observed change.
+    Note inconclusive or unavailable measurements and point to retained outputs
+    when available.
+- Record agent identity for provisional or exploratory commits made by an
+  agent. For commits intended to land, follow the repository's attribution
+  convention.
 
 ## Review and fix
 
@@ -87,9 +95,9 @@ folding patches, and publishing are distinct operations with their own scope.
   only when the same correction resolves them. Keep unrelated repairs in
   their own changes and leave reviewed revisions intact.
 - Verify the behavior that exposed the defect against the repaired tree.
-  Record the finding, affected change ID, what makes the fix sufficient, and
-  intended integration. If the fix only works with later dependencies,
-  record those dependencies before proposing a fold into an earlier change.
+  Explain the defect and what makes the fix sufficient. For a fix intended to
+  fold, also record the affected change ID, fold target, and any dependencies
+  that constrain where it can land.
 
 ## Finish each change
 

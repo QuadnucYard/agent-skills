@@ -101,8 +101,12 @@ or reread them merely to confirm a write.
   against its own branch parent. Do not restore the source tree onto the
   mainline to force equality and thereby reintroduce redundant work.
 - **Descriptions and handoff:** redescribe every result by its actual purpose
-  and motivation, especially the residual. Advance only a fresh result bookmark
-  after validation. Report ordered change IDs, mapping, safety tag/bookmark, and
+  and motivation, especially the residual. Keep merge-ready descriptions focused
+  on delivered behavior and rationale. Carry relevant plans, progress, findings,
+  and blockers with provisional slices, and measurements with exploratory slices.
+  Attribute measurements to the revision actually measured. Advance only a
+  fresh result bookmark after validation. Report ordered change IDs, mapping,
+  safety tag/bookmark, and
   checks or limits, including each preserved residual's branch point and a fresh
   bookmark for later reference; leave a clean working copy. Keep the last validated milestone
   on failure and inspect intervening operations before recovery. Publish only

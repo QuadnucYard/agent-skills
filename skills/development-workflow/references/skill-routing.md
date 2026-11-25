@@ -32,8 +32,8 @@ an automatic post-implementation checklist.
 | Situation | Skill | Boundary |
 | --- | --- | --- |
 | Understand a stack's actual capabilities and dependencies | `recognize-stack-features` | Read-only evidence for reviews, splits, and restack planning; reuse an existing feature inventory when still valid. |
-| Describe or finish ordinary jj work | `jj-commit` | Owns descriptions and ordinary task commits; description-only and message-only requests retain their scope. |
-| Develop a jj stack in an isolated workspace or review and apply targeted fixes there | `jj-development-workflow` | Owns workspace setup and retirement, additive commits, and descriptions that capture attribution, progress, and intended integration. |
+| Describe or finish ordinary jj work | `jj-commit` | Owns ordinary task commits and message guidance for merge-ready changes, development checkpoints, and experiments. Description-only and message-only requests retain their scope. |
+| Develop a jj stack in an isolated workspace or review and apply targeted fixes there | `jj-development-workflow` | Owns workspace setup and retirement, additive commits, and recording each change's intended destination and relevant evidence. |
 | Merge upstream features into a fork or follow an upstream Rust crate API change | `pull-upstream-changes` | Owns upstream target selection, integration checkpoints, and smoke tests for affected downstream behavior in Git, jj, or Cargo. |
 | Split a bounded set of mixed jj changes into semantic units | `jj-split` | Preserve combined behavior and original history as specified; splitting grants no behavior-fix authority. |
 | Review a jj stack and design a broader reconstruction | `jj-plan-restack` | Owns read-only review, source snapshot, semantic timeline, redistribution, boundaries, and handoff. |

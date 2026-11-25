@@ -1,6 +1,6 @@
 ---
 name: jj-commit
-description: Describe pending work, keep task boundaries clean, and commit verified Jujutsu (jj) changes. Use for starting or finishing jj tasks, drafting messages, and rewriting stale or concatenated descriptions.
+description: Write Jujutsu (jj) descriptions for merge-ready changes, development checkpoints, and experiments. Use for starting or finishing jj tasks, drafting messages, and rewriting stale or concatenated descriptions.
 license: MIT
 ---
 
@@ -37,14 +37,47 @@ revert unrelated or concurrent work. Verify that the prior state is restored
 and the unexpected divergence is gone before proceeding with the task. If a
 safe undo is unclear or divergence remains, stop and report the blocker.
 
-## Message
+## Choose the description by purpose
+
+Use the intended destination of the individual change. Follow the user's
+stated intent or the established workflow. Use the merge-ready form for
+ordinary completed work intended to land. A stack can contain changes with
+different purposes, and `jj commit` alone does not make a change merge-ready.
+
+- **Ready to merge.** Explain the delivered behavior, why it matters, and
+  consequential design decisions or constraints. Keep relevant evidence, such
+  as a measured effect that justifies the design. Omit working plans, progress
+  diaries, resolved blockers, amendment or fold instructions, and routine
+  verification output. Report current verification separately.
+- **Quick development to amend later.** Make the provisional status clear.
+  Quick development usually follows a step-by-step plan. Reference the plan
+  when it is available and identify the step or milestone this change covers.
+  Capture progress, verified behavior, findings, deviations from the plan,
+  open blockers, and the next step. If the plan is unavailable to the reader,
+  give enough context to resume. Record the intended disposition when known.
+  Use a stable jj change ID for a known dependency or fold target.
+- **Exploration.** Start from the goal or question. Exploration usually leaves
+  the method open. Record the approach actually tried and measured results such
+  as runtime or compilation time. For a comparison, identify the exact baseline
+  and candidate revisions or artifacts, and give the values, units, and change
+  observed under comparable conditions. Include the command or setup needed to
+  interpret the figures. Record negative or inconclusive findings and unavailable
+  measurements honestly. Say what the evidence supports and where to find
+  retained detailed output when it exists.
+
+When preparing a provisional or exploratory change to land, rewrite its
+description around the delivered result. Carry forward findings and measurements
+that still explain or support the result. Preserve other useful context in the
+source history or an existing report when available.
+
+## Message conventions
 
 - Use `type(scope): subject`; omit the scope when it adds no useful context.
   Choose the type by intent, such as `feat`, `fix`, `refactor`, or `docs`.
   Use an imperative subject, no trailing period, and aim for at most 72 columns.
 - Always include a body, separated from the subject by a blank line. Explain
-  the problem or motivation and the resulting behavior or high-level idea.
-  Keep it short; do not repeat the subject in longer words.
+  the motivation and follow the guidance for the change's purpose. Avoid
+  repeating the subject in longer words.
 - Describe important design decisions, constraints, or tradeoffs when they
   explain the approach. Omit implementation inventories, helper names, file
   lists, and step-by-step mechanics unless they express an important technique
@@ -57,10 +90,7 @@ safe undo is unclear or divergence remains, stop and report the blocker.
   limit. Preserve blank lines between paragraphs and before footers.
 - Mark incompatible changes with `!` and a `BREAKING CHANGE:` footer that
   explains the impact and required migration. Add issue references only when
-  known and relevant. Describe delivered behavior, not speculative plans.
-- Passing tests are a prerequisite, not a selling point. Never include test
-  counts in the body. Omit routine test-pass statements, logs, and checklists;
-  report verification separately to the user.
+  known and relevant.
 
 Example:
 
@@ -90,23 +120,28 @@ description; do not finish or advance the working-copy change.
    from the intended base. Never discard or commit unrelated work to clean up.
    Requests to commit existing edits, draft messages, or only describe changes
    do not require an initially empty working copy.
-2. Prefer `jj describe -m "planned message"` before editing to name the scope
-   and motivation without claiming completion. Inspect existing edits first
-   when continuing a task.
+2. Determine the change's purpose. Prefer `jj describe -m "planned message"`
+   before editing to name the scope and motivation. For quick development,
+   identify the plan step when one exists. For exploration, state the goal.
+   Inspect existing edits first when continuing a task.
 3. Review the target's full `jj --no-pager diff -r <target> --git`, status,
-   and nearby `jj --no-pager log`. Reconcile the final description with the
-   actual result; use the redescribe reference when replacing existing text.
+   and nearby `jj --no-pager log`. Reconcile the description with the actual
+   result and intended destination; use the redescribe reference when replacing
+   existing text.
    Commit only agreed work with jj, never `git add` or `git commit`. Do not
    reorganize history merely to write a message.
 4. Run required tests and applicable checks against the exact content to commit;
    rerun affected checks after edits. Failed or skipped required tests and
-   unavailable tooling block committing: preserve the work and report the
-   blocker. If no tests apply, say so and run applicable verification. Message
+   unavailable tooling block a merge-ready commit. An in-scope local
+   checkpoint or experiment may record incomplete verification if repository
+   rules allow the commit. Record what was checked, what is pending or blocked,
+   and why. If no tests apply, say so and run applicable verification. Message
    drafting may proceed without claiming verification.
-5. Finish verified work at `@` with `jj commit -m "final message"`, which
-   creates an empty working-copy change. Prefer this over `jj describe` followed
-   by `jj new`, even when a provisional description exists. For description-only
-   requests, use `jj describe -r <target> -m "message"` without advancing `@`.
+5. Commit the in-scope change at `@` with `jj commit -m "complete message"`.
+   This creates an empty working-copy change. Prefer this over `jj describe`
+   followed by `jj new`, even when a provisional description exists. For
+   description-only requests, use `jj describe -r <target> -m "message"`
+   without advancing `@`.
 6. Read back the saved description, checking the revision, backticks, and
    newlines. Recheck status and diff: require a clean working copy before the
    next task, accounting for leftover edits and generated files without
