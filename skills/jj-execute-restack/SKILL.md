@@ -21,6 +21,10 @@ during execution. Do not publish or replace the user's branch implicitly.
   `jj --no-pager` commands with explicit descriptions. In colocated repositories,
   mutate with jj and use Git only for read-only verification. Preserve unrelated
   work and record the operation before mutation.
+- Reuse an available workspace at the intended base or create one there from a
+  clean task checkout. Check registered workspace heads against the descendants
+  of revisions to be rewritten. Get explicit user approval before affecting
+  another workspace you did not create.
 - Require a source snapshot record, explicit base/tip and retained prefix,
   original inventory and semantic timeline, complete redistribution map,
   ordered target commits, authorized fixes, per-boundary checks, final-tree
@@ -90,9 +94,9 @@ during execution. Do not publish or replace the user's branch implicitly.
    the pre-fix-to-clean delta contains precisely the authorized fixes and
    extraction changes, plus the accounted destination integration delta when
    changing bases. Audit the target delta independently of the rebuilt tip.
-   Verify
-   preserved source IDs/refs, retained-prefix identity, separate suffix, semantic
-   milestones, and per-commit evidence. Apply the
+   Verify preserved source IDs and refs, retained-prefix identity, a separate
+   suffix, semantic milestones, and per-commit evidence. Verify a clean working
+   copy in the task workspace before handoff. Apply the
    [completion and recovery rules](references/validation-and-recovery.md).
 
 ## Deviations and reporting

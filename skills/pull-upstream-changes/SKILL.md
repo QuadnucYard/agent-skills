@@ -24,8 +24,11 @@ license: MIT
 
 Identify the requested upstream behavior, the downstream guarantees to preserve,
 and any approved behavior changes. Resolve exact starting and target revisions
-or package versions and sources. Use a task-owned worktree or workspace from the
-recorded downstream revision. Use `jj` for mutations in a Jujutsu repository.
+or package versions and sources. Use a task-owned worktree or workspace at the
+recorded downstream revision. In a Jujutsu repository, use `jj` for mutations and
+reuse an available workspace already at the intended base or create one there
+from a clean task checkout. Get explicit user approval before affecting another
+workspace you did not create. Keep the task workspace for follow-up merges.
 
 Pick a quick smoke test through an affected consumer or public entry point. Reuse
 existing checks that assert the relevant outputs, state changes, or errors. Add a
@@ -50,4 +53,5 @@ Retry when the diagnosis suggests a concrete fix or a better checkpoint boundary
 If progress is blocked, report the failing check and the last verified revision.
 Run the affected repository checks against the final candidate, then verify and
 report the exact upstream inputs, integration commits, passing checks, and any
-remaining gaps. Publish only when authorized.
+remaining gaps. Verify a clean working copy in the task workspace before
+handoff. Publish only when authorized.

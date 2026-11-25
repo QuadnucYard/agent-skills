@@ -114,13 +114,15 @@ and include a short example when it helps the user see the difference.
    behavior. Keep wiring, migration, and necessary tests with their owning
    behavior. Report a blocker when required evidence or tooling is unavailable.
 
-   For feature work in a Jujutsu repository with a Rust workspace, prefer a
-   separate `jj workspace` under the primary checkout's Cargo target directory,
-   such as `target/jj-workspaces/<feature>`. Set `CARGO_TARGET_DIR` for Cargo
-   commands in the feature checkout to the absolute path of the primary
-   checkout's Cargo target directory so both checkouts reuse cached builds.
-   An unscoped `cargo clean` against that directory deletes the nested
-   checkouts along with the build artifacts.
+   In a Jujutsu repository, use one workspace for serial work. Reuse an
+   available workspace already on the intended base or create one there.
+   Get explicit approval before affecting another workspace you did not
+   create, including via a history rewrite. Follow `jj-development-workflow`
+   for setup and cleanup. Keep the task workspace for follow-up edits and
+   amends. For Rust work, set `CARGO_TARGET_DIR` in the development checkout
+   to the absolute path of the primary checkout's Cargo target directory to
+   reuse cached builds. An unscoped `cargo clean` against that directory also
+   deletes any checkouts nested under it.
 
 Cover the full intended outcome and interactions. Resolve correctness gaps now,
 and name justified extension boundaries and their reconsideration triggers
@@ -173,11 +175,11 @@ do not add tests merely to mirror an implementation or the wording of a document
 
 Finish each verified, coherent unit with the repository's commit workflow when
 committing is requested or required by standing instructions. In jj repositories,
-use `jj-commit` for ordinary task boundaries and descriptions. A specialized
-history workflow owns its topology and commit destinations; do not apply a
-generic finish command that would violate it. Serialize repository mutations,
-including description updates across workspaces. Use literal message arguments
-and preserve configured signing.
+use `jj-commit` for ordinary task boundaries and descriptions. Verify a clean
+working copy before handing off file-changing work. Preserve and report any
+unrelated edits. Respect specialized workflows' commit destinations and
+topology. Serialize repository mutations across workspaces. Use literal message
+arguments and preserve configured signing.
 
 In a plain Git repository, follow its conventions and commit only task-owned
 changes when authorized. Message-only requests authorize drafting, not staging,

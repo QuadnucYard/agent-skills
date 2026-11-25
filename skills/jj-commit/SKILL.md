@@ -23,6 +23,9 @@ are fine, but agents must hand drafts to the single writer. Before each write,
 refresh the target's current commit ID and full description; if either changed
 since inspection, reconcile the draft before applying it.
 
+Check which other workspace heads would move before rewriting a change. Obtain
+explicit user approval before affecting another workspace you did not create.
+
 ## Red line: stop on unexpected divergence
 
 After each repository mutation, check for newly divergent changes. If unexpected
@@ -113,11 +116,12 @@ description; do not finish or advance the working-copy change.
 
 ## Task and commit workflow
 
-1. Before a new file-changing task, check `jj --no-pager status` and
-   `jj --no-pager diff --git`. Require an empty diff, no conflicts, and no
-   unexpected untracked files; a described empty change is clean. Finish
-   authorized pending work after verification, or use a separate jj workspace
-   from the intended base. Never discard or commit unrelated work to clean up.
+1. Resume ongoing work in its existing task workspace. For a new task, use
+   an available workspace already on the intended base. If none fits, add a
+   workspace at that base from a clean task checkout. Before starting new work
+   in the selected workspace, use `jj --no-pager status` and
+   `jj --no-pager diff --git` to check for an empty diff, conflicts, and
+   unexpected untracked files. A described empty change is clean.
    Requests to commit existing edits, draft messages, or only describe changes
    do not require an initially empty working copy.
 2. Determine the change's purpose. Prefer `jj describe -m "planned message"`
@@ -137,18 +141,18 @@ description; do not finish or advance the working-copy change.
    rules allow the commit. Record what was checked, what is pending or blocked,
    and why. If no tests apply, say so and run applicable verification. Message
    drafting may proceed without claiming verification.
-5. Commit the in-scope change at `@` with `jj commit -m "complete message"`.
+5. Commit in-scope work where it was done, including in `default`, with
+   `jj commit -m "complete message"`.
    This creates an empty working-copy change. Prefer this over `jj describe`
    followed by `jj new`, even when a provisional description exists. For
    description-only requests, use `jj describe -r <target> -m "message"`
    without advancing `@`.
 6. Read back the saved description, checking the revision, backticks, and
-   newlines. Recheck status and diff: require a clean working copy before the
-   next task, accounting for leftover edits and generated files without
-   discarding unrelated work. A partial commit alone does not ensure cleanliness;
-   no content changes need no empty completion commit. Report the change ID and
-   verification separately. Description-only work preserves file trees and
-   working-copy position as specified in the redescribe reference.
+   newlines. Before handing off file-changing work, verify a clean working copy
+   with `jj status` and `jj diff`. Check for conflicts and unexpected untracked
+   files. Preserve and report any unrelated edits. Keep the task workspace
+   available for follow-up amends. Report the change ID and verification
+   separately. Skip empty completion commits.
 
 Always pass `-m` with the complete subject and body as one literal argument.
 Preserve backticks and actual newlines through a process API or safe shell

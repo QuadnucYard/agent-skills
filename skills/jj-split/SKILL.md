@@ -67,11 +67,14 @@ or reread them merely to confirm a write.
 
 ## Split
 
-1. **Protect the source.** Verify `jj root`, explicit base/tip, and working-copy
-   state. Record exact source IDs, refs, and the operation; pin the source with a
-   fresh safety tag. Preserve unrelated edits, using a separate workspace if
-   needed. Build a separate result line; keep original commits and refs intact
-   unless replacement was explicitly requested.
+1. **Protect the source.** Verify `jj root` and the explicit base/tip. Reuse
+   an available workspace at the intended base or create one there from a clean
+   task checkout. Get explicit user approval before affecting another workspace
+   you did not create, including by rewriting an ancestor of its head. Verify the
+   selected workspace state. Record exact source IDs, refs, and the operation
+   and pin the source with a fresh safety tag. Build a separate result line and
+   keep original commits and refs intact unless replacement was explicitly
+   requested.
 2. **Choose per milestone.** Follow the [command recipes](references/recipes.md):
    - **Paths already final:** restore from the final state only when those paths
      reach that state here and have **no later changes**.
@@ -106,8 +109,7 @@ or reread them merely to confirm a write.
   and blockers with provisional slices, and measurements with exploratory slices.
   Attribute measurements to the revision actually measured. Advance only a
   fresh result bookmark after validation. Report ordered change IDs, mapping,
-  safety tag/bookmark, and
-  checks or limits, including each preserved residual's branch point and a fresh
-  bookmark for later reference; leave a clean working copy. Keep the last validated milestone
-  on failure and inspect intervening operations before recovery. Publish only
-  when requested.
+  safety tag/bookmark, and checks or limits, including each preserved residual's
+  branch point and a fresh bookmark for later reference. Verify a clean working
+  copy in the task workspace. Keep the last validated milestone on failure and
+  inspect intervening operations before recovery. Publish only when requested.

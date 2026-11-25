@@ -3,7 +3,7 @@ name: jj-development-workflow
 description: >
   Run quick, append-only development or review and targeted fixes in a Jujutsu
   workspace. Use when starting or resuming a jj development stack, applying
-  review fixes, or retiring a temporary checkout while retaining its history.
+  review fixes, or reusing and retiring development workspaces.
 license: MIT
 ---
 
@@ -11,11 +11,16 @@ license: MIT
 
 Use **quick development** to build and document a stack incrementally. Use
 **review and fix** to investigate an existing revision or stack and apply
-authorized repairs. Both modes use an isolated `jj workspace` and preserve
-completed changes. A review-only request ends with findings. Restacking,
-folding patches, and publishing are distinct operations with their own scope.
+authorized repairs. Both modes preserve completed changes and can use an
+isolated `jj workspace` when needed. A review-only request ends with findings.
+Restacking, folding patches, and publishing have their own scope.
 
-## Start in a clean workspace
+## Choose a workspace
+
+Get explicit user approval before affecting another workspace you did not
+create. Name the workspace and describe the expected effect. Before rewriting
+a revision, compare it and its descendants with the registered workspace heads.
+A rewrite can move those heads even when run from a separate checkout.
 
 1. Identify the repository with `jj root`. Inspect relevant revisions and
    registered workspaces with `jj --ignore-working-copy --no-pager log` and
@@ -25,35 +30,33 @@ folding patches, and publishing are distinct operations with their own scope.
    or the exact source revision for an isolated review or benchmark. For
    stacked fixes, choose the reviewed tip that contains the dependencies
    the fixes need. Resolve and record the base change ID and commit ID.
-2. Use a dedicated path and unique name. Follow the repository's workspace
-   convention. Otherwise use a sibling checkout or an ignored workspace area
-   owned by the repository. Confirm the destination is available and outside
-   any directory that build or cache cleanup can erase. If the repository
-   intentionally keeps workspaces under a build directory, avoid cleanup
-   commands that would delete those checkouts. Put reports, benchmark data,
-   logs, and other artifacts that must survive in a durable location outside
-   the temporary workspace.
-3. Create the workspace from a clean checkout of the same repository, with
-   the recorded commit as its explicit parent. Workspace creation can
-   snapshot the source checkout. If the source has pending edits, use
-   another clean checkout or coordinate with the owner to finish those
-   edits first. Verify `jj root` and the parent once inside, and run task
-   edits and commands there.
+2. Use one task workspace for serial work. Resume ongoing work and make
+   follow-up amends in that workspace. For a new task, reuse an available
+   workspace already on the intended base, including `default` when it fits.
+   Confirm who owns other candidates before choosing one.
+   An unrelated workspace can hold work even when its working copy is clean.
+   If the current workspace is on a feature branch and the task starts from
+   trunk, leave that checkout in place and use a workspace based on trunk.
+3. If no available workspace is already on the intended base, create one there.
+   Use the repository's workspace convention or choose a stable name and a
+   dedicated path outside build and cache directories. Run the command from a
+   clean task checkout. It can snapshot the source and requires working-copy
+   access. If only another workspace you did not create is available as the
+   source, get approval before running the command there. Disclose any pending
+   edits that the command could snapshot.
 
    ```sh
    jj workspace add --name <name> -r <base-commit-id> <path>
    ```
 
    Use `--no-colocate` when Git worktree integration is unnecessary.
-4. Before starting each new task, require an empty, conflict-free working-copy
-   change. Check `jj --no-pager status` and `jj --no-pager diff --summary`,
-   and account for generated or untracked files that jj might ignore.
-   Snapshot only a workspace assigned to the task. If a proposed workspace
-   contains unrelated edits, leave them with their owner and create a fresh
-   workspace from the intended committed base. Edit only the working-copy
-   change you created for the task or can establish as your own in-progress
-   work. Commit unfinished work only when its checkpoint is in scope and
-   the description records its status.
+4. Verify `jj root` and the parent in the selected workspace. Use
+   `--ignore-working-copy` when inspecting other workspaces. Before starting a
+   new task, verify an empty, conflict-free change with `jj --no-pager status`
+   and `jj --no-pager diff --summary`. Account for generated or untracked files
+   that jj might ignore. Edit only the working-copy change assigned to the task
+   or your own in-progress work. Commit unfinished work only when its
+   checkpoint is in scope and the description records its status.
 
 ## Quick development
 
@@ -83,10 +86,11 @@ folding patches, and publishing are distinct operations with their own scope.
 
 ## Review and fix
 
-- Review the specified revision or range in a dedicated workspace. Check
-  design adoption, behavior, regressions, and dependencies. Tie each finding
-  to the responsible change and affected behavior. Skip formatting and
-  linter checks during review.
+- Review the specified revision or range directly. If checks require a
+  checkout, reuse an available workspace at the revision under review.
+  Check design adoption, behavior, regressions, and dependencies. Tie each
+  finding to the responsible change and affected behavior. Skip formatting
+  and linter checks during review.
 - For each authorized fix, append a narrowly scoped change on a base that
   reproduces the issue and contains the needed dependencies. Group findings
   only when the same correction resolves them. Keep unrelated repairs in
@@ -111,14 +115,24 @@ quick development checkpoints and exploration.
 2. Commit the current change with `jj commit -m <complete-description>`
    using literal multiline text. Serialize mutations to shared repository
    state, even across workspaces. Review the saved description and completed
-   diff. Check `jj --no-pager status` and `jj --no-pager diff --summary`
-   again. The new working copy must be empty and conflict-free, with any
-   leftover files accounted for.
+   diff. Verify a clean working copy before handoff with `jj --no-pager status`
+   and `jj --no-pager diff --summary`. Check for conflicts and unexpected
+   untracked files. Preserve and report any unrelated edits.
 
-## Retire temporary workspaces
+## Retain one task workspace at handoff
 
-Clean up task-owned temporary workspaces as soon as their purpose ends,
-including short-lived benchmark or comparison checkouts.
+Keep the main task workspace available after handoff so the user can request
+follow-up edits or an amend. Leave its removal to the user unless they
+explicitly ask you to remove it.
+
+Create additional workspaces only for parallel work. Designate the extras you
+create as disposable at creation. Keep reports, benchmark data, and other
+outputs to retain outside them. Remove the disposable workspaces before
+reporting completion so exactly one workspace remains for the task. Leave
+unrelated workspaces in place.
+
+Use this procedure to remove a disposable checkout you created or a workspace
+whose removal the user explicitly requested.
 
 1. Move any outputs to retain outside the workspace, stop tools using the
    checkout, and account for pending tracked, untracked, and ignored files.
@@ -128,10 +142,11 @@ including short-lived benchmark or comparison checkouts.
    its completed tip with `jj bookmark create <name> -r <tip>`. A single
    bookmark covers the completed ancestors on that stack.
 2. From a clean workspace you are keeping, verify the registered name and
-   resolved absolute path of the task-owned checkout. Run
+   resolved absolute path of the checkout selected for removal. Run
    `jj workspace remove <name>` to unregister it and delete its directory.
    This removes ignored and untracked files in that directory as well.
 3. Check that the registration and directory are gone and the retained tip
-   still resolves. Hand off the base and completed change IDs, the bookmark
-   if used, and the location of any retained artifacts. Leave the primary
-   workspace and existing refs alone.
+   still resolves. At handoff, verify that only the retained task workspace
+   remains, or that its removal was requested and completed. Hand off the
+   base and completed change IDs, the bookmark if used, and the location of
+   any retained artifacts.

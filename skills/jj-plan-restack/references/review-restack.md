@@ -99,8 +99,10 @@ delta separately, even when clean-to-target is empty.
    new identities, and review the new descriptions and graph. Rerun checks that
    depend on revision metadata; do not rerun behavior tests solely because a
    hash changed. Run missing or
-   suspect behavior/build checks in an isolated workspace when authorized and
-   available; report unavailable evidence. Do not spend review on format or lint.
+   suspect behavior/build checks when authorized. Reuse an available workspace
+   already at the revision under review when the checks require a checkout.
+   Get explicit user approval before affecting another workspace you did not
+   create. Report unavailable evidence. Do not spend review on format or lint.
 5. Verify original commit identities and existing refs, safety/target tags,
    retained-prefix identity, and a separate rebuilt suffix rooted at the declared
    base. For another destination, distinguish source commits already inherited

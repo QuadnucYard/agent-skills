@@ -15,6 +15,10 @@ One goal is to prepare the absorption or dissolution of changes collected at the
 These rules govern patch preparation. "Apply After Approval" permits only the described squash operations and their automatic descendant rewrites after explicit authorization; all other prohibitions remain in force.
 
 - Use `jj` only. Do not run any `git` command.
+- Reuse an available workspace at the intended base or create one there from a
+  clean task checkout. Get explicit user approval before affecting another
+  workspace you did not create, including when applying squashes.
+- Verify a clean working copy in the task workspace before handoff.
 - Do not run `jj squash`, `jj rebase`, `jj abandon`, `jj restore`, or `jj undo`.
 - Never directly edit an already-built change, including your committed patches. Do not use `jj edit` to check out and modify an existing revision. Make corrections in a new additive patch on top of the affected patch; never squash it into an existing change. The only revision you may edit directly is the new patch change under construction while it is `@`.
 - Original targets, source top changes, and committed patches keep the same change ID and commit ID throughout. Corrections remain separate additive patches.
@@ -26,7 +30,7 @@ These rules govern patch preparation. "Apply After Approval" permits only the de
 - Every commit this workflow creates must be well formatted: formatted content and a proper description, per "Well-Formed Commits" below.
 - If the requested result cannot be produced without a forbidden operation, stop and explain the constraint.
 
-Read-only commands such as `jj status`, `jj log`, `jj show`, and `jj diff` are allowed. Additive commands such as `jj new`, `jj describe`, `jj commit`, and conflict-resolution commands are allowed only when they operate on the new patch change.
+Use `--ignore-working-copy` for read-only inspection of workspaces outside the task. Additive commands such as `jj new`, `jj describe`, `jj commit`, and conflict-resolution commands are allowed only when they operate on the new patch change.
 
 ## Well-Formed Commits
 
@@ -82,7 +86,7 @@ Once this mapping is complete and verified, preparation is complete. Do not rebu
 
 ## Workflow
 
-1. Run `jj status` and inspect the relevant graph with `jj log`. Preserve unrelated work. If the working copy contains changes whose ownership is unclear, stop and ask before proceeding.
+1. Inspect the relevant graph and registered workspaces with `jj --ignore-working-copy log` and `jj --ignore-working-copy workspace list`. Verify the selected task workspace with `jj status`. If it contains unrelated edits or edits of unclear ownership, leave it in place and select another workspace at the intended base.
 2. Identify every target revision and order them by ancestry, oldest first. Record any standalone insertions at their intended boundaries in the final order. If the order is ambiguous, do not guess. When fixes already exist in top changes, map their ownership, dependencies, and residual work as described in "Examples and Strategy Selection" before constructing patches.
 3. For the oldest target, call the immutable revision `target-1`. If it needs no fix, use it directly as the prepared prefix and proceed to the next insertion or target. Otherwise create a child:
 
@@ -139,7 +143,20 @@ python "<skill-dir>/scripts/squash_patches.py" PATCH_1_COMMIT:TARGET_1_COMMIT PA
 python "<skill-dir>/scripts/squash_patches.py" --apply REVIEWED_OPERATION PATCH_1_COMMIT:TARGET_1_COMMIT PATCH_3_COMMIT:TARGET_3_COMMIT
 ```
 
-The first command previews the pairs and affected descendants. Review that output and use its operation ID with the same pairs only after the user authorizes the rewrite. Run with an empty working copy and exclusive access to the repository. The script uses change IDs across rewrites, keeps target descriptions, and compares each completed target with its reviewed patch tree. It stops on a mismatch or conflict and prints the starting operation ID. Earlier squashes can remain after a stop. Verify any trailing mapped revisions, affected bookmarks, and behavior after it succeeds, as in step 4 below.
+Run both commands from the same task workspace with an empty working copy
+and exclusive access to the repository. The first command previews the pairs,
+affected descendants, and other workspace heads that would move. Show the user
+any affected workspaces you did not create and obtain explicit approval to move
+their heads. After the user authorizes the rewrite, apply from the same operation
+with the same pairs. Pass `--allow-workspace <name>` once for each affected
+workspace you created or whose head move the user explicitly approved. The
+script refuses to apply if an affected workspace is missing from that list.
+
+The script uses change IDs across rewrites, keeps target descriptions, and
+compares each completed target with its reviewed patch tree. It stops on a
+mismatch or conflict and prints the starting operation ID. Earlier squashes
+can remain after a stop. Verify any trailing mapped revisions, affected
+bookmarks, and behavior after it succeeds, as in step 4 below.
 
 Use the manual sequence for stacks that expect temporary conflicts, need updated target descriptions, or lack a single cumulative patch chain.
 
@@ -147,7 +164,16 @@ Use the manual sequence for stacks that expect temporary conflicts, need updated
 
 Once application is authorized:
 
-1. Recheck `jj --no-pager status` and the relevant `jj --no-pager log`. Confirm that the patch/target mapping still matches the reviewed commit IDs, inspect affected descendants and bookmarks, and preserve unrelated working-copy edits. If the reviewed content or rewrite scope changed, refresh the guide and obtain approval for that change before applying. Record the pre-application operation ID with `jj --no-pager op log --limit 1` for recovery; do not run recovery commands automatically.
+1. Recheck `jj --no-pager status` in the task workspace and confirm the
+   patch/target mapping still matches the reviewed commit IDs. Inspect the
+   targets, their descendants, and affected bookmarks with `jj --no-pager log`.
+   Compare these revisions with the heads from
+   `jj --ignore-working-copy --no-pager workspace list`. Obtain explicit
+   approval before moving the head of another workspace you did not create.
+   If the reviewed content or rewrite scope changed, refresh the guide and
+   obtain approval for the change before applying. Record the pre-application
+   operation ID with `jj --no-pager op log --limit 1` for recovery.
+   Leave recovery commands to a separate authorized action.
 2. Squash from the oldest target to the newest, one explicit source/destination pair at a time:
 
    ```sh
