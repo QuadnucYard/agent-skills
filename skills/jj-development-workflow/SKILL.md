@@ -80,9 +80,6 @@ folding patches, and publishing are distinct operations with their own scope.
     and candidate revisions, the conditions, values, units, and observed change.
     Note inconclusive or unavailable measurements and point to retained outputs
     when available.
-- Record agent identity for provisional or exploratory commits made by an
-  agent. For commits intended to land, follow the repository's attribution
-  convention.
 
 ## Review and fix
 
@@ -100,6 +97,9 @@ folding patches, and publishing are distinct operations with their own scope.
   that constrain where it can land.
 
 ## Finish each change
+
+For agent-made changes, record agent identity in the commit message only for
+quick development checkpoints and exploration.
 
 1. Inspect the task diff and verify the relevant behavior. `jj fix` is
    allowed on your own in-progress change. Scope it explicitly with
